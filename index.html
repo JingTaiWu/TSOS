@@ -1,0 +1,196 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+   <meta name="author"             content="Jing Tai Wu" />
+   <!-- UI Design -->
+   <link rel="stylesheet" type="text/css" href="resources/bootstrap/css/bootstrap.css">
+   <script type="text/javascript" src="resources/jquery-1.11.1.min.js"></script>
+   <script type="text/javascript" src="resources/bootstrap/js/bootstrap.js"></script>
+   <script type="text/javascript" src="resources/UIControl.js"></script>
+   <link rel="shortcut icon" href="resources/bells.png" />
+
+   <!-- TSOS CSS-->
+   <!--<link rel="stylesheet" href="dist/styles/tsos.css" type="text/css" media="screen" />-->
+   <title>
+      Jingle OS - An operating system built with TypeScript
+   </title>
+
+   <!-- Globals CONSTANTS and _Variables. Must included be first. -->
+   <script type="text/javascript" src="dist/scripts/globals.js"></script>
+
+   <!-- Host (Hardware Simulation) Routines -->
+   <script type="text/javascript" src="dist/scripts/host/control.js"></script>
+   <script type="text/javascript" src="dist/scripts/host/devices.js"></script>
+   <script type="text/javascript" src="dist/scripts/host/cpu.js"></script>
+
+   <!-- Virtual OS Routines: Make sure Kernel code is last, since it needs those above it. -->
+   <script type="text/javascript" src="dist/scripts/os/interrupt.js"></script>
+   <script type="text/javascript" src="dist/scripts/os/canvastext.js"></script>
+   <script type="text/javascript" src="dist/scripts/os/console.js"></script>
+   <script type="text/javascript" src="dist/scripts/os/deviceDriver.js"></script>
+   <script type="text/javascript" src="dist/scripts/os/deviceDriverKeyboard.js"></script>
+   <script type="text/javascript" src="dist/scripts/os/queue.js"></script>
+   <script type="text/javascript" src="dist/scripts/os/shell.js"></script>
+   <script type="text/javascript" src="dist/scripts/os/shellCommand.js"></script>
+   <script type="text/javascript" src="dist/scripts/os/userCommand.js"></script>
+   <script type="text/javascript" src="dist/scripts/os/kernel.js"></script>
+
+   <!-- Other Routines -->
+   <script type="text/javascript" src="dist/scripts/utils.js"></script>
+   <!-- Uncomment this line below to enable Glados testing -->
+   <!-- <script type="text/javascript" src="http://www.labouseur.com/courses/os/projects/glados.js"></script> -->
+
+</head>
+
+<!-- style ="background-image: url('resources/giftly.png');" -->
+<body onload="onDocumentLoad();">
+
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <h2><span class="glyphicon glyphicon-bell"></span>&nbsp;&nbsp;<a href="http://foxweb.marist.edu/users/jing.wu1/">Jingle</a> <span style="color:#c7951f">OS</span></h2>
+    </div>
+    <div id="divButtonBar" class="navbar-right">
+      <div class="btn-group">
+       <button type="button"
+              id = "btnStartOS"
+              name="brnStartOS"
+              class="btn btn-default btn-lg navbar-btn btn-success"
+              value="Start"
+              tabindex="0"
+              onclick="TSOS.Control.hostBtnStartOS_click(this);">
+              Start &nbsp;
+              <span class="glyphicon glyphicon-off"></span>
+       </button>
+
+       <button type="button"
+              id = "btnHaltOS"
+              name="brnHaltOS"
+              class="btn btn-default btn-lg navbar-btn btn-danger"
+              disabled="disabled"
+              value="Staph"
+              tabindex="1"
+              onclick="TSOS.Control.hostBtnHaltOS_click(this);">
+              Stop &nbsp;
+              <span class="glyphicon glyphicon-stop"></span>
+       </button>
+       <button type="button"
+              id = "btnReset"
+              name="brnReset"
+              class="btn btn-default btn-lg navbar-btn btn-info"
+              disabled="disabled"
+              value="Re-Jingle"
+              tabindex="2"
+              onclick="TSOS.Control.hostBtnReset_click(this);">
+              Re-Jingle &nbsp;
+              <span class="glyphicon glyphicon-refresh"></span>
+      </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!--Main container -->
+<div id="divMain" class="container theme-showcase" role="main">
+  <!-- status board -->
+  <div class="row well">
+      <!-- Status -->
+      <div class="col-md-5">
+        <div class="panel panel-info" style="text-align:left;">
+          <div class="panel-heading">
+            <h3 style="font-weight: bold;">Status</h3>
+            </div>
+            <div id="statusMessage" class="panel-body" style="font-weight: bold;">
+              <span class="glyphicon glyphicon-pencil"></span>
+              Start the OS and type in a status!
+              </div>
+      </div>
+    </div>
+
+    <!-- Place holder -->
+    <div class="col-md-3">
+      <div class="panel panel-default" style="display:none" id="doge">
+        <div class="panel-body">
+          <img src="resources/doge.png" style="display:block;width:auto; height:98px;text-align:center;margin:auto;" alt="">
+        </div>
+      </div>
+    </div>
+      <!-- Clock -->
+      <div class="col-md-4">
+        <div class="panel panel-success">
+          <div class="panel-heading">
+            <h3 style="font-weight: bold;">Accurate Clock</h3>
+          </div>
+            <div id="clock" class="panel-body" style="font-weight:bold;">
+            </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <!-- The Console -->
+   <div id="divConsole" class="row">
+     <div class="col-md-8">
+       <div class="panel panel-primary">
+         <div class="panel-heading">
+           <div class="panel-title">
+             <h3 style="font-weight: bold;">The Almighty Console</h3>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div style="overflow-y:auto; height: 510px; width:720px;" id="displayWrapper">
+              <canvas id="display"
+                      width="700"
+                      height="500"
+                      tabindex="3"
+                      style="border-style: solid; border-width:1px; display:inline">
+           </canvas>
+              <canvas id="buffer" style="display:none;"
+                      width="700"
+                      height="1000"></canvas>
+          </div>
+          </div>
+      </div>
+    </div>
+
+  <!-- The log -->
+    <div class="col-md-4">
+      <div id="divLog" class="panel panel-info">
+           <div class="panel-heading">
+            <h3 style="font-weight: bold;">Host Log</h3>
+          </div>
+           <div class="panel-body">
+            <textarea name="taHostLog"
+                      id  ="taHostLog"
+                      rows="25"
+                      cols="49"
+                      readonly
+                      style="resize:none;"></textarea>
+           </div>
+      </div>
+    </div>
+
+   </div>
+
+   <div class="row well">
+   <!-- User program -->
+   <div class="col-md-4">
+     <div id="divUserProgramInput" class="panel panel-warning">
+           <div class="panel-heading">
+             <h3 style="font-weight: bold;">User Program Input</h3>
+           </div>
+
+           <div class="panel-body">
+             <textarea name="taProgramInput"
+                       id  ="taProgramInput"
+                       rows="8"
+                       cols="48"></textarea>
+           </div>
+     </div>
+ </div>
+ </div>
+</div>
+
+
+</body>
+</html>
