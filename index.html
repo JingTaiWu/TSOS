@@ -11,7 +11,7 @@
    <link rel="shortcut icon" href="resources/bells.png" />
 
    <!-- TSOS CSS-->
-   <!--<link rel="stylesheet" href="dist/styles/tsos.css" type="text/css" media="screen" />-->
+   <link rel="stylesheet" href="dist/styles/tsos.css" type="text/css" media="screen" />
    <title>
       Jingle OS - An operating system built with TypeScript
    </title>
@@ -101,7 +101,7 @@
           <div class="panel-heading">
             <h3 style="font-weight: bold;">Status</h3>
             </div>
-            <div id="statusMessage" class="panel-body" style="font-weight: bold;">
+            <div id="statusMessage" class="panel-body">
               <span class="glyphicon glyphicon-pencil"></span>
               Start the OS and type in a status!
               </div>
@@ -138,12 +138,11 @@
             </div>
           </div>
           <div class="panel-body">
-            <div style="overflow-y:auto; height: 510px; width:720px;" id="displayWrapper">
+            <div id="displayWrapper">
               <canvas id="display"
                       width="700"
                       height="500"
-                      tabindex="3"
-                      style="border-style: solid; border-width:1px; display:inline">
+                      tabindex="3">
            </canvas>
               <canvas id="buffer" style="display:none;"
                       width="700"
@@ -162,10 +161,7 @@
            <div class="panel-body">
             <textarea name="taHostLog"
                       id  ="taHostLog"
-                      rows="25"
-                      cols="49"
-                      readonly
-                      style="resize:none;"></textarea>
+                      readonly></textarea>
            </div>
       </div>
     </div>
@@ -182,9 +178,7 @@
 
            <div class="panel-body">
              <textarea name="taProgramInput"
-                       id  ="taProgramInput"
-                       rows="8"
-                       cols="48"></textarea>
+                       id  ="taProgramInput"></textarea>
            </div>
      </div>
  </div>

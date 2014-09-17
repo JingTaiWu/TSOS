@@ -27,7 +27,7 @@ To Do List
 5. Enhancements
 	- Accept and display punctuation characters and symbols.
 	- ~~Handle backspace appropriately.~~
-	- Implement command completion with the tab key
+	- ~~Implement command completion with the tab key~~
 	- ~~Prodvide command history recall via the up and down arrow keys.~~
 6. Display a BSOD message when the kernel traps an OS error.
 	- Add a shell command to test this.

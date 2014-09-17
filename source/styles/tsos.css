@@ -1,48 +1,36 @@
 /* TSOS.css */
-
-body {
-  background: #909193 url(../images/linen.png) repeat;
-  font-family: Helvetica, Verdana, Arial, sans-serif;
-  font-size: 12pt;
-  font-weight: normal;
-  font-style: normal;
+#taHostLog{
+  resize: none;
+  width: 100%;
+  height: 510px;
+  display: block;
+  margin: auto;
 }
 
-h1 {
-  color: black;
-  font-size: 24pt;
-  font-weight: normal;
-  font-style: normal;
-  border-bottom: 1px solid black;
+#taProgramInput{
+  resize: none;
+  width: 100%;
+  height: 200px;
+  display: block;
+  margin: auto;
 }
 
-h2 {
-  color: black;
-  font-size: 20pt;
-  font-weight: normal;
-  font-style: normal;
+
+#statusMessage{
+  font-weight: bold;
 }
 
-h3 {
-  font-family: Helvetica, Verdana, Arial, sans-serif;
-  font-size: 16pt;
-  font-weight: normal;
-  font-style: normal;
+/*This is the canvas that draws the console*/
+#displayWrapper{
+  overflow-y: auto;
+  height: 510px;
+  width: 720px;
+  margin: auto;
 }
 
-#display {
-  background-color:#DFDBC3;
-  border: 2px solid red;
-  cursor: default;
-}
-
-.normal_button {
-  width: 100px;
-}
-
-.footerText {
-  color: black;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 8pt;
-  text-align: center;
+#display{
+  border-style: solid;
+  border-width: 1px;
+  display: block;
+  margin: auto;
 }

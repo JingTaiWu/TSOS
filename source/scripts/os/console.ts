@@ -83,6 +83,31 @@ module TSOS {
                     this.putText(this.buffer);
                     _CommandHistoryCur = _CommandHistoryCur + 1;
                   }
+                } else if(chr === String.fromCharCode(9)) {
+                  //if it is a tab key, auto complete the command
+                  if(this.buffer !== "") {
+                    //if the buffer is not an empty string, try look for the command using
+                    //the first character
+                    //Grab a copy of the command list from the shell
+                    var commandList = _OsShell.commandList;
+                    for(var i = 0; i < commandList.length; i++) {
+                      var currentCommand = commandList[i].command;
+                      //string.match returns a list of matching strings
+                      var templs = currentCommand.match(this.buffer);
+                      if(templs !== null){
+                        //if there is a match, return the first element that matches
+                        //clear the current line
+                        this.clearInput();
+                        //set the buffer to that command
+                        this.buffer = currentCommand;
+                        //draw it on the canvas
+                        this.putText(currentCommand);
+                        //break from the loop;
+                        break;
+                      }
+                    }
+                  }
+
                 } else {
                     // This is a "normal" character, so ...
                     // ... draw it on the screen...
