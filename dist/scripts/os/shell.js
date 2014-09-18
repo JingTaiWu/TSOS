@@ -298,20 +298,20 @@ var TSOS;
             }
         };
 
-        //date - Output the Current Date to the console
+        // date - Output the Current Date to the console
         Shell.prototype.shellDate = function (args) {
             var currentDate = new Date();
             var currentMonth = currentDate.getMonth() + 1;
             _StdOut.putText("It is currently " + currentMonth + "/" + currentDate.getDate() + "/" + currentDate.getFullYear() + ".");
         };
 
-        //whereami - display a random location for the user
+        // whereami - display a random location for the user
         Shell.prototype.shellWhereAmI = function (args) {
             var locations = ["China", "Taiwan", "The United States", "England", "Mars", "Doge's planet", "Summoner's Rift"];
             _StdOut.putText("You are currently at " + locations[Math.floor(Math.random() * (locations.length))] + ".");
         };
 
-        //status - takes user's input string and render it in the status board
+        // status - takes user's input string and render it in the status board
         Shell.prototype.shellStatus = function (args) {
             var statusStr = "Status:   ";
             for (var i = 0; i < args.length; i++) {
@@ -320,18 +320,18 @@ var TSOS;
             document.getElementById('statusMessage').innerHTML = statusStr;
         };
 
-        //summonDoge - summon The Almight Doge
+        // summonDoge - summon The Almight Doge
         Shell.prototype.shellSummonDoge = function (args) {
             document.getElementById('doge').style.display = "block";
             window.scrollTo(0, 0);
         };
 
-        //hideDoge - hide Dodge
+        // hideDoge - hide Dodge
         Shell.prototype.shellHideDoge = function (args) {
             document.getElementById('doge').style.display = "none";
         };
 
-        //load - validate user program input
+        // load - validate user program input
         Shell.prototype.shellLoad = function (args) {
             var textArea = document.getElementById('taProgramInput');
             var input = textArea.value;
@@ -348,9 +348,9 @@ var TSOS;
             }
         };
 
-        //Bsod - triggers bosd
+        // Bsod - triggers bosd
         Shell.prototype.shellBsod = function (args) {
-            //add an irq to the queue
+            // add an irq to the queue
             var irq = new TSOS.Interrupt("meant to break the OS", "BREAK IT");
             _KernelInterruptQueue.enqueue(irq);
         };

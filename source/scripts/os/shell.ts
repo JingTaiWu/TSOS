@@ -326,20 +326,20 @@ module TSOS {
             }
         }
 
-        //date - Output the Current Date to the console
+        // date - Output the Current Date to the console
         public shellDate(args) {
             var currentDate = new Date();
             var currentMonth: number = currentDate.getMonth() + 1;
             _StdOut.putText("It is currently " + currentMonth + "/" + currentDate.getDate() + "/" + currentDate.getFullYear() + ".");
         }
 
-        //whereami - display a random location for the user
+        // whereami - display a random location for the user
         public shellWhereAmI(args) {
             var locations: string[] = ["China","Taiwan","The United States","England","Mars","Doge's planet","Summoner's Rift"];
             _StdOut.putText("You are currently at " + locations[Math.floor(Math.random() * (locations.length))] + ".");
         }
 
-        //status - takes user's input string and render it in the status board
+        // status - takes user's input string and render it in the status board
         public shellStatus(args){
             var statusStr: string = "Status:   ";
             for(var i = 0; i < args.length; i++){
@@ -348,18 +348,18 @@ module TSOS {
             document.getElementById('statusMessage').innerHTML = statusStr;
         }
 
-        //summonDoge - summon The Almight Doge
+        // summonDoge - summon The Almight Doge
         public shellSummonDoge(args){
           document.getElementById('doge').style.display="block";
           window.scrollTo(0,0);
         }
 
-        //hideDoge - hide Dodge
+        // hideDoge - hide Dodge
         public shellHideDoge(args){
           document.getElementById('doge').style.display="none";
         }
 
-        //load - validate user program input
+        // load - validate user program input
         public shellLoad(args){
           var textArea = <HTMLInputElement> document.getElementById('taProgramInput');
           var input = textArea.value;
@@ -376,9 +376,9 @@ module TSOS {
           }
         }
 
-        //Bsod - triggers bosd
+        // Bsod - triggers bosd
         public shellBsod(args){
-          //add an irq to the queue
+          // add an irq to the queue
           var irq = new Interrupt("meant to break the OS", "BREAK IT");
           _KernelInterruptQueue.enqueue(irq);
         }
