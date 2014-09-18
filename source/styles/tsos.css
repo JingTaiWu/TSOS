@@ -22,7 +22,7 @@
 
 /*This is the canvas that draws the console*/
 #displayWrapper{
-  overflow-y: auto;
+  overflow: auto;
   height: 510px;
   width: 720px;
   margin: auto;

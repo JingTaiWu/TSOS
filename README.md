@@ -29,7 +29,7 @@ To Do List
 	- ~~Handle backspace appropriately.~~
 	- ~~Implement command completion with the tab key~~
 	- ~~Prodvide command history recall via the up and down arrow keys.~~
-6. Display a BSOD message when the kernel traps an OS error.
-	- Add a shell command to test this.
+6. ~~Display a BSOD message when the kernel traps an OS error.~~
+	- ~~Add a shell command to test this.~~
 7. ~~Add a shell command called load to validate the user code in the HTML5 text area (id= “taProgramInput”). Only hex digits and spaces are valid.~~
-8. Optional line wrap.
+8. ~~Optional line wrap.~~

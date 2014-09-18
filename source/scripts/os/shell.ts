@@ -100,14 +100,22 @@ module TSOS {
                                   " - Summon a lovely doge.");
             this.commandList[this.commandList.length] = sc;
 
+            //hide Doge
             sc = new ShellCommand(this.shellHideDoge,
                                   "hide",
                                   " - hide a lovely doge.");
             this.commandList[this.commandList.length] = sc;
 
+            //test the user program
             sc = new ShellCommand(this.shellLoad,
                                   "load",
                                   " - validate user program input.");
+            this.commandList[this.commandList.length] = sc;
+
+            //BSOD
+            sc = new ShellCommand(this.shellBsod,
+                                  "bsod",
+                                  " - triggers the blue screen of death.");
             this.commandList[this.commandList.length] = sc;
             // processes - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -366,6 +374,13 @@ module TSOS {
               break;
             }
           }
+        }
+
+        //Bsod - triggers bosd
+        public shellBsod(args){
+          //add an irq to the queue
+          var irq = new Interrupt("meant to break the OS", "BREAK IT");
+          _KernelInterruptQueue.enqueue(irq);
         }
     }
 }

@@ -69,6 +69,10 @@ var _hardwareClockID: number = null;
 var _GLaDOS: any = null;
 var Glados: any = null;
 
+// BSOD Image
+var _BSOD = new Image();
+_BSOD.src = "resources/BSOD.png";
+
 var onDocumentLoad = function() {
 	TSOS.Control.hostInit();
 };

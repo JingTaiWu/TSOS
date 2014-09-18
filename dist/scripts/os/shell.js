@@ -69,10 +69,16 @@ var TSOS;
             sc = new TSOS.ShellCommand(this.shellSummonDoge, "summon", " - Summon a lovely doge.");
             this.commandList[this.commandList.length] = sc;
 
+            //hide Doge
             sc = new TSOS.ShellCommand(this.shellHideDoge, "hide", " - hide a lovely doge.");
             this.commandList[this.commandList.length] = sc;
 
+            //test the user program
             sc = new TSOS.ShellCommand(this.shellLoad, "load", " - validate user program input.");
+            this.commandList[this.commandList.length] = sc;
+
+            //BSOD
+            sc = new TSOS.ShellCommand(this.shellBsod, "bsod", " - triggers the blue screen of death.");
             this.commandList[this.commandList.length] = sc;
 
             // processes - list the running processes and their IDs
@@ -340,6 +346,13 @@ var TSOS;
                     break;
                 }
             }
+        };
+
+        //Bsod - triggers bosd
+        Shell.prototype.shellBsod = function (args) {
+            //add an irq to the queue
+            var irq = new TSOS.Interrupt("meant to break the OS", "BREAK IT");
+            _KernelInterruptQueue.enqueue(irq);
         };
         return Shell;
     })();

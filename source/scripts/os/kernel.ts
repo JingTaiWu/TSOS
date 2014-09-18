@@ -41,6 +41,7 @@ module TSOS {
             // ... more?
             //
 
+
             // Enable the OS Interrupts.  (Not the CPU clock interrupt, as that is done in the hardware sim.)
             this.krnTrace("Enabling the interrupts.");
             this.krnEnableInterrupts();
@@ -170,7 +171,9 @@ module TSOS {
         public krnTrapError(msg) {
             Control.hostLog("OS ERROR - TRAP: " + msg);
             // TODO: Display error on console, perhaps in some sort of colored screen. (Perhaps blue?)
+            _DrawingContext.drawImage(_BSOD, 0, 0);
             this.krnShutdown();
+            clearInterval(_hardwareClockID);
         }
     }
 }
