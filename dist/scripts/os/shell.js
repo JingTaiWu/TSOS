@@ -337,6 +337,10 @@ var TSOS;
             var input = textArea.value;
             var ls = input.split(" ");
             var regEx = /^([a-f]|[0-9])*$/i;
+            if (input === "") {
+                _StdOut.putText("Please Enter a program first!");
+                return;
+            }
             for (var i = 0; i < ls.length; i++) {
                 if (!regEx.test(ls[i])) {
                     _StdOut.putText("Your program is invalid. Enter a correct program, pls...");
