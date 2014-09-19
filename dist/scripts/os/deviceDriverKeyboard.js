@@ -45,9 +45,84 @@ var TSOS;
 
                 // TODO: Check for caps-lock and handle as shifted if so.
                 _KernelInputQueue.enqueue(chr);
-            } else if (((keyCode >= 48) && (keyCode <= 57)) || (keyCode == 32) || (keyCode == 13) || (keyCode == 8) || (keyCode == 38) || (keyCode == 40) || (keyCode == 9)) {
+            } else if (isShifted && (keyCode >= 48 && keyCode <= 57)) {
+                // HardCode the array with those symbols
+                var ls = [];
+
+                // I will insert the array starting from 48 so the keycode can just be the index
+                ls[48] = ")";
+                ls[49] = "!";
+                ls[50] = "@";
+                ls[51] = "#";
+                ls[52] = "$";
+                ls[53] = "%";
+                ls[54] = "^";
+                ls[55] = "&";
+                ls[56] = "*";
+                ls[57] = "(";
+
+                chr = ls[keyCode];
+
+                // put the character in the kernel queue
+                _KernelInputQueue.enqueue(chr);
+            } else if ((keyCode >= 186 && keyCode <= 192) || (keyCode >= 219 && keyCode <= 222)) {
+                if (isShifted) {
+                    // the list for the string
+                    var ls = [];
+                    ls[186] = ":";
+                    ls[187] = "+";
+                    ls[188] = "<";
+                    ls[189] = "_";
+                    ls[190] = ">";
+                    ls[191] = "?";
+                    ls[192] = "~";
+                    ls[219] = "{";
+                    ls[220] = "|";
+                    ls[221] = "}";
+                    ls[222] = "\"";
+
+                    chr = ls[keyCode];
+
+                    // put the character in the kernel queue
+                    _KernelInputQueue.enqueue(chr);
+                } else {
+                    // the list for the string
+                    var ls = [];
+                    ls[186] = ";";
+                    ls[187] = "=";
+                    ls[188] = ",";
+                    ls[189] = "-";
+                    ls[190] = ".";
+                    ls[191] = "/";
+                    ls[192] = "`";
+                    ls[219] = "[";
+                    ls[220] = "\\";
+                    ls[221] = "]";
+                    ls[222] = "'";
+
+                    chr = ls[keyCode];
+
+                    // put the character in the kernel queue
+                    _KernelInputQueue.enqueue(chr);
+                }
+            } else if (((keyCode >= 48) && (keyCode <= 57)) || (keyCode == 32) || (keyCode == 13) || (keyCode == 8)) {
                 chr = String.fromCharCode(keyCode);
                 _KernelInputQueue.enqueue(chr);
+            } else if ((keyCode == 38) || (keyCode == 40) || (keyCode == 9)) {
+                switch (keyCode) {
+                    case 9:
+                        chr = "TAB";
+                        _KernelInputQueue.enqueue(chr);
+                        break;
+                    case 38:
+                        chr = "KEY_UP";
+                        _KernelInputQueue.enqueue(chr);
+                        break;
+                    case 40:
+                        chr = "KEY_DOWN";
+                        _KernelInputQueue.enqueue(chr);
+                        break;
+                }
             }
         };
         return DeviceDriverKeyboard;

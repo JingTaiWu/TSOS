@@ -53,7 +53,7 @@ module TSOS {
                 } else if (chr === String.fromCharCode(8)) {
                     //KeyCode 8 is backspace. It should delete the last character
                     this.deleteLastChar();
-                } else if (chr === String.fromCharCode(38)) {
+                } else if (chr === "KEY_UP") {
                     //KeyCode 38 is up arrow, it should display the previous command
                     if(_CommandHistory.length !== 0){
                       //define the cursor if it is undefined
@@ -68,7 +68,7 @@ module TSOS {
                       this.putText(this.buffer);
                       _CommandHistoryCur = _CommandHistoryCur - 1;
                     }
-                } else if (chr === String.fromCharCode(40)) {
+                } else if (chr ==="KEY_DOWN") {
                   //KeyCode 38 is up arrow, it should display the previous command
                   if(_CommandHistory.length !== 0){
                     //define the cursor if it is undefined
@@ -83,7 +83,7 @@ module TSOS {
                     this.putText(this.buffer);
                     _CommandHistoryCur = _CommandHistoryCur + 1;
                   }
-                } else if(chr === String.fromCharCode(9)) {
+                } else if(chr === "TAB") {
                   //if it is a tab key, auto complete the command
                   if(this.buffer !== "") {
                     //if the buffer is not an empty string, try look for the command using
@@ -126,7 +126,7 @@ module TSOS {
               var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, this.buffer[this.buffer.length - 1]);
               this.currentXPosition = this.currentXPosition - offset;
               //_DrawingContext.fillStyle="#FFFFFF";
-              _DrawingContext.clearRect(this.currentXPosition, this.currentYPosition - this.currentFontSize - 2, offset, _DefaultFontSize + 5);
+              _DrawingContext.clearRect(this.currentXPosition, this.currentYPosition - this.currentFontSize - 2, offset, _DefaultFontSize + 10);
               //delete the last character in the buffer
               this.buffer = this.buffer.slice(0,-1);
             }

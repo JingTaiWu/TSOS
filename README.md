@@ -7,7 +7,7 @@ Welcome to JingleJangleOS
 Progress Check
 ==============
 
-1. iProject 1 (in progress)
+1. iProject 1 (Complete!!)
 2. iProject 2
 3. iProject 3
 4. iProject 4
@@ -25,7 +25,7 @@ To Do List
 	- ~~status messages as specified by the user with a new shell command.~~
 4. ~~Implement ***Scrolling*** in the client console~~
 5. Enhancements
-	- Accept and display punctuation characters and symbols.
+	- ~~Accept and display punctuation characters and symbols.~~
 	- ~~Handle backspace appropriately.~~
 	- ~~Implement command completion with the tab key~~
 	- ~~Prodvide command history recall via the up and down arrow keys.~~
