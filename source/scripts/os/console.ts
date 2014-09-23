@@ -121,14 +121,23 @@ module TSOS {
 
         //Delete Text
         public deleteLastChar(): void {
-            // Move the current X position.
             if(this.buffer.length != 0){
-              var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, this.buffer[this.buffer.length - 1]);
-              this.currentXPosition = this.currentXPosition - offset;
-              //_DrawingContext.fillStyle="#FFFFFF";
-              _DrawingContext.clearRect(this.currentXPosition, this.currentYPosition - this.currentFontSize - 2, offset, _DefaultFontSize + 10);
-              //delete the last character in the buffer
-              this.buffer = this.buffer.slice(0,-1);
+              if(this.currentXPosition < 0){
+                // if the string is at a new line, go back to the previous line
+                var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, this.buffer[this.buffer.length - 1]);
+                this.currentXPosition = _Canvas.width + offset + 1.5;
+                this.currentYPosition -= _DefaultFontSize +
+                                         _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
+                                         _FontHeightMargin;
+              } else {
+                // else handle it like a regular delete
+                var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, this.buffer[this.buffer.length - 1]);
+                this.currentXPosition = this.currentXPosition - offset;
+                //_DrawingContext.fillStyle="#FFFFFF";
+                _DrawingContext.clearRect(this.currentXPosition, this.currentYPosition - this.currentFontSize - 2, offset, _DefaultFontSize + 10);
+                //delete the last character in the buffer
+                this.buffer = this.buffer.slice(0,-1);
+              }
             }
 
         }
@@ -160,7 +169,7 @@ module TSOS {
                   // Lets print one letter at a time
                   // if the current x position is greater than the width of the canvas
                   // advance the line.
-                  if(this.currentXPosition > _Canvas.width - 10){
+                  if(this.currentXPosition > _Canvas.width){
                     this.advanceLine();
                   }
                   // Draw the text at the current X and Y coordinates.
