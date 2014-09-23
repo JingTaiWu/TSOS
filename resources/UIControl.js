@@ -20,4 +20,9 @@ function checkTime(time){
 
 $(document).ready(function(){
   startClock();
+  $("#statusBoard, #divConsole, #divLog, #divUserProgramInput").css("display", "none");
+  $("#btnStartOS").click(function(){
+    $("#welcome").fadeOut(500);
+    $("#statusBoard, #divConsole, #divLog, #divUserProgramInput").delay(500).fadeIn(500);
+  });
 });

@@ -93,8 +93,15 @@
 
 <!--Main container -->
 <div id="divMain" class="container theme-showcase" role="main">
+
+  <!-- Welcome Panel -->
+  <div id="welcome" class="jumbotron">
+    <h1>Welcome to Jingle <span style="color:#c7951f">OS</span></h1>
+    <p class="lead">Press Start to Begin.....</p>
+  </div>
+
   <!-- status board -->
-  <div class="row well">
+  <div id="statusBoard" class="row well">
       <!-- Status -->
       <div class="col-md-5">
         <div class="panel panel-info" style="text-align:left;">
@@ -168,20 +175,20 @@
 
    </div>
 
-   <div class="row well">
    <!-- User program -->
-   <div class="col-md-4">
-     <div id="divUserProgramInput" class="panel panel-warning">
-           <div class="panel-heading">
-             <h3 style="font-weight: bold;">User Program Input</h3>
-           </div>
+   <div id="divUserProgramInput" class="row">
+     <div class="col-md-4">
+       <div class="panel panel-warning">
+             <div class="panel-heading">
+               <h3 style="font-weight: bold;">User Program Input</h3>
+             </div>
 
-           <div class="panel-body">
-             <textarea name="taProgramInput"
-                       id  ="taProgramInput"></textarea>
-           </div>
+             <div class="panel-body">
+               <textarea name="taProgramInput"
+                         id  ="taProgramInput"></textarea>
+             </div>
+       </div>
      </div>
- </div>
  </div>
 </div>
 
