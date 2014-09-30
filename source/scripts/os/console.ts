@@ -55,43 +55,49 @@ module TSOS {
                     this.deleteLastChar();
                 } else if (chr === "KEY_UP") {
                     //KeyCode 38 is up arrow, it should display the previous command
-                    if(_CommandHistory.length !== 0){
-                      //define the cursor if it is undefined
-                      if(_CommandHistoryCur === undefined ||
-                         _CommandHistoryCur < 0 ||
-                         _CommandHistoryCur >= _CommandHistory.length) {
+                    if (_CommandHistory.length !== 0){
+                      // define the cursor if it is undefined
+                      if (_CommandHistoryCur === undefined) {
                         _CommandHistoryCur = _CommandHistory.length - 1;
                       }
-                      //clear the input
-                      this.clearInput();
+
+                      // if the buffer is dirty, clear it
+                      if (this.buffer !== "") {
+                        // clear the input
+                        this.clearInput();
+                      }
+                      // set the buffer
                       this.buffer = _CommandHistory[_CommandHistoryCur]
+                      // print the text
                       this.putText(this.buffer);
                       _CommandHistoryCur = _CommandHistoryCur - 1;
+                      if (_CommandHistoryCur < 0) {
+                        _CommandHistoryCur += 1;
+                      }
                     }
                 } else if (chr ==="KEY_DOWN") {
                   //KeyCode 38 is up arrow, it should display the previous command
-                  if(_CommandHistory.length !== 0){
+                  if (_CommandHistory.length !== 0){
                     //define the cursor if it is undefined
-                    if(_CommandHistoryCur === undefined ||
-                       _CommandHistoryCur >= _CommandHistory.length ||
-                       _CommandHistoryCur < 0) {
+                    if (_CommandHistoryCur === undefined) {
                       _CommandHistoryCur = 0;
                     }
-                    //clear the input
-                    this.clearInput();
+                    // clear the dirty buffer
+                    if (this.buffer !== "") {
+                      // clear the input
+                      this.clearInput();
+                    }
+                    // set the buffer
                     this.buffer = _CommandHistory[_CommandHistoryCur]
+                    // print the text
                     this.putText(this.buffer);
                     _CommandHistoryCur = _CommandHistoryCur + 1;
+                    if (_CommandHistoryCur >= _CommandHistory.length) {
+                      _CommandHistoryCur -= 1;
+                    }
                   }
-                } else if(chr === "TAB") {
+                } else if (chr === "TAB") {
                   // if it is a tab key, auto complete the command
-                  // Define a startsWith function
-                  if(typeof String.prototype.startsWith != 'function') {
-                    String.prototype.startsWith = fuinction(str) {
-                      return this.slice(0, str.length) == str;
-                    };
-                  }
-
                   if(this.buffer !== "") {
                     // if the buffer is not an empty string, try look for the command using
                     // the current input
@@ -99,12 +105,13 @@ module TSOS {
                     var commandList = _OsShell.commandList;
                     for(var i = 0; i < commandList.length; i++) {
                       var currentCommand = commandList[i].command;
-                      //string.match returns a list of matching strings
-                      if(currentCommand.startsWith(this.buffer) {
+                      if(currentCommand.slice(0, this.buffer.length) == this.buffer) {
+                        // clear the current input
+                        this.clearInput();
                         // sets the current buffer to the current command
                         this.buffer = currentCommand;
                         // draw the text onto the canvas
-                        this.putText.(this.buffer);
+                        this.putText(this.buffer);
                         // break from the loop
                         break;
                       }

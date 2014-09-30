@@ -58,53 +58,69 @@ var TSOS;
                 } else if (chr === "KEY_UP") {
                     //KeyCode 38 is up arrow, it should display the previous command
                     if (_CommandHistory.length !== 0) {
-                        //define the cursor if it is undefined
-                        if (_CommandHistoryCur === undefined || _CommandHistoryCur < 0 || _CommandHistoryCur >= _CommandHistory.length) {
+                        // define the cursor if it is undefined
+                        if (_CommandHistoryCur === undefined) {
                             _CommandHistoryCur = _CommandHistory.length - 1;
                         }
 
-                        //clear the input
-                        this.clearInput();
+                        // if the buffer is dirty, clear it
+                        if (this.buffer !== "") {
+                            // clear the input
+                            this.clearInput();
+                        }
+
+                        // set the buffer
                         this.buffer = _CommandHistory[_CommandHistoryCur];
+
+                        // print the text
                         this.putText(this.buffer);
                         _CommandHistoryCur = _CommandHistoryCur - 1;
+                        if (_CommandHistoryCur < 0) {
+                            _CommandHistoryCur += 1;
+                        }
                     }
                 } else if (chr === "KEY_DOWN") {
                     //KeyCode 38 is up arrow, it should display the previous command
                     if (_CommandHistory.length !== 0) {
                         //define the cursor if it is undefined
-                        if (_CommandHistoryCur === undefined || _CommandHistoryCur >= _CommandHistory.length || _CommandHistoryCur < 0) {
+                        if (_CommandHistoryCur === undefined) {
                             _CommandHistoryCur = 0;
                         }
 
-                        //clear the input
-                        this.clearInput();
+                        // clear the dirty buffer
+                        if (this.buffer !== "") {
+                            // clear the input
+                            this.clearInput();
+                        }
+
+                        // set the buffer
                         this.buffer = _CommandHistory[_CommandHistoryCur];
+
+                        // print the text
                         this.putText(this.buffer);
                         _CommandHistoryCur = _CommandHistoryCur + 1;
+                        if (_CommandHistoryCur >= _CommandHistory.length) {
+                            _CommandHistoryCur -= 1;
+                        }
                     }
                 } else if (chr === "TAB") {
-                    //if it is a tab key, auto complete the command
+                    // if it is a tab key, auto complete the command
                     if (this.buffer !== "") {
-                        //if the buffer is not an empty string, try look for the command using
-                        //the first character
-                        //Grab a copy of the command list from the shell
+                        // if the buffer is not an empty string, try look for the command using
+                        // the current input
+                        // Grab a copy of the command list from the shell
                         var commandList = _OsShell.commandList;
                         for (var i = 0; i < commandList.length; i++) {
                             var currentCommand = commandList[i].command;
-
-                            //string.match returns a list of matching strings
-                            var templs = currentCommand.match(this.buffer);
-                            if (templs !== null) {
-                                //if there is a match, return the first element that matches
-                                //clear the current line
+                            if (currentCommand.slice(0, this.buffer.length) == this.buffer) {
+                                // clear the current input
                                 this.clearInput();
 
-                                //set the buffer to that command
+                                // sets the current buffer to the current command
                                 this.buffer = currentCommand;
 
-                                //draw it on the canvas
-                                this.putText(currentCommand);
+                                // draw the text onto the canvas
+                                this.putText(this.buffer);
 
                                 break;
                             }
