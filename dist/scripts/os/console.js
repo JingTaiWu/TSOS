@@ -55,54 +55,10 @@ var TSOS;
                 } else if (chr === String.fromCharCode(8)) {
                     //KeyCode 8 is backspace. It should delete the last character
                     this.deleteLastChar();
-                } else if (chr === "KEY_UP") {
-                    //KeyCode 38 is up arrow, it should display the previous command
-                    if (_CommandHistory.length !== 0) {
-                        // define the cursor if it is undefined
-                        if (_CommandHistoryCur === undefined) {
-                            _CommandHistoryCur = _CommandHistory.length - 1;
-                        }
-
-                        // if the buffer is dirty, clear it
-                        if (this.buffer !== "") {
-                            // clear the input
-                            this.clearInput();
-                        }
-
-                        // set the buffer
-                        this.buffer = _CommandHistory[_CommandHistoryCur];
-
-                        // print the text
-                        this.putText(this.buffer);
-                        _CommandHistoryCur = _CommandHistoryCur - 1;
-                        if (_CommandHistoryCur < 0) {
-                            _CommandHistoryCur += 1;
-                        }
-                    }
-                } else if (chr === "KEY_DOWN") {
-                    //KeyCode 38 is up arrow, it should display the previous command
-                    if (_CommandHistory.length !== 0) {
-                        //define the cursor if it is undefined
-                        if (_CommandHistoryCur === undefined) {
-                            _CommandHistoryCur = 0;
-                        }
-
-                        // clear the dirty buffer
-                        if (this.buffer !== "") {
-                            // clear the input
-                            this.clearInput();
-                        }
-
-                        // set the buffer
-                        this.buffer = _CommandHistory[_CommandHistoryCur];
-
-                        // print the text
-                        this.putText(this.buffer);
-                        _CommandHistoryCur = _CommandHistoryCur + 1;
-                        if (_CommandHistoryCur >= _CommandHistory.length) {
-                            _CommandHistoryCur -= 1;
-                        }
-                    }
+                } else if (chr === "KEY_UP" || chr === "KEY_DOWN") {
+                    this.clearInput();
+                    this.buffer = _OsShell.traverseHistory(chr);
+                    this.putText(this.buffer);
                 } else if (chr === "TAB") {
                     // if it is a tab key, auto complete the command
                     if (this.buffer !== "") {

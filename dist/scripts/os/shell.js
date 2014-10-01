@@ -15,6 +15,8 @@ var TSOS;
             this.commandList = [];
             this.curses = "[fuvg],[cvff],[shpx],[phag],[pbpxfhpxre],[zbgureshpxre],[gvgf]";
             this.apologies = "[sorry]";
+            this.history = [];
+            this.cursor = -1;
         }
         Shell.prototype.init = function () {
             var sc = null;
@@ -135,7 +137,25 @@ var TSOS;
             }
 
             //add the user command to the commandhistory
-            _CommandHistory[_CommandHistory.length] = userCommand.command;
+            this.history[this.history.length] = userCommand.command;
+        };
+
+        // For User input history
+        Shell.prototype.traverseHistory = function (input) {
+            switch (input) {
+                case "KEY_UP":
+                    if (this.cursor < this.history.length - 1) {
+                        this.cursor++;
+                    }
+                    break;
+                case "KEY_DOWN":
+                    if (this.cursor > -1) {
+                        this.cursor--;
+                    }
+                    break;
+            }
+
+            return (this.cursor === -1) ? "" : this.history[this.cursor];
         };
 
         // args is an option parameter, ergo the ? which allows TypeScript to understand that

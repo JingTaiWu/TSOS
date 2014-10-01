@@ -17,6 +17,8 @@ module TSOS {
         public commandList = [];
         public curses = "[fuvg],[cvff],[shpx],[phag],[pbpxfhpxre],[zbgureshpxre],[gvgf]";
         public apologies = "[sorry]";
+        public history = [];
+        public cursor = -1;
 
         constructor() {
 
@@ -169,8 +171,26 @@ module TSOS {
             }
 
             //add the user command to the commandhistory
-            _CommandHistory[_CommandHistory.length] = userCommand.command;
+            this.history[this.history.length] = userCommand.command;
         }
+
+        // For User input history
+        public traverseHistory(input) {
+          switch(input) {
+            case "KEY_UP":
+              if(this.cursor < this.history.length - 1) {
+                this.cursor++;
+              }
+              break;
+            case "KEY_DOWN":
+              if(this.cursor > -1) {
+                this.cursor--;
+              }
+              break;
+            }
+
+            return (this.cursor === -1) ? "" : this.history[this.cursor];
+          }
 
         // args is an option parameter, ergo the ? which allows TypeScript to understand that
         public execute(fn, args?) {
