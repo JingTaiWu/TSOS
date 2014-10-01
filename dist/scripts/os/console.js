@@ -212,21 +212,25 @@ var TSOS;
             * Font descent measures from the baseline to the lowest point in the font.
             * Font height margin is extra spacing between the lines.
             */
-            this.currentYPosition += _DefaultFontSize + _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) + _FontHeightMargin;
+            var offset = _DefaultFontSize + _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) + _FontHeightMargin;
+            this.currentYPosition += offset;
 
             // TODO: Handle scrolling. (Project 1)
             _BufferContext.clearRect(0, 0, _Buffer.width, _Buffer.height);
 
-            //draw the current image to the buffer
+            // draw the current image to the buffer
             _BufferContext.drawImage(_Canvas, 0, 0);
+            var imageData = _BufferContext.getImageData(0, offset, _Canvas.width, _Canvas.height - 15);
             if (this.currentYPosition > _Canvas.height) {
-                _Canvas.height = this.currentYPosition + _FontHeightMargin + 10;
-                _DrawingContext.drawImage(_Buffer, 0, 0);
-                _Buffer.height = this.currentYPosition + _FontHeightMargin + 50;
-
+                //_Canvas.height = this.currentYPosition + _FontHeightMargin + 10;
+                //_DrawingContext.drawImage(_Buffer, 0, 0);
+                //_Buffer.height = this.currentYPosition + _FontHeightMargin + 50;
                 //scroll to the bottom
-                var displayDiv = document.getElementById("displayWrapper");
-                displayDiv.scrollTop = displayDiv.scrollHeight;
+                //var displayDiv = document.getElementById("displayWrapper");
+                //displayDiv.scrollTop = displayDiv.scrollHeight;
+                _DrawingContext.clearRect(0, 0, _Canvas.width, _Canvas.height);
+                _DrawingContext.putImageData(imageData, 0, 0);
+                this.currentYPosition -= offset;
             }
         };
         return Console;
