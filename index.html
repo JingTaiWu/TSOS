@@ -99,16 +99,18 @@
     <h1>Welcome to <em><span style="color:#0080c1">Jingle</span> <span style="color:#c7951f">OS</span></em></h1>
     <p class="lead">Press Start to Begin...</p>
     <p>But first, enjoy a picture of Hawaii</p>
-    <img src="resources/Hawaii.jpg" alt="" class="img-rounded" style="height:600px">
+    <div>
+    <img src="resources/Hawaii.jpg" alt="" class="img-rounded" style="width: 100%; height: 100%">
+    </div>
   </div>
 
   <!-- status board -->
-  <div id="statusBoard" class="row well">
+  <div id="statusBoard" class="row">
       <!-- Status -->
       <div class="col-md-5">
         <div class="panel panel-info" style="text-align:left;">
           <div class="panel-heading">
-            <h3 style="font-weight: bold;">Status</h3>
+            <h4 style="font-weight: bold;">Status</h3>
             </div>
             <div id="statusMessage" class="panel-body">
               <span class="glyphicon glyphicon-pencil"></span>
@@ -129,7 +131,7 @@
       <div class="col-md-4">
         <div class="panel panel-success">
           <div class="panel-heading">
-            <h3 style="font-weight: bold;">Accurate Clock</h3>
+            <h4 style="font-weight: bold;">Accurate Clock</h3>
           </div>
             <div id="clock" class="panel-body" style="font-weight:bold;">
             </div>
@@ -156,22 +158,100 @@
               <canvas id="buffer" style="display:none;"
                       width="700"
                       height="1000"></canvas>
-          </div>
+            </div>
           </div>
       </div>
     </div>
 
   <!-- The log -->
     <div class="col-md-4">
-      <div id="divLog" class="panel panel-info">
-           <div class="panel-heading">
-            <h3 style="font-weight: bold;">Host Log</h3>
+      <div class="row">
+        <div id="divLog" class="panel panel-default">
+             <div class="panel-heading">
+              Host Log
+            </div>
+             <div class="panel-body">
+              <textarea name="taHostLog"
+                        id  ="taHostLog"
+                        readonly></textarea>
+             </div>
+        </div>
+      </div>
+
+      <!-- Process Control block panel -->
+      <div class="row">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            Process Control Block
           </div>
-           <div class="panel-body">
-            <textarea name="taHostLog"
-                      id  ="taHostLog"
-                      readonly></textarea>
-           </div>
+
+          <div clas="panel-body">
+            <table class="table text-center">
+              <thead>
+                <tr style="font-weight: bold;">
+                  <td>PID</td>
+                  <td>PC</td>
+                  <td>IR</td>
+                  <td>ACC</td>
+                  <td>X</td>
+                  <td>Y</td>
+                  <td>Z</td>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td colspan="7">
+                    No processes are running.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- CPU Panel -->
+      <div class="row">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            CPU
+          </div>
+
+          <div class="panel-body">
+            <table class="table text-center">
+              <thead>
+                <tr style="font-weight: bold;">
+                  <td>PID</td>
+                  <td>PC</td>
+                  <td>IR</td>
+                  <td>ACC</td>
+                  <td>X</td>
+                  <td>Y</td>
+                  <td>Z</td>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Memory Panel -->
+      <div class="row">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            Memory
+          </div>
+
+          <div class="panel-body">
+            Start the OS to initialize memory.
+          </div>
+        </div>
       </div>
     </div>
 
@@ -182,7 +262,7 @@
      <div class="col-md-4">
        <div class="panel panel-warning">
              <div class="panel-heading">
-               <h3 style="font-weight: bold;">User Program Input</h3>
+               User Program Input
              </div>
 
              <div class="panel-body">

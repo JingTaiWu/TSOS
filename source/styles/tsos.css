@@ -2,7 +2,7 @@
 #taHostLog{
   resize: none;
   width: 100%;
-  height: 510px;
+  height: 120px;
   display: block;
   margin: auto;
 }
@@ -10,7 +10,7 @@
 #taProgramInput{
   resize: none;
   width: 100%;
-  height: 200px;
+  height: 150px;
   display: block;
   margin: auto;
 }
@@ -23,8 +23,6 @@
 /*This is the canvas that draws the console*/
 #displayWrapper{
   overflow: auto;
-  height: 510px;
-  width: 720px;
   margin: auto;
 }
 
@@ -37,4 +35,8 @@
 
 body {
   padding-top:80px;
+}
+
+.panel-heading {
+  font-weight: bold;
 }
