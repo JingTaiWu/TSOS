@@ -35,8 +35,6 @@ var _BufferContext = null;
 var _DefaultFontFamily = "sans";
 var _DefaultFontSize = 13;
 var _FontHeightMargin = 4;
-var _CommandHistory = [];
-var _CommandHistoryCur = undefined;
 
 var _Trace = true;
 
@@ -45,6 +43,10 @@ var _Kernel;
 var _KernelInterruptQueue = null;
 var _KernelBuffers = null;
 var _KernelInputQueue = null;
+
+// Memory
+var _Memory;
+var _MemoryManager;
 
 // Standard input and output
 var _StdIn = null;

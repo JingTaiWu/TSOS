@@ -390,7 +390,7 @@ module TSOS {
             return;
           }
           for (var i = 0; i < ls.length; i++){
-            if (!regEx.test(ls[i])) {
+            if (!regEx.test(ls[i]) || ls[i].length != 2) {
               _StdOut.putText("Your program is invalid. Enter a correct program, pls...");
               break;
             } else {
