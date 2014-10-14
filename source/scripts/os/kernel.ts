@@ -29,6 +29,9 @@ module TSOS {
             _MemoryDisplay = new MemoryDisplay(); // Initialize memory display
             _MemoryDisplay.update();
 
+            // Initialize Process Control Block
+            _PCB = new ProcessControlBlock();
+            
             // Initialize the console.
             _Console.init();
 

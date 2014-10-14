@@ -1,14 +1,20 @@
 /*
-  Resident Queue - where the processes reside when they are loaded into the OS
+  Process Control block - save the state of the process
   The information of the process is displayed on the Process Control Block panel
 */
 
 module TSOS {
-  export class processControlBlock {
+  export class ProcessControlBlock {
     // where all the processes resides
     public residentQueue : Process[] = [];
+    // Pid
+    public pid : number;
 
-    public loadProcess(p : Process) {
+    constructor() {
+      this.pid = 0;
+    }
+
+    public addProcess(p : Process) {
       this.residentQueue.push(p);
     }
   }

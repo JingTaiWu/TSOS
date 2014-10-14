@@ -47,6 +47,9 @@ var _KernelInterruptQueue = null;
 var _KernelBuffers: any[] = null;
 var _KernelInputQueue = null;
 
+// Process Control Block
+var _PCB : TSOS.ProcessControlBlock;
+
 // Memory
 var _MemoryManager : TSOS.MemoryManager;
 var _MemoryDisplay : TSOS.MemoryDisplay;

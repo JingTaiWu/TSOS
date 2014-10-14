@@ -27,6 +27,9 @@ var TSOS;
             _MemoryDisplay = new TSOS.MemoryDisplay(); // Initialize memory display
             _MemoryDisplay.update();
 
+            // Initialize Process Control Block
+            _PCB = new TSOS.ProcessControlBlock();
+
             // Initialize the console.
             _Console.init();
 

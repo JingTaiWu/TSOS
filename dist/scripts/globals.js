@@ -44,6 +44,9 @@ var _KernelInterruptQueue = null;
 var _KernelBuffers = null;
 var _KernelInputQueue = null;
 
+// Process Control Block
+var _PCB;
+
 // Memory
 var _MemoryManager;
 var _MemoryDisplay;

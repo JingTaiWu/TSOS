@@ -5,10 +5,11 @@
 */
 module TSOS {
   export class MemoryDisplay {
+
     // This method updates the memory display in the host OS
     public update() : void {
       var displayTable = $("#memoryDisplay > tbody");
-      var memory = _MemoryManager.readMemory();
+      var memory = _MemoryManager.memory;
       // To avoid any display conflict
       // Clear all the rows in the table first
       displayTable.empty();

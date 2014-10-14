@@ -1,5 +1,4 @@
 /*
-ReadyQueue - Where the processes resides
 The information about the process is displayed in the process control block
 in the client OS
 */

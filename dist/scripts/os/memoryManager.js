@@ -8,18 +8,38 @@ var TSOS;
         function MemoryManager() {
             this.memorySize = 256;
             // Initializes the memory
-            this.memory = new TSOS.Memory(this.memorySize);
+            var mem = new TSOS.Memory(this.memorySize);
+            this.memory = mem.bytes;
+            this.cursor = 0;
         }
-        // return a specific byte in the memory
-        MemoryManager.prototype.readByte = function (location) {
-            if (location < this.memory.bytes.length) {
-                return this.memory.bytes[location].byte;
+        // load user input program
+        MemoryManager.prototype.loadProgram = function (program) {
+            for (var i = 0; i < program.length; i++) {
+                if (this.cursor < this.memory.length) {
+                    this.memory[this.cursor] = new TSOS.Byte(program[i]);
+                    this.cursor++;
+
+                    // update the memory panel
+                    _MemoryDisplay.update();
+                } else {
+                    // Memory run out of bound, throw error
+                    _Kernel.krnTrapError("Memory Out Of Bound.");
+                }
             }
         };
 
-        // return the entire memory
-        MemoryManager.prototype.readMemory = function () {
-            return this.memory.bytes;
+        // reset memory
+        MemoryManager.prototype.resetMemory = function () {
+            var newMem = new TSOS.Memory(this.memorySize);
+            this.memory = newMem.bytes;
+            this.cursor = 0;
+        };
+
+        // return a specific byte in the memory
+        MemoryManager.prototype.readByte = function (location) {
+            if (location < this.memory.length) {
+                return this.memory[location].byte;
+            }
         };
         return MemoryManager;
     })();

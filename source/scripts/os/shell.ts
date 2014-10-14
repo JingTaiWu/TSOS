@@ -389,15 +389,17 @@ module TSOS {
             _StdOut.putText("Please Enter a program first!");
             return;
           }
+
           for (var i = 0; i < ls.length; i++){
+            // if it is not valid, tell the user
             if (!regEx.test(ls[i]) || ls[i].length != 2) {
               _StdOut.putText("Your program is invalid. Enter a correct program, pls...");
               break;
-            } else {
-              _StdOut.putText("Yep, your program is correct.");
-              break;
             }
           }
+
+          // if it is valid, load it into the memory
+          _MemoryManager.loadProgram(ls);
         }
 
         // Bsod - triggers bosd

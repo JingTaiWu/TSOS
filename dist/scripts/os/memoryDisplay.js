@@ -10,7 +10,7 @@ var TSOS;
         // This method updates the memory display in the host OS
         MemoryDisplay.prototype.update = function () {
             var displayTable = $("#memoryDisplay > tbody");
-            var memory = _MemoryManager.readMemory();
+            var memory = _MemoryManager.memory;
 
             // To avoid any display conflict
             // Clear all the rows in the table first

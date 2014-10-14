@@ -1,18 +1,19 @@
 /*
-Resident Queue - where the processes reside when they are loaded into the OS
+Process Control block - save the state of the process
 The information of the process is displayed on the Process Control Block panel
 */
 var TSOS;
 (function (TSOS) {
-    var processControlBlock = (function () {
-        function processControlBlock() {
+    var ProcessControlBlock = (function () {
+        function ProcessControlBlock() {
             // where all the processes resides
             this.residentQueue = [];
+            this.pid = 0;
         }
-        processControlBlock.prototype.loadProcess = function (p) {
+        ProcessControlBlock.prototype.addProcess = function (p) {
             this.residentQueue.push(p);
         };
-        return processControlBlock;
+        return ProcessControlBlock;
     })();
-    TSOS.processControlBlock = processControlBlock;
+    TSOS.ProcessControlBlock = ProcessControlBlock;
 })(TSOS || (TSOS = {}));
