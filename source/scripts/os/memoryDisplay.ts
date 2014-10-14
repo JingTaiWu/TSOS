@@ -12,16 +12,26 @@ module TSOS {
       // To avoid any display conflict
       // Clear all the rows in the table first
       displayTable.empty();
-      // find how many rows I need
-      for (var row = 0; row < memory.length; row = row + 8) {
-        var cols = "";
+
+      // display the memory
+      var index : number = 0;
+      while (index < memory.length) {
+        // The first column should display the address
+        var cols = "<td style='font-weight: bold;'>" + "0x0" + index.toString(16).toUpperCase() + "</td>";
+        var row = "";
+        // every address has 16 bits
         for (var col = 0; col < 8; col++) {
-          var actualIndex = col + row;
-          cols += "<td>" + _MemoryManager.readByte(actualIndex) + "</td>";
+          var location = index + col;
+          cols += "<td id='" + location + "'>" + _MemoryManager.readByte(location) + "</td>";
         }
-        var address = "<td style='font-weight: bold'>" + row + "</td>"
-        var rowStr = "<tr>" + address + cols + "</tr>";
-        $("#memoryDisplay > tbody:last").append(rowStr);
+
+        // increment the index
+        index += 8;
+
+        // form the string for one row
+        row += "<tr>" + cols + "</tr>";
+        // append it to the table
+        $("#memoryDisplay > tbody:last").append(row);
       }
     }
   }
