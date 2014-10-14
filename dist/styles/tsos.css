@@ -1,5 +1,5 @@
 /* TSOS.css */
-#taHostLog{
+#taHostLog {
   resize: none;
   width: 100%;
   height: 120px;
@@ -7,7 +7,7 @@
   margin: auto;
 }
 
-#taProgramInput{
+#taProgramInput {
   resize: none;
   width: 100%;
   height: 150px;
@@ -16,21 +16,26 @@
 }
 
 
-#statusMessage{
+#statusMessage {
   font-weight: bold;
 }
 
 /*This is the canvas that draws the console*/
-#displayWrapper{
+#displayWrapper {
   overflow: auto;
   margin: auto;
 }
 
-#display{
+#display {
   border-style: solid;
   border-width: 1px;
   display: block;
   margin: auto;
+}
+
+#memoryDiv {
+  overflow: auto;
+  height: 100px;
 }
 
 body {

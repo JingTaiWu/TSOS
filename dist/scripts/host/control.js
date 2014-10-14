@@ -84,7 +84,6 @@ var TSOS;
             _CPU = new TSOS.Cpu();
             _CPU.init();
 
-            // ... Create and intialize the memory (also part of the hardware)
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(TSOS.Devices.hostClockPulse, CPU_CLOCK_INTERVAL);
 

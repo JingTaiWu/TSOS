@@ -45,8 +45,8 @@ var _KernelBuffers = null;
 var _KernelInputQueue = null;
 
 // Memory
-var _Memory;
 var _MemoryManager;
+var _MemoryDisplay;
 
 // Standard input and output
 var _StdIn = null;

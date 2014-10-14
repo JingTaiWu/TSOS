@@ -4,13 +4,12 @@
 */
 
 module TSOS {
-  export class residentQueue {
-    constructor (public q = new Array()) {
-
-    }
+  export class processControlBlock {
+    // where all the processes resides
+    public residentQueue : Process[] = [];
 
     public loadProcess(p : Process) {
-      this.q.push(p);
+      this.residentQueue.push(p);
     }
   }
 }

@@ -12,6 +12,7 @@
 
    <!-- TSOS CSS-->
    <link rel="stylesheet" href="dist/styles/tsos.css" type="text/css" media="screen" />
+
    <title>
       Jingle OS - An operating system built with TypeScript
    </title>
@@ -23,8 +24,11 @@
    <script type="text/javascript" src="dist/scripts/host/control.js"></script>
    <script type="text/javascript" src="dist/scripts/host/devices.js"></script>
    <script type="text/javascript" src="dist/scripts/host/cpu.js"></script>
+   <script type="text/javascript" src="dist/scripts/host/memory.js"></script>
 
    <!-- Virtual OS Routines: Make sure Kernel code is last, since it needs those above it. -->
+   <script type="text/javascript" src="dist/scripts/os/memoryManager.js"></script>
+   <script type="text/javascript" src="dist/scripts/os/memoryDisplay.js"></script>
    <script type="text/javascript" src="dist/scripts/os/interrupt.js"></script>
    <script type="text/javascript" src="dist/scripts/os/canvastext.js"></script>
    <script type="text/javascript" src="dist/scripts/os/console.js"></script>
@@ -251,8 +255,23 @@
           </div>
 
           <div class="panel-body">
-            Start the OS to initialize memory.
+            <div id="memoryDiv">
+              <table id="memoryDisplay" class="table text-center">
+                <thead>
+                  <tr>
+                    <td style="font-weight: bold;">
+                    Address
+                    </td>
+                    <td colspan="8">
+                    </td>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
           </div>
+
         </div>
       </div>
     </div>

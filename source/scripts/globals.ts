@@ -48,8 +48,8 @@ var _KernelBuffers: any[] = null;
 var _KernelInputQueue = null;
 
 // Memory
-var _Memory : TSOS.Memory;
 var _MemoryManager : TSOS.MemoryManager;
+var _MemoryDisplay : TSOS.MemoryDisplay;
 
 // Standard input and output
 var _StdIn  = null;
