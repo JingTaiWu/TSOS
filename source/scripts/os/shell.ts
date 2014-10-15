@@ -382,7 +382,7 @@ module TSOS {
         // load - validate user program input
         public shellLoad(args){
           var textArea = <HTMLInputElement> document.getElementById('taProgramInput');
-          var input = textArea.value;
+          var input = textArea.value.trim();
           var ls = input.split(" ");
           var regEx = /^([a-f]|[0-9])*$/i;
           if (input === ""){
@@ -390,16 +390,25 @@ module TSOS {
             return;
           }
 
+          var sum = 0;
           for (var i = 0; i < ls.length; i++){
+            // sum of the program must be even
+            sum += parseInt(ls[i], 16);
             // if it is not valid, tell the user
             if (!regEx.test(ls[i]) || ls[i].length != 2) {
               _StdOut.putText("Your program is invalid. Enter a correct program, pls...");
-              break;
+              return;
             }
           }
 
+          if (sum % 2 !== 0) {
+            _StdOut.putText("Your Program didn't add up right... try again.");
+            return;
+          }
+
           // if it is valid, load it into the memory
-          _MemoryManager.loadProgram(ls);
+          var pid = _MemoryManager.loadProgram(ls);
+          _StdOut.putText("Process ID: " + pid);
         }
 
         // Bsod - triggers bosd

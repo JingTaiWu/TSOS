@@ -8,10 +8,21 @@ var TSOS;
         function ProcessControlBlock() {
             // where all the processes resides
             this.residentQueue = [];
-            this.pid = 0;
+            // Pid
+            this.currentPid = 0;
         }
-        ProcessControlBlock.prototype.addProcess = function (p) {
-            this.residentQueue.push(p);
+        ProcessControlBlock.prototype.addProcess = function (base) {
+            var process = new TSOS.Process(this.currentPid, base);
+            process.location = "Memory";
+            this.residentQueue.push(process);
+
+            // increment the pid (we don't want to recycle the ID)
+            this.currentPid++;
+
+            // update the PCB
+            _PCBDisplay.update();
+
+            return process.pid;
         };
         return ProcessControlBlock;
     })();

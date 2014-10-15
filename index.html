@@ -29,6 +29,9 @@
    <!-- Virtual OS Routines: Make sure Kernel code is last, since it needs those above it. -->
    <script type="text/javascript" src="dist/scripts/os/memoryManager.js"></script>
    <script type="text/javascript" src="dist/scripts/os/memoryDisplay.js"></script>
+   <script type="text/javascript" src="dist/scripts/os/processControlBlock.js"></script>
+   <script type="text/javascript" src="dist/scripts/os/pcbDisplay.js"></script>
+   <script type="text/javascript" src="dist/scripts/os/process.js"></script>
    <script type="text/javascript" src="dist/scripts/os/interrupt.js"></script>
    <script type="text/javascript" src="dist/scripts/os/canvastext.js"></script>
    <script type="text/javascript" src="dist/scripts/os/console.js"></script>
@@ -143,6 +146,7 @@
     </div>
   </div>
   <br>
+
   <!-- The Console -->
    <div id="divConsole" class="row">
      <div class="col-md-8">
@@ -190,29 +194,24 @@
           </div>
 
           <div clas="panel-body">
-            <table class="table text-center">
-              <thead>
-                <tr style="font-weight: bold;">
-                  <td>PID</td>
-                  <td>PC</td>
-                  <td>IR</td>
-                  <td>ACC</td>
-                  <td>X</td>
-                  <td>Y</td>
-                  <td>Z</td>
-                  <td>State</td>
-                  <td>Location</td>
-                </tr>
-              </thead>
+            <div id="pcbDiv">
+              <table class="table text-center" id="pcbDisplay">
+                <thead>
+                  <tr style="font-weight: bold;">
+                    <td>PID</td>
+                    <td>PC</td>
+                    <td>IR</td>
+                    <td>ACC</td>
+                    <td>X</td>
+                    <td>Y</td>
+                    <td>Z</td>
+                  </tr>
+                </thead>
 
-              <tbody>
-                <tr>
-                  <td colspan="9">
-                    No processes are running.
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -228,7 +227,6 @@
             <table class="table text-center">
               <thead>
                 <tr style="font-weight: bold;">
-                  <td>PID</td>
                   <td>PC</td>
                   <td>IR</td>
                   <td>ACC</td>
@@ -240,6 +238,12 @@
 
               <tbody>
                 <tr>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
                 </tr>
               </tbody>
             </table>

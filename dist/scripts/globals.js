@@ -46,6 +46,7 @@ var _KernelInputQueue = null;
 
 // Process Control Block
 var _PCB;
+var _PCBDisplay;
 
 // Memory
 var _MemoryManager;

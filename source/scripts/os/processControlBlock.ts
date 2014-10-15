@@ -8,14 +8,18 @@ module TSOS {
     // where all the processes resides
     public residentQueue : Process[] = [];
     // Pid
-    public pid : number;
+    public currentPid : number = 0;
 
-    constructor() {
-      this.pid = 0;
-    }
+    public addProcess(base : number) : number {
+      var process = new Process(this.currentPid, base);
+      process.location = "Memory";
+      this.residentQueue.push(process);
+      // increment the pid (we don't want to recycle the ID)
+      this.currentPid++;
+      // update the PCB
+      _PCBDisplay.update();
 
-    public addProcess(p : Process) {
-      this.residentQueue.push(p);
+      return process.pid;
     }
   }
 }

@@ -13,19 +13,30 @@ var TSOS;
             this.cursor = 0;
         }
         // load user input program
+        // return the base address of the program
         MemoryManager.prototype.loadProgram = function (program) {
-            for (var i = 0; i < program.length; i++) {
+            for (var offset = 0; offset < program.length; offset++) {
                 if (this.cursor < this.memory.length) {
-                    this.memory[this.cursor] = new TSOS.Byte(program[i]);
-                    this.cursor++;
-
-                    // update the memory panel
-                    _MemoryDisplay.update();
+                    this.memory[this.cursor + offset] = new TSOS.Byte(program[offset]);
                 } else {
                     // Memory run out of bound, throw error
                     _Kernel.krnTrapError("Memory Out Of Bound.");
                 }
             }
+
+            // temp variable for return later
+            var temp = this.cursor;
+
+            // update the cursor in the memory
+            this.cursor += program.length;
+
+            // update the memory panel
+            _MemoryDisplay.update();
+
+            // create a new process and add it to the resident queue
+            var pid = _PCB.addProcess(temp);
+
+            return pid;
         };
 
         // reset memory

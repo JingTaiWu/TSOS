@@ -40,3 +40,13 @@ body {
 .panel-heading {
   font-weight: bold;
 }
+
+#memoryDiv {
+  overflow: auto;
+  height: 100px;
+}
+
+#pcbDiv {
+  overflow: auto;
+  height: 70px;
+}

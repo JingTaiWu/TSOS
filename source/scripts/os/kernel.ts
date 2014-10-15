@@ -31,7 +31,8 @@ module TSOS {
 
             // Initialize Process Control Block
             _PCB = new ProcessControlBlock();
-            
+            _PCBDisplay = new PcbDisplay();
+
             // Initialize the console.
             _Console.init();
 

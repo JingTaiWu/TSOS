@@ -29,6 +29,7 @@ var TSOS;
 
             // Initialize Process Control Block
             _PCB = new TSOS.ProcessControlBlock();
+            _PCBDisplay = new TSOS.PcbDisplay();
 
             // Initialize the console.
             _Console.init();
