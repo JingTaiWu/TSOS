@@ -44,7 +44,7 @@ module TSOS {
         }
 
         // load the current running process and start the CPU cycle
-        public start(pcb : Process) {
+        public start(pcb: Process) {
           this.currentProcess = pcb;
           // set the properties of the pcb to the CPU
           this.PC = pcb.pc;
@@ -72,6 +72,16 @@ module TSOS {
             this.updateDisplay();
         }
 
+        // update the current running process
+        public updateProcess(): void {
+           this.currentProcess.pc = this.PC;
+           this.currentProcess.acc = this.Acc;
+           this.currentProcess.ir = this.IR;
+           this.currentProcess.xFlag = this.Xreg;
+           this.currentProcess.yFlag = this.Yreg;
+           this.currentProcess.zFlag = this.Zflag;
+        }
+
         // update the display in the client OS
         public updateDisplay() {
           // Grab a reference to the CPU Div in the HTML page
@@ -91,28 +101,55 @@ module TSOS {
         }
 
         // Fetch the correct instruction
-        public execute(instruction : string) : void {
+        public execute(instruction : string): void {
           switch(instruction) {
             case "A9":
             this.loadAccWithConstant();
             break;
+            case "AD":
+            this.loadAccFromMemory();
+            break;
+            case "8D":
+            this.storeAccInMemory();
           }
         }
 
         // Increment Program Counter
-        public incrementPC(bytes : number) : void {
+        public incrementPC(bytes: number): void {
           // The memory is only 256 bytes
           this.PC = (this.PC + bytes) % 256;
         }
+
         // Assembly instruction
         // LDA - Load the accumulator with a constant
-        public loadAccWithConstant() : void {
+        public loadAccWithConstant(): void {
+          this.IR = parseInt(_MemoryManager.readByte(this.PC), 16);
           // Get the constant from memory
-          var constant = parseInt(_MemoryManager.readByte(++this.PC), 16);
           // Set the constant to Accumulator
-          this.Acc = constant;
+          this.Acc = parseInt(_MemoryManager.readByte(this.PC + 1), 16);
           // Increment the Program counter
-          this.incrementPC(1);
+          this.incrementPC(2);
+        }
+
+        // LDA - Load the accumulator from memory
+        public loadAccFromMemory(): void {
+          this.IR = parseInt(_MemoryManager.readByte(this.PC), 16);
+          // Get the memory address
+          var addressStr = _MemoryManager.readByte(this.PC + 1) + _MemoryManager.readByte(this.PC + 2);
+          var address: number = parseInt(addressStr, 16);
+          // Load the number into accumulator
+          this.Acc = parseInt(_MemoryManager.readByte(address), 16);
+          this.incrementPC(3);
+        }
+
+        // STA - Store the accumulator in memory
+        public storeAccInMemory(): void {
+          this.IR = parseInt(_MemoryManager.readByte(this.PC), 16);
+          // Get the memory address
+          var addressStr = _MemoryManager.readByte(this.PC + 1) + _MemoryManager.readByte(this.PC + 2);
+          var address: number = parseInt(addressStr, 16);
+          _MemoryManager.writeByte(address, this.Acc + "");
+          this.incrementPC(3);
         }
     }
 }

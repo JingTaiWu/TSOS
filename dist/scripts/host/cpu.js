@@ -76,6 +76,16 @@ var TSOS;
             this.updateDisplay();
         };
 
+        // update the current running process
+        Cpu.prototype.updateProcess = function () {
+            this.currentProcess.pc = this.PC;
+            this.currentProcess.acc = this.Acc;
+            this.currentProcess.ir = this.IR;
+            this.currentProcess.xFlag = this.Xreg;
+            this.currentProcess.yFlag = this.Yreg;
+            this.currentProcess.zFlag = this.Zflag;
+        };
+
         // update the display in the client OS
         Cpu.prototype.updateDisplay = function () {
             // Grab a reference to the CPU Div in the HTML page
@@ -98,6 +108,11 @@ var TSOS;
                 case "A9":
                     this.loadAccWithConstant();
                     break;
+                case "AD":
+                    this.loadAccFromMemory();
+                    break;
+                case "8D":
+                    this.storeAccInMemory();
             }
         };
 
@@ -110,14 +125,38 @@ var TSOS;
         // Assembly instruction
         // LDA - Load the accumulator with a constant
         Cpu.prototype.loadAccWithConstant = function () {
-            // Get the constant from memory
-            var constant = parseInt(_MemoryManager.readByte(++this.PC), 16);
+            this.IR = parseInt(_MemoryManager.readByte(this.PC), 16);
 
+            // Get the constant from memory
             // Set the constant to Accumulator
-            this.Acc = constant;
+            this.Acc = parseInt(_MemoryManager.readByte(this.PC + 1), 16);
 
             // Increment the Program counter
-            this.incrementPC(1);
+            this.incrementPC(2);
+        };
+
+        // LDA - Load the accumulator from memory
+        Cpu.prototype.loadAccFromMemory = function () {
+            this.IR = parseInt(_MemoryManager.readByte(this.PC), 16);
+
+            // Get the memory address
+            var addressStr = _MemoryManager.readByte(this.PC + 1) + _MemoryManager.readByte(this.PC + 2);
+            var address = parseInt(addressStr, 16);
+
+            // Load the number into accumulator
+            this.Acc = parseInt(_MemoryManager.readByte(address), 16);
+            this.incrementPC(3);
+        };
+
+        // STA - Store the accumulator in memory
+        Cpu.prototype.storeAccInMemory = function () {
+            this.IR = parseInt(_MemoryManager.readByte(this.PC), 16);
+
+            // Get the memory address
+            var addressStr = _MemoryManager.readByte(this.PC + 1) + _MemoryManager.readByte(this.PC + 2);
+            var address = parseInt(addressStr, 16);
+            _MemoryManager.writeByte(address, this.Acc + "");
+            this.incrementPC(3);
         };
         return Cpu;
     })();

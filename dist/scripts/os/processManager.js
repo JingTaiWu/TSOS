@@ -13,11 +13,17 @@ var TSOS;
         }
         // Add User input program to pcb
         ProcessManager.prototype.addProcess = function (program) {
+            // reset the memory
+            _MemoryManager.resetMemory();
             var process = new TSOS.Process();
             process.pid = this.lastPid++;
             process.program = program;
             _MemoryManager.allocate(process);
-            return process;
+
+            // add it to the resident queue
+            this.residentQueue[process.pid] = process;
+            _PCBDisplay.update();
+            return process.pid;
         };
         return ProcessManager;
     })();

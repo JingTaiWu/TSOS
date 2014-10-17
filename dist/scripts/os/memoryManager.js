@@ -24,7 +24,7 @@ var TSOS;
                     this.memory[location] = new TSOS.Byte(process.program[i]);
                 } else {
                     // trap error
-                    _Kernel.krnInterruptHandler(EXCEED_MEMORY_BOUND_IRQ, process);
+                    _Kernel.krnInterruptHandler(EXCEED_MEMORY_SIZE_IRQ, process);
                     return;
                 }
             }
@@ -47,6 +47,15 @@ var TSOS;
         MemoryManager.prototype.readByte = function (location) {
             if (location < this.memory.length) {
                 return this.memory[location].byte;
+            } else {
+                _Kernel.krnInterruptHandler(MEMORY_OUT_OF_BOUND, location);
+            }
+        };
+
+        // write to a specific byte in the memory
+        MemoryManager.prototype.writeByte = function (location, byte) {
+            if (location < this.memory.length) {
+                this.memory[location] = new TSOS.Byte(byte);
             }
         };
         return MemoryManager;

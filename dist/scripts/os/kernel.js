@@ -123,8 +123,11 @@ var TSOS;
                     _krnKeyboardDriver.isr(params); // Kernel mode device driver
                     _StdIn.handleInput();
                     break;
-                case EXCEED_MEMORY_BOUND_IRQ:
-                    this.exceedMemoryBound();
+                case EXCEED_MEMORY_SIZE_IRQ:
+                    this.exceedMemorySize();
+                    break;
+                case MEMORY_OUT_OF_BOUND:
+                    this.memoryOutOfBound();
                     break;
                 default:
                     this.krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");
@@ -150,9 +153,20 @@ var TSOS;
         // - ReadFile
         // - WriteFile
         // - CloseFile
-        Kernel.prototype.exceedMemoryBound = function () {
+        Kernel.prototype.exceedMemorySize = function () {
             // throw error in host log
             this.krnTrace("Program is bigger than the size of memory.");
+
+            // reset the memory
+            _MemoryManager.resetMemory();
+        };
+
+        Kernel.prototype.memoryOutOfBound = function () {
+            // throw error in host log
+            this.krnTrace("Memory out of bound.");
+
+            // stop the cpu cycle
+            _CPU.isExecuting = false;
 
             // reset the memory
             _MemoryManager.resetMemory();

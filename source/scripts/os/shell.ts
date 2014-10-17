@@ -413,7 +413,7 @@ module TSOS {
           }*/
 
           // if it is valid, load it into the memory
-          var pid = _ProcessManager.addProcess(ls).pid;
+          var pid = _ProcessManager.addProcess(ls);
           _StdOut.putText("Process ID: " + pid);
         }
 
@@ -422,9 +422,10 @@ module TSOS {
           if (args.length <= 0) {
             _StdOut.putText("Please give me a process id to run.");
           } else if(!_ProcessManager.residentQueue[args[0]]) {
-            _StdOut.putText("This process isn't valid.");
+            _StdOut.putText("This process does not exists.");
           } else {
-
+            // Execute the CPU
+            //_CPU.start();
           }
         }
 

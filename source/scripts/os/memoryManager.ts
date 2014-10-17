@@ -28,7 +28,7 @@ module TSOS {
           this.memory[location] = new Byte(process.program[i]);
         } else {
           // trap error
-          _Kernel.krnInterruptHandler(EXCEED_MEMORY_BOUND_IRQ, process);
+          _Kernel.krnInterruptHandler(EXCEED_MEMORY_SIZE_IRQ, process);
           return;
         }
       }
@@ -46,9 +46,18 @@ module TSOS {
     }
 
     // return a specific byte in the memory
-    public readByte(location : number) : string{
-      if (location < this.memory.length) {
+    public readByte(location: number): string{
+      if(location < this.memory.length) {
         return this.memory[location].byte;
+      } else {
+        _Kernel.krnInterruptHandler(MEMORY_OUT_OF_BOUND, location);
+      }
+    }
+
+    // write to a specific byte in the memory
+    public writeByte(location: number, byte: string) {
+      if(location < this.memory.length) {
+        this.memory[location] = new Byte(byte);
       }
     }
   }
