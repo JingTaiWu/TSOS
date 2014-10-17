@@ -413,7 +413,7 @@ module TSOS {
           }*/
 
           // if it is valid, load it into the memory
-          var pid = _MemoryManager.loadProgram(ls);
+          var pid = _ProcessManager.addProcess(ls).pid;
           _StdOut.putText("Process ID: " + pid);
         }
 

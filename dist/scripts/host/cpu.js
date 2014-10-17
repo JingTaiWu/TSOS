@@ -14,13 +14,14 @@ Operating System Concepts 8th edition by Silberschatz, Galvin, and Gagne.  ISBN 
 var TSOS;
 (function (TSOS) {
     var Cpu = (function () {
-        function Cpu(PC, Acc, Xreg, Yreg, Zflag, IR, isExecuting) {
+        function Cpu(PC, Acc, Xreg, Yreg, Zflag, IR, currentProcess, isExecuting) {
             if (typeof PC === "undefined") { PC = 0; }
             if (typeof Acc === "undefined") { Acc = 0; }
             if (typeof Xreg === "undefined") { Xreg = 0; }
             if (typeof Yreg === "undefined") { Yreg = 0; }
             if (typeof Zflag === "undefined") { Zflag = 0; }
             if (typeof IR === "undefined") { IR = 0; }
+            if (typeof currentProcess === "undefined") { currentProcess = null; }
             if (typeof isExecuting === "undefined") { isExecuting = false; }
             this.PC = PC;
             this.Acc = Acc;
@@ -28,6 +29,7 @@ var TSOS;
             this.Yreg = Yreg;
             this.Zflag = Zflag;
             this.IR = IR;
+            this.currentProcess = currentProcess;
             this.isExecuting = isExecuting;
         }
         Cpu.prototype.init = function () {
@@ -38,7 +40,27 @@ var TSOS;
             this.Zflag = 0;
             this.IR = 0;
             this.isExecuting = false;
+            this.currentProcess = null;
             this.updateDisplay();
+        };
+
+        // load the current running process and start the CPU cycle
+        Cpu.prototype.start = function (pcb) {
+            this.currentProcess = pcb;
+
+            // set the properties of the pcb to the CPU
+            this.PC = pcb.pc;
+            this.Acc = pcb.acc;
+            this.Xreg = pcb.xFlag;
+            this.Yreg = pcb.yFlag;
+            this.Zflag = pcb.zFlag;
+            this.IR = pcb.ir;
+            this.isExecuting = true;
+        };
+
+        // Stop CPU execution
+        Cpu.prototype.stop = function () {
+            this.init();
         };
 
         Cpu.prototype.cycle = function () {

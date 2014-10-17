@@ -52,8 +52,6 @@ var _KernelInputQueue = null;
 // Process Control Block
 var _ProcessManager : TSOS.ProcessManager;
 var _PCBDisplay : TSOS.PcbDisplay;
-var _ResidentQueue : TSOS.Process[];
-var _ReadyQueue : TSOS.Process[];
 
 // Memory
 var _MemoryManager : TSOS.MemoryManager;

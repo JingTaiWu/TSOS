@@ -26,6 +26,7 @@ module TSOS {
                     public Yreg: number = 0,
                     public Zflag: number = 0,
                     public IR: number = 0,
+                    public currentProcess: Process = null,
                     public isExecuting: boolean = false) {
 
         }
@@ -38,7 +39,26 @@ module TSOS {
             this.Zflag = 0;
             this.IR = 0;
             this.isExecuting = false;
+            this.currentProcess = null;
             this.updateDisplay();
+        }
+
+        // load the current running process and start the CPU cycle
+        public start(pcb : Process) {
+          this.currentProcess = pcb;
+          // set the properties of the pcb to the CPU
+          this.PC = pcb.pc;
+          this.Acc = pcb.acc;
+          this.Xreg = pcb.xFlag;
+          this.Yreg = pcb.yFlag;
+          this.Zflag = pcb.zFlag;
+          this.IR = pcb.ir;
+          this.isExecuting = true;
+        }
+
+        // Stop CPU execution
+        public stop() {
+          this.init();
         }
 
         public cycle(): void {

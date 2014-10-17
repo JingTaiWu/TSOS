@@ -8,12 +8,13 @@ module TSOS {
     public pid : number; // Process ID
     public pc :  number = 0; // Program Counter
     public acc : number = 0;
-    public ir : string = "00"; // Current Instruction
+    public ir : number = 0; // Current Instruction
     public xFlag : number = 0; // x register
     public yFlag : number = 0; // y register
     public zFlag : number = 0; // zero flag
     public location : string; // current location of the process
     public base : number = 0;
-    public limit : number = 255;
+    public limit : number = 0;
+    public program : string[] = [];
   }
 }

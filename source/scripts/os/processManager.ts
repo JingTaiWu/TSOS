@@ -7,15 +7,16 @@ module TSOS {
   export class ProcessManager {
     // where all the processes resides
     public residentQueue : Process[] = [];
-    public readyQueue : Process [] = [];
+    public readyQueue : Process[] = [];
+    public lastPid : number = 0;
 
-    public addToResidentQueue(base : number) : number {
+    // Add User input program to pcb
+    public addProcess(program : string[]) : Process{
       var process = new Process();
-      process.location = "Memory";
-      this.residentQueue.push(process);
-      // Set the pid of the process to the index of the process in the resident queue
-      this.residentQueue[this.residentQueue.length - 1].pid = this.residentQueue.length - 1;
-      return process.pid;
+      process.pid = this.lastPid++;
+      process.program = program;
+      _MemoryManager.allocate(process);
+      return process;
     }
   }
 }

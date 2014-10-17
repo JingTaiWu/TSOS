@@ -30,8 +30,6 @@ var TSOS;
             // Initialize Process Control Block
             _ProcessManager = new TSOS.ProcessManager();
             _PCBDisplay = new TSOS.PcbDisplay();
-            _ResidentQueue = _ProcessManager.residentQueue;
-            _ReadyQueue = _ProcessManager.readyQueue;
 
             // Initialize the console.
             _Console.init();

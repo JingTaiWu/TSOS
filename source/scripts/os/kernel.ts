@@ -32,8 +32,6 @@ module TSOS {
             // Initialize Process Control Block
             _ProcessManager = new ProcessManager();
             _PCBDisplay = new PcbDisplay();
-            _ResidentQueue = _ProcessManager.residentQueue;
-            _ReadyQueue = _ProcessManager.readyQueue;
 
             // Initialize the console.
             _Console.init();

@@ -5,9 +5,9 @@
 
 module TSOS {
   export class MemoryManager {
-    public memorySize : number = 256;
-    public memory : Byte[];
-    private cursor : number;
+    public memorySize: number = 256;
+    public memory: Byte[];
+    private cursor: number;
 
     constructor() {
       // Initializes the memory
@@ -15,33 +15,31 @@ module TSOS {
       this.memory = mem.bytes;
       this.cursor = 0;
     }
-    // load user input program
-    // return the pid of the program
-    public loadProgram(program : string[]) : number {
-      // add the instructions into the memory, byte by byte
-      for (var offset = 0; offset < program.length; offset++) {
-        if(this.cursor < this.memory.length) {
-          this.memory[this.cursor + offset] = new Byte(program[offset]);
+
+    // allocate memory for a given process
+    public allocate(process: Process) {
+      // set the base and the limit of the current program
+      process.base = this.cursor;
+      process.limit = this.memorySize;
+
+      for(var i = 0; i < process.program.length; i++) {
+        var location = process.base + i;
+        if(location < this.memory.length) {
+          this.memory[location] = new Byte(process.program[i]);
         } else {
-          // Memory run out of bound, throw error
-          _Kernel.krnInterruptHandler(EXCEED_MEMORY_BOUND_IRQ, program);
+          // trap error
+          _Kernel.krnInterruptHandler(EXCEED_MEMORY_BOUND_IRQ, process);
+          return;
         }
       }
 
-      // temp variable the base address of the process
-      var temp : number = this.cursor;
-      // update the cursor in the memory
-      this.cursor += program.length;
-      // update the memory panel
+      // update the current cursor
+      this.cursor += process.program.length;
+      // Update the memory display
       _MemoryDisplay.update();
-      // create a new process and add it to the resident queue
-      var pid = _ProcessManager.addToResidentQueue(temp);
-
-      return pid;
     }
-
     // reset memory
-    public resetMemory() : void {
+    public resetMemory(): void {
       var newMem = new Memory(this.memorySize);
       this.memory = newMem.bytes;
       this.cursor = 0;

@@ -12,31 +12,28 @@ var TSOS;
             this.memory = mem.bytes;
             this.cursor = 0;
         }
-        // load user input program
-        // return the pid of the program
-        MemoryManager.prototype.loadProgram = function (program) {
-            for (var offset = 0; offset < program.length; offset++) {
-                if (this.cursor < this.memory.length) {
-                    this.memory[this.cursor + offset] = new TSOS.Byte(program[offset]);
+        // allocate memory for a given process
+        MemoryManager.prototype.allocate = function (process) {
+            // set the base and the limit of the current program
+            process.base = this.cursor;
+            process.limit = this.memorySize;
+
+            for (var i = 0; i < process.program.length; i++) {
+                var location = process.base + i;
+                if (location < this.memory.length) {
+                    this.memory[location] = new TSOS.Byte(process.program[i]);
                 } else {
-                    // Memory run out of bound, throw error
-                    _Kernel.krnInterruptHandler(EXCEED_MEMORY_BOUND_IRQ, program);
+                    // trap error
+                    _Kernel.krnInterruptHandler(EXCEED_MEMORY_BOUND_IRQ, process);
+                    return;
                 }
             }
 
-            // temp variable the base address of the process
-            var temp = this.cursor;
+            // update the current cursor
+            this.cursor += process.program.length;
 
-            // update the cursor in the memory
-            this.cursor += program.length;
-
-            // update the memory panel
+            // Update the memory display
             _MemoryDisplay.update();
-
-            // create a new process and add it to the resident queue
-            var pid = _ProcessManager.addToResidentQueue(temp);
-
-            return pid;
         };
 
         // reset memory

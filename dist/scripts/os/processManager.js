@@ -9,15 +9,15 @@ var TSOS;
             // where all the processes resides
             this.residentQueue = [];
             this.readyQueue = [];
+            this.lastPid = 0;
         }
-        ProcessManager.prototype.addToResidentQueue = function (base) {
+        // Add User input program to pcb
+        ProcessManager.prototype.addProcess = function (program) {
             var process = new TSOS.Process();
-            process.location = "Memory";
-            this.residentQueue.push(process);
-
-            // Set the pid of the process to the index of the process in the resident queue
-            this.residentQueue[this.residentQueue.length - 1].pid = this.residentQueue.length - 1;
-            return process.pid;
+            process.pid = this.lastPid++;
+            process.program = program;
+            _MemoryManager.allocate(process);
+            return process;
         };
         return ProcessManager;
     })();
