@@ -30,8 +30,10 @@ module TSOS {
             _MemoryDisplay.update();
 
             // Initialize Process Control Block
-            _PCB = new ProcessControlBlock();
+            _ProcessManager = new ProcessManager();
             _PCBDisplay = new PcbDisplay();
+            _ResidentQueue = _ProcessManager.residentQueue;
+            _ReadyQueue = _ProcessManager.readyQueue;
 
             // Initialize the console.
             _Console.init();
@@ -132,6 +134,9 @@ module TSOS {
                     _krnKeyboardDriver.isr(params);   // Kernel mode device driver
                     _StdIn.handleInput();
                     break;
+                case EXCEED_MEMORY_BOUND_IRQ:
+                    this.exceedMemoryBound();
+                    break;
                 default:
                     this.krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");
             }
@@ -156,7 +161,12 @@ module TSOS {
         // - ReadFile
         // - WriteFile
         // - CloseFile
-
+        public exceedMemoryBound() {
+          // throw error in host log
+          this.krnTrace("Program is bigger than the size of memory.");
+          // reset the memory
+          _MemoryManager.resetMemory();
+        }
 
         //
         // OS Utility Routines

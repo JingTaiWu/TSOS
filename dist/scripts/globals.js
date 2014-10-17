@@ -19,6 +19,8 @@ var TIMER_IRQ = 0;
 // NOTE: The timer is different from hardware/host clock pulses. Don't confuse these.
 var KEYBOARD_IRQ = 1;
 
+var EXCEED_MEMORY_BOUND_IRQ = 2;
+
 //
 // Global Variables
 //
@@ -45,8 +47,10 @@ var _KernelBuffers = null;
 var _KernelInputQueue = null;
 
 // Process Control Block
-var _PCB;
+var _ProcessManager;
 var _PCBDisplay;
+var _ResidentQueue;
+var _ReadyQueue;
 
 // Memory
 var _MemoryManager;

@@ -28,8 +28,10 @@ var TSOS;
             _MemoryDisplay.update();
 
             // Initialize Process Control Block
-            _PCB = new TSOS.ProcessControlBlock();
+            _ProcessManager = new TSOS.ProcessManager();
             _PCBDisplay = new TSOS.PcbDisplay();
+            _ResidentQueue = _ProcessManager.residentQueue;
+            _ReadyQueue = _ProcessManager.readyQueue;
 
             // Initialize the console.
             _Console.init();
@@ -123,6 +125,9 @@ var TSOS;
                     _krnKeyboardDriver.isr(params); // Kernel mode device driver
                     _StdIn.handleInput();
                     break;
+                case EXCEED_MEMORY_BOUND_IRQ:
+                    this.exceedMemoryBound();
+                    break;
                 default:
                     this.krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");
             }
@@ -147,6 +152,14 @@ var TSOS;
         // - ReadFile
         // - WriteFile
         // - CloseFile
+        Kernel.prototype.exceedMemoryBound = function () {
+            // throw error in host log
+            this.krnTrace("Program is bigger than the size of memory.");
+
+            // reset the memory
+            _MemoryManager.resetMemory();
+        };
+
         //
         // OS Utility Routines
         //

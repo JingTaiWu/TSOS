@@ -4,21 +4,17 @@
 */
 
 module TSOS {
-  export class ProcessControlBlock {
+  export class ProcessManager {
     // where all the processes resides
     public residentQueue : Process[] = [];
-    // Pid
-    public currentPid : number = 0;
+    public readyQueue : Process [] = [];
 
-    public addProcess(base : number) : number {
-      var process = new Process(this.currentPid, base);
+    public addToResidentQueue(base : number) : number {
+      var process = new Process();
       process.location = "Memory";
       this.residentQueue.push(process);
-      // increment the pid (we don't want to recycle the ID)
-      this.currentPid++;
-      // update the PCB
-      _PCBDisplay.update();
-
+      // Set the pid of the process to the index of the process in the resident queue
+      this.residentQueue[this.residentQueue.length - 1].pid = this.residentQueue.length - 1;
       return process.pid;
     }
   }

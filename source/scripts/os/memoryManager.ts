@@ -16,7 +16,7 @@ module TSOS {
       this.cursor = 0;
     }
     // load user input program
-    // return the base address of the program
+    // return the pid of the program
     public loadProgram(program : string[]) : number {
       // add the instructions into the memory, byte by byte
       for (var offset = 0; offset < program.length; offset++) {
@@ -24,18 +24,18 @@ module TSOS {
           this.memory[this.cursor + offset] = new Byte(program[offset]);
         } else {
           // Memory run out of bound, throw error
-          _Kernel.krnTrapError("Memory Out Of Bound.");
+          _Kernel.krnInterruptHandler(EXCEED_MEMORY_BOUND_IRQ, program);
         }
       }
 
-      // temp variable for return later
+      // temp variable the base address of the process
       var temp : number = this.cursor;
       // update the cursor in the memory
       this.cursor += program.length;
       // update the memory panel
       _MemoryDisplay.update();
       // create a new process and add it to the resident queue
-      var pid = _PCB.addProcess(temp);
+      var pid = _ProcessManager.addToResidentQueue(temp);
 
       return pid;
     }
@@ -48,7 +48,7 @@ module TSOS {
     }
 
     // return a specific byte in the memory
-    public readByte(location : number) : String{
+    public readByte(location : number) : string{
       if (location < this.memory.length) {
         return this.memory[location].byte;
       }

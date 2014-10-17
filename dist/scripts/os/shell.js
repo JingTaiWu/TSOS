@@ -79,7 +79,11 @@ var TSOS;
             sc = new TSOS.ShellCommand(this.shellLoad, "load", " - validate user program input.");
             this.commandList[this.commandList.length] = sc;
 
-            //BSOD
+            // run a process in the resident queue
+            sc = new TSOS.ShellCommand(this.shellRun, "run", " - a process in the resident queue.");
+            this.commandList[this.commandList.length] = sc;
+
+            // BSOD
             sc = new TSOS.ShellCommand(this.shellBsod, "bsod", " - triggers the blue screen of death.");
             this.commandList[this.commandList.length] = sc;
 
@@ -374,14 +378,23 @@ var TSOS;
                 }
             }
 
-            if (sum % 2 !== 0) {
-                _StdOut.putText("Your Program didn't add up right... try again.");
-                return;
-            }
-
+            /*if (sum % 2 !== 0) {
+            _StdOut.putText("Your Program didn't add up right... try again.");
+            return;
+            }*/
             // if it is valid, load it into the memory
             var pid = _MemoryManager.loadProgram(ls);
             _StdOut.putText("Process ID: " + pid);
+        };
+
+        // run - a process in the resident queue
+        Shell.prototype.shellRun = function (args) {
+            if (args.length <= 0) {
+                _StdOut.putText("Please give me a process id to run.");
+            } else if (!_ProcessManager.residentQueue[args[0]]) {
+                _StdOut.putText("This process isn't valid.");
+            } else {
+            }
         };
 
         // Bsod - triggers bosd

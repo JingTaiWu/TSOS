@@ -13,11 +13,7 @@ module TSOS {
     public yFlag : number = 0; // y register
     public zFlag : number = 0; // zero flag
     public location : string; // current location of the process
-    public base : number; // the base address of the program
-
-    constructor(pid : number, base : number) {
-      this.pid = pid;
-      this.base = base;
-    }
+    public base : number = 0;
+    public limit : number = 255;
   }
 }

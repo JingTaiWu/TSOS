@@ -14,7 +14,7 @@ module TSOS {
     public update() {
       // empty the table first
       this.pcbTableBody.empty();
-      var residentQueue = _PCB.residentQueue;
+      var residentQueue = _ProcessManager.residentQueue;
       for (var i = 0; i < residentQueue.length; i++) {
         var process = residentQueue[i];
         var cols = "<td>" + process.pid + "</td>" +
@@ -31,7 +31,7 @@ module TSOS {
 
     // update a single row given a process id
     public updateProcess(pid : number) {
-      var residentQueue = _PCB.residentQueue;
+      var residentQueue = _ProcessManager.residentQueue;
       for (var i = 0; i < residentQueue.length; i++) {
         var process = residentQueue[i];
         // if it matches, update the row

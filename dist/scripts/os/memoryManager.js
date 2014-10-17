@@ -13,18 +13,18 @@ var TSOS;
             this.cursor = 0;
         }
         // load user input program
-        // return the base address of the program
+        // return the pid of the program
         MemoryManager.prototype.loadProgram = function (program) {
             for (var offset = 0; offset < program.length; offset++) {
                 if (this.cursor < this.memory.length) {
                     this.memory[this.cursor + offset] = new TSOS.Byte(program[offset]);
                 } else {
                     // Memory run out of bound, throw error
-                    _Kernel.krnTrapError("Memory Out Of Bound.");
+                    _Kernel.krnInterruptHandler(EXCEED_MEMORY_BOUND_IRQ, program);
                 }
             }
 
-            // temp variable for return later
+            // temp variable the base address of the process
             var temp = this.cursor;
 
             // update the cursor in the memory
@@ -34,7 +34,7 @@ var TSOS;
             _MemoryDisplay.update();
 
             // create a new process and add it to the resident queue
-            var pid = _PCB.addProcess(temp);
+            var pid = _ProcessManager.addToResidentQueue(temp);
 
             return pid;
         };

@@ -114,7 +114,13 @@ module TSOS {
                                   " - validate user program input.");
             this.commandList[this.commandList.length] = sc;
 
-            //BSOD
+            // run a process in the resident queue
+            sc = new ShellCommand(this.shellRun,
+                                  "run",
+                                  " - a process in the resident queue.");
+            this.commandList[this.commandList.length] = sc;
+
+            // BSOD
             sc = new ShellCommand(this.shellBsod,
                                   "bsod",
                                   " - triggers the blue screen of death.");
@@ -360,7 +366,7 @@ module TSOS {
         }
 
         // status - takes user's input string and render it in the status board
-        public shellStatus(args){
+        public shellStatus(args) {
             var statusStr: string = "Status:   ";
             for(var i = 0; i < args.length; i++){
               statusStr = statusStr + " " + args[i];
@@ -369,18 +375,18 @@ module TSOS {
         }
 
         // summonDoge - summon The Almight Doge
-        public shellSummonDoge(args){
+        public shellSummonDoge(args) {
           document.getElementById('doge').style.display="block";
           window.scrollTo(0,0);
         }
 
         // hideDoge - hide Dodge
-        public shellHideDoge(args){
+        public shellHideDoge(args) {
           document.getElementById('doge').style.display="none";
         }
 
         // load - validate user program input
-        public shellLoad(args){
+        public shellLoad(args) {
           var textArea = <HTMLInputElement> document.getElementById('taProgramInput');
           var input = textArea.value.trim();
           var ls = input.split(" ");
@@ -391,7 +397,7 @@ module TSOS {
           }
 
           var sum = 0;
-          for (var i = 0; i < ls.length; i++){
+          for (var i = 0; i < ls.length; i++) {
             // sum of the program must be even
             sum += parseInt(ls[i], 16);
             // if it is not valid, tell the user
@@ -401,18 +407,29 @@ module TSOS {
             }
           }
 
-          if (sum % 2 !== 0) {
+          /*if (sum % 2 !== 0) {
             _StdOut.putText("Your Program didn't add up right... try again.");
             return;
-          }
+          }*/
 
           // if it is valid, load it into the memory
           var pid = _MemoryManager.loadProgram(ls);
           _StdOut.putText("Process ID: " + pid);
         }
 
+        // run - a process in the resident queue
+        public shellRun(args) {
+          if (args.length <= 0) {
+            _StdOut.putText("Please give me a process id to run.");
+          } else if(!_ProcessManager.residentQueue[args[0]]) {
+            _StdOut.putText("This process isn't valid.");
+          } else {
+
+          }
+        }
+
         // Bsod - triggers bosd
-        public shellBsod(args){
+        public shellBsod(args) {
           // add an irq to the queue
           var irq = new Interrupt("meant to break the OS", "BREAK IT");
           _KernelInterruptQueue.enqueue(irq);

@@ -4,12 +4,13 @@ The information of the process is displayed on the Process Control Block panel
 */
 var TSOS;
 (function (TSOS) {
-    var ProcessControlBlock = (function () {
-        function ProcessControlBlock() {
+    var ProcessManager = (function () {
+        function ProcessManager() {
             // where all the processes resides
             this.residentQueue = [];
+            this.readyQueue = [];
         }
-        ProcessControlBlock.prototype.addProcess = function (base) {
+        ProcessManager.prototype.addToResidentQueue = function (base) {
             var process = new TSOS.Process();
             process.location = "Memory";
             this.residentQueue.push(process);
@@ -18,7 +19,7 @@ var TSOS;
             this.residentQueue[this.residentQueue.length - 1].pid = this.residentQueue.length - 1;
             return process.pid;
         };
-        return ProcessControlBlock;
+        return ProcessManager;
     })();
-    TSOS.ProcessControlBlock = ProcessControlBlock;
+    TSOS.ProcessManager = ProcessManager;
 })(TSOS || (TSOS = {}));

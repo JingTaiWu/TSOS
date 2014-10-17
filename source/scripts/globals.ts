@@ -21,6 +21,8 @@ var TIMER_IRQ: number = 0;  // Pages 23 (timer), 9 (interrupts), and 561 (interr
                             // NOTE: The timer is different from hardware/host clock pulses. Don't confuse these.
 var KEYBOARD_IRQ: number = 1;
 
+var EXCEED_MEMORY_BOUND_IRQ: number = 2;
+
 
 //
 // Global Variables
@@ -48,8 +50,10 @@ var _KernelBuffers: any[] = null;
 var _KernelInputQueue = null;
 
 // Process Control Block
-var _PCB : TSOS.ProcessControlBlock;
+var _ProcessManager : TSOS.ProcessManager;
 var _PCBDisplay : TSOS.PcbDisplay;
+var _ResidentQueue : TSOS.Process[];
+var _ReadyQueue : TSOS.Process[];
 
 // Memory
 var _MemoryManager : TSOS.MemoryManager;

@@ -5,15 +5,15 @@ in the client OS
 var TSOS;
 (function (TSOS) {
     var Process = (function () {
-        function Process(pid, base) {
+        function Process() {
             this.pc = 0;
             this.acc = 0;
             this.ir = "00";
             this.xFlag = 0;
             this.yFlag = 0;
             this.zFlag = 0;
-            this.pid = pid;
-            this.base = base;
+            this.base = 0;
+            this.limit = 255;
         }
         return Process;
     })();
