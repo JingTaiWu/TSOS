@@ -171,7 +171,7 @@ var TSOS;
             this.krnTrace("Memory out of bound.");
 
             // stop the cpu cycle
-            _CPU.isExecuting = false;
+            _CPU.stop();
 
             // reset the memory
             _MemoryManager.resetMemory();
