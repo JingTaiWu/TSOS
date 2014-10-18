@@ -8,7 +8,8 @@ var TSOS;
         function SystemCalls() {
             // system call interface - mapping all the systems calls
             this.systemCallInterface = {
-                0: this.terminateProcess
+                0: this.terminateProcess,
+                1: this.handleSysOutput
             };
         }
         // terminates the current running process
@@ -26,6 +27,38 @@ var TSOS;
             _MemoryDisplay.update();
             _PCBDisplay.update();
             _CPU.updateDisplay();
+        };
+
+        // this handles the output of a process when it reaches Op code FF
+        SystemCalls.prototype.handleSysOutput = function (params) {
+            var process = params;
+            var xFlag = parseInt(process.xFlag, 16);
+            var yFlag = parseInt(process.yFlag, 16);
+
+            // if the X reg is 1, print the integer stored in the register
+            if (xFlag == 1) {
+                _StdOut.putText(yFlag + "");
+                // if the X reg is 2, print the 00-terminated string stored at address
+                // in the y register
+            } else if (xFlag == 2) {
+                var location = yFlag;
+                var output = "";
+                var currentByte = _MemoryManager.readByte(location);
+                while (currentByte !== "00") {
+                    // concat current byte with the output string
+                    // convert character into Char
+                    output += String.fromCharCode(parseInt(currentByte, 16));
+
+                    // increment the location
+                    location += 1;
+
+                    // reassign the currentByte to a newByte in memory
+                    currentByte = _MemoryManager.readByte(location);
+                }
+
+                // print the reresult to console
+                _StdOut.putText(output);
+            }
         };
         return SystemCalls;
     })();

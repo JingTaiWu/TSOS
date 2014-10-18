@@ -150,6 +150,9 @@ module TSOS {
             case "EE":
             this.incrementValueOfByte();
             break;
+            case "FF":
+            this.systemCall();
+            break;
             // Instruction not found
             default:
             // just terminate the process for now
@@ -278,7 +281,11 @@ module TSOS {
         }
 
         // SYS - SystemCall
-
+        public systemCall(): void {
+          // give the current process to the queue
+          _KernelInterruptQueue.enqueue(SYSTEM_CALL_IRQ, [1, this.currentProcess]);
+          this.incrementPC(1);
+        }
         // returns the next byte after the program counter
         public readNextByte(): string {
           return _MemoryManager.readByte(this.PC + 1);

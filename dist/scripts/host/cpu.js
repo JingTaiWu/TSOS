@@ -154,6 +154,9 @@ var TSOS;
                 case "EE":
                     this.incrementValueOfByte();
                     break;
+                case "FF":
+                    this.systemCall();
+                    break;
 
                 default:
                     // just terminate the process for now
@@ -287,6 +290,12 @@ var TSOS;
         };
 
         // SYS - SystemCall
+        Cpu.prototype.systemCall = function () {
+            // give the current process to the queue
+            _KernelInterruptQueue.enqueue(SYSTEM_CALL_IRQ, [1, this.currentProcess]);
+            this.incrementPC(1);
+        };
+
         // returns the next byte after the program counter
         Cpu.prototype.readNextByte = function () {
             return _MemoryManager.readByte(this.PC + 1);
