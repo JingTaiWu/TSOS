@@ -86,6 +86,7 @@ module TSOS {
            this.currentProcess.xFlag = this.Xreg;
            this.currentProcess.yFlag = this.Yreg;
            this.currentProcess.zFlag = this.Zflag;
+           this.currentProcess.state = Process.RUNNING;
         }
 
         // update the display in the client OS
@@ -164,7 +165,7 @@ module TSOS {
         // Increment Program Counter
         public incrementPC(bytes: number): void {
           // The memory is only 256 bytes
-          this.PC = (this.PC + bytes) % 256;
+          this.PC = (this.PC + bytes) % 255;
         }
 
         // Assembly instruction
@@ -248,6 +249,7 @@ module TSOS {
         public breakFromProcess(): void {
           // terminate the process
           _KernelInterruptQueue.enqueue(new Interrupt(SYSTEM_CALL_IRQ, [0, this.currentProcess]));
+          this.incrementPC(1);
         }
 
         // EC - compare a byte in memory to the X reg
@@ -255,9 +257,12 @@ module TSOS {
         public compareXReg(): void {
           var addressStr = this.readNextTwoBytes();
           var address: number = parseInt(addressStr, 16);
+          var byte = parseInt(_MemoryManager.readByte(address), 16);
           var x = parseInt(this.Xreg, 16);
-          if(address == x) {
+          if(byte == x) {
             this.Zflag = "1";
+          } else {
+            this.Zflag = "0";
           }
           this.incrementPC(3);
         }
@@ -266,8 +271,14 @@ module TSOS {
         public branchNotEqual(): void {
           // read next byte and calculate number of bytes to move forward
           var numOfBytes: number = parseInt(this.readNextByte(), 16);
-          // jump > . >
-          this.incrementPC(numOfBytes);
+          var zflag: number = parseInt(this.Zflag, 16);
+          // if z flag = 0, branch
+          if(zflag == 0) {
+            this.incrementPC(numOfBytes + 1);
+          } else {
+            // increment program counter
+            this.incrementPC(2);
+          }
         }
 
         // INC - increment the value of a byte
@@ -283,7 +294,7 @@ module TSOS {
         // SYS - SystemCall
         public systemCall(): void {
           // give the current process to the queue
-          _KernelInterruptQueue.enqueue(new Interrupt(SYSTEM_CALL_IRQ, [0, this.currentProcess]));
+          _KernelInterruptQueue.enqueue(new Interrupt(SYSTEM_CALL_IRQ, [1, this.currentProcess]));
           this.incrementPC(1);
         }
         // returns the next byte after the program counter

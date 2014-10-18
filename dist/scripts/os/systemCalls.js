@@ -20,8 +20,7 @@ var TSOS;
             process.state = TSOS.Process.TERMINATED;
 
             //_ProcessManager.removeProcess(process);
-            // reinitialize CPU
-            _CPU.stop();
+            _CPU.isExecuting = false;
 
             // update all the display
             _MemoryDisplay.update();
@@ -37,7 +36,8 @@ var TSOS;
 
             // if the X reg is 1, print the integer stored in the register
             if (xFlag == 1) {
-                _StdOut.putText(yFlag + "");
+                var output = yFlag + "";
+                _StdOut.putText(output);
                 // if the X reg is 2, print the 00-terminated string stored at address
                 // in the y register
             } else if (xFlag == 2) {

@@ -92,6 +92,7 @@ var TSOS;
             this.currentProcess.xFlag = this.Xreg;
             this.currentProcess.yFlag = this.Yreg;
             this.currentProcess.zFlag = this.Zflag;
+            this.currentProcess.state = TSOS.Process.RUNNING;
         };
 
         // update the display in the client OS
@@ -168,7 +169,7 @@ var TSOS;
         // Increment Program Counter
         Cpu.prototype.incrementPC = function (bytes) {
             // The memory is only 256 bytes
-            this.PC = (this.PC + bytes) % 256;
+            this.PC = (this.PC + bytes) % 255;
         };
 
         // Assembly instruction
@@ -256,6 +257,7 @@ var TSOS;
         Cpu.prototype.breakFromProcess = function () {
             // terminate the process
             _KernelInterruptQueue.enqueue(new TSOS.Interrupt(SYSTEM_CALL_IRQ, [0, this.currentProcess]));
+            this.incrementPC(1);
         };
 
         // EC - compare a byte in memory to the X reg
@@ -263,9 +265,12 @@ var TSOS;
         Cpu.prototype.compareXReg = function () {
             var addressStr = this.readNextTwoBytes();
             var address = parseInt(addressStr, 16);
+            var byte = parseInt(_MemoryManager.readByte(address), 16);
             var x = parseInt(this.Xreg, 16);
-            if (address == x) {
+            if (byte == x) {
                 this.Zflag = "1";
+            } else {
+                this.Zflag = "0";
             }
             this.incrementPC(3);
         };
@@ -274,9 +279,15 @@ var TSOS;
         Cpu.prototype.branchNotEqual = function () {
             // read next byte and calculate number of bytes to move forward
             var numOfBytes = parseInt(this.readNextByte(), 16);
+            var zflag = parseInt(this.Zflag, 16);
 
-            // jump > . >
-            this.incrementPC(numOfBytes);
+            // if z flag = 0, branch
+            if (zflag == 0) {
+                this.incrementPC(numOfBytes + 1);
+            } else {
+                // increment program counter
+                this.incrementPC(2);
+            }
         };
 
         // INC - increment the value of a byte
@@ -292,7 +303,7 @@ var TSOS;
         // SYS - SystemCall
         Cpu.prototype.systemCall = function () {
             // give the current process to the queue
-            _KernelInterruptQueue.enqueue(new TSOS.Interrupt(SYSTEM_CALL_IRQ, [0, this.currentProcess]));
+            _KernelInterruptQueue.enqueue(new TSOS.Interrupt(SYSTEM_CALL_IRQ, [1, this.currentProcess]));
             this.incrementPC(1);
         };
 

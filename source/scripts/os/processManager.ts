@@ -17,6 +17,8 @@ module TSOS {
       var process = new Process();
       process.pid = this.lastPid++;
       process.program = program;
+      process.base = 0;
+      process.limit = 255;
       _MemoryManager.allocate(process);
       // add it to the resident queue
       this.residentQueue[process.pid] = process;

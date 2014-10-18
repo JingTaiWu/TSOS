@@ -17,9 +17,7 @@ module TSOS {
       // changes the state of the process
       process.state = Process.TERMINATED;
       //_ProcessManager.removeProcess(process);
-      // reinitialize CPU
-      _CPU.stop();
-
+      _CPU.isExecuting = false;
       // update all the display
       _MemoryDisplay.update();
       _PCBDisplay.update();
@@ -30,10 +28,11 @@ module TSOS {
     public handleSysOutput(params) {
       var process: Process = params;
       var xFlag: number = parseInt(process.xFlag, 16);
-      var yFlag: number = parseInt(process.yFlag, 16);
+      var yFlag = parseInt(process.yFlag, 16);
       // if the X reg is 1, print the integer stored in the register
       if(xFlag == 1) {
-        _StdOut.putText(yFlag + "");
+        var output: string = yFlag + "";
+        _StdOut.putText(output);
       // if the X reg is 2, print the 00-terminated string stored at address
       // in the y register
       } else if(xFlag == 2) {

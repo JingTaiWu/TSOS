@@ -30,7 +30,7 @@ var SYSTEM_CALL_IRQ = 4;
 //
 var _CPU;
 
-var _OSclock = 3000;
+var _OSclock = 10000;
 
 var _Mode = 0;
 
