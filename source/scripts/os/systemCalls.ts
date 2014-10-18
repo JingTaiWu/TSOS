@@ -24,5 +24,7 @@ module TSOS {
       _PCBDisplay.update();
       _CPU.updateDisplay();
     }
+
+    // this handles the output of a process when
   }
 }

@@ -24,7 +24,7 @@ module TSOS {
                     public Acc: string = "00",
                     public Xreg: string = "00",
                     public Yreg: string = "00",
-                    public Zflag: string = "00",
+                    public Zflag: string = "0",
                     public IR: string = "00",
                     public currentProcess: Process = null,
                     public isExecuting: boolean = false) {
@@ -36,7 +36,7 @@ module TSOS {
             this.Acc = "00";
             this.Xreg = "00";
             this.Yreg = "00";
-            this.Zflag = "00";
+            this.Zflag = "0";
             this.IR = "00";
             this.isExecuting = false;
             this.currentProcess = null;
@@ -73,6 +73,8 @@ module TSOS {
             if(this.currentProcess) {
               this.updateProcess();
             }
+            // update the pcb display
+            _PCBDisplay.update();
             this.updateDisplay();
         }
 
@@ -84,8 +86,6 @@ module TSOS {
            this.currentProcess.xFlag = this.Xreg;
            this.currentProcess.yFlag = this.Yreg;
            this.currentProcess.zFlag = this.Zflag;
-           // update the display
-           _PCBDisplay.update();
         }
 
         // update the display in the client OS
@@ -108,6 +108,8 @@ module TSOS {
 
         // Fetch the correct instruction
         public execute(instruction : string): void {
+          instruction = instruction.toUpperCase();
+          this.IR = instruction;
           switch(instruction) {
             case "A9":
             this.loadAccWithConstant();
@@ -118,7 +120,40 @@ module TSOS {
             case "8D":
             this.storeAccInMemory();
             break;
+            case "6D":
+            this.addWithCarry();
+            break;
+            case "A2":
+            this.loadXRegWithConstant();
+            break;
+            case "AE":
+            this.loadXRegFromMemory();
+            break;
+            case "A0":
+            this.loadYRegWithConstant();
+            break;
+            case "AC":
+            this.loadYRegFromMemory();
+            break;
             case "00":
+            this.breakFromProcess();
+            break;
+            case "EA":
+            this.noOperation();
+            break;
+            case "EC":
+            this.compareXReg();
+            break;
+            case "D0":
+            this.branchNotEqual();
+            break;
+            case "EE":
+            this.incrementValueOfByte();
+            break;
+            // Instruction not found
+            default:
+            // just terminate the process for now
+            _Kernel.krnTrace("Invalid Instruction!");
             this.breakFromProcess();
           }
         }
@@ -132,19 +167,18 @@ module TSOS {
         // Assembly instruction
         // LDA - Load the accumulator with a constant
         public loadAccWithConstant(): void {
-          this.IR = _MemoryManager.readByte(this.PC);
           // Get the constant from memory
           // Set the constant to Accumulator
-          this.Acc = _MemoryManager.readByte(this.PC + 1);
+          this.Acc = this.readNextByte();
           // Increment the Program counter
           this.incrementPC(2);
         }
 
         // LDA - Load the accumulator from memory
         public loadAccFromMemory(): void {
-          this.IR = _MemoryManager.readByte(this.PC);
           // Get the memory address
-          var addressStr = _MemoryManager.readByte(this.PC + 1) + _MemoryManager.readByte(this.PC + 2);
+          // remember the low order bytes are first, "little endian"
+          var addressStr = this.readNextTwoBytes();
           var address: number = parseInt(addressStr, 16);
           // Load the number into accumulator
           this.Acc = _MemoryManager.readByte(address);
@@ -153,18 +187,106 @@ module TSOS {
 
         // STA - Store the accumulator in memory
         public storeAccInMemory(): void {
-          this.IR = _MemoryManager.readByte(this.PC);
           // Get the memory address
-          var addressStr = _MemoryManager.readByte(this.PC + 1) + _MemoryManager.readByte(this.PC + 2);
+          var addressStr = this.readNextTwoBytes();
           var address: number = parseInt(addressStr, 16);
-          _MemoryManager.writeByte(address, this.Acc + "");
+          _MemoryManager.writeByte(address, this.Acc);
           this.incrementPC(3);
+        }
+
+        // ADC - Add with carry: adds contents of an address to the contents of the accumulator and keeps
+        // the result in the accumulator
+        public addWithCarry(): void {
+          var addressStr = this.readNextTwoBytes();
+          var address: number = parseInt(addressStr, 16);
+          // Add the content from the address to the accumulator (remember to convert to decimal)
+          var sum: number = parseInt(_MemoryManager.readByte(address), 16) + parseInt(this.Acc, 16);
+          // convert the sum back to base 16
+          this.Acc = sum.toString(16);
+          this.incrementPC(3);
+        }
+
+        // LDX - Load the X register with a constant
+        public loadXRegWithConstant(): void {
+          this.Xreg = this.readNextByte();
+          this.incrementPC(2);
+        }
+
+        // LDX - Load the X register from memory
+        public loadXRegFromMemory(): void {
+          var addressStr = this.readNextTwoBytes();
+          var address: number = parseInt(addressStr, 16);
+          this.Xreg = _MemoryManager.readByte(address);
+          this.incrementPC(3);
+        }
+
+        // LDY - Load the Y register with a constant
+        public loadYRegWithConstant(): void {
+          this.Yreg = this.readNextByte();
+          this.incrementPC(2);
+        }
+
+        // LDY - Load the Y register from memory
+        public loadYRegFromMemory(): void {
+          var addressStr = this.readNextTwoBytes();
+          var address: number = parseInt(addressStr, 16);
+          this.Yreg = _MemoryManager.readByte(address);
+          this.incrementPC(3);
+        }
+
+        // EA - no operation
+        public noOperation(): void {
+          // you literally no nothing....
+          // but increase the program counter though
+          this.incrementPC(1);
         }
 
         // BRK - break (which is really a system call)
         public breakFromProcess(): void {
           // terminate the process
-          _Kernel.krnInterruptHandler(SYSTEM_CALL_IRQ, [0, this.currentProcess]);
+          _KernelInterruptQueue.enqueue(SYSTEM_CALL_IRQ, [0, this.currentProcess]);
+        }
+
+        // EC - compare a byte in memory to the X reg
+        // sets the z flag  = 1 if equal
+        public compareXReg(): void {
+          var addressStr = this.readNextTwoBytes();
+          var address: number = parseInt(addressStr, 16);
+          var x = parseInt(this.Xreg, 16);
+          if(address == x) {
+            this.Zflag = "1";
+          }
+          this.incrementPC(3);
+        }
+
+        // D0 - Branch n bytes if Z flag = 0
+        public branchNotEqual(): void {
+          // read next byte and calculate number of bytes to move forward
+          var numOfBytes: number = parseInt(this.readNextByte(), 16);
+          // jump > . >
+          this.incrementPC(numOfBytes);
+        }
+
+        // INC - increment the value of a byte
+        public incrementValueOfByte(): void {
+          var addressStr = this.readNextTwoBytes();
+          var data: string = _MemoryManager.readByte(parseInt(addressStr, 16));
+          var byte: number = parseInt(data, 16);
+          byte++;
+          _MemoryManager.writeByte(parseInt(addressStr, 16), byte.toString(16));
+          this.incrementPC(3);
+        }
+
+        // SYS - SystemCall
+
+        // returns the next byte after the program counter
+        public readNextByte(): string {
+          return _MemoryManager.readByte(this.PC + 1);
+        }
+
+        // return the next two bytes after the program counter
+        public readNextTwoBytes(): string {
+          return _MemoryManager.readByte(this.PC + 2) + _MemoryManager.readByte(this.PC + 1);
         }
     }
 }

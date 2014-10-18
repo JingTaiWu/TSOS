@@ -56,6 +56,7 @@ var TSOS;
         MemoryManager.prototype.writeByte = function (location, byte) {
             if (location < this.memory.length) {
                 this.memory[location] = new TSOS.Byte(byte);
+                _MemoryDisplay.update();
             }
         };
         return MemoryManager;

@@ -58,6 +58,7 @@ module TSOS {
     public writeByte(location: number, byte: string) {
       if(location < this.memory.length) {
         this.memory[location] = new Byte(byte);
+        _MemoryDisplay.update();
       }
     }
   }
