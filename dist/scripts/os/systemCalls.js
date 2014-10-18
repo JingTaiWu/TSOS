@@ -38,6 +38,10 @@ var TSOS;
             if (xFlag == 1) {
                 var output = yFlag + "";
                 _StdOut.putText(output);
+
+                //advance the line
+                _StdOut.advanceLine();
+                _StdOut.putText(">");
                 // if the X reg is 2, print the 00-terminated string stored at address
                 // in the y register
             } else if (xFlag == 2) {
@@ -58,6 +62,8 @@ var TSOS;
 
                 // print the reresult to console
                 _StdOut.putText(output);
+                _StdOut.advanceLine();
+                _StdOut.putText(">");
             }
         };
         return SystemCalls;
