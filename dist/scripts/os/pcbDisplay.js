@@ -15,7 +15,7 @@ var TSOS;
             var residentQueue = _ProcessManager.residentQueue;
             for (var i = 0; i < residentQueue.length; i++) {
                 var process = residentQueue[i];
-                var cols = "<td>" + process.pid + "</td>" + "<td>" + process.pc + "</td>" + "<td>" + process.ir + "</td>" + "<td>" + process.acc + "</td>" + "<td>" + process.xFlag + "</td>" + "<td>" + process.yFlag + "</td>" + "<td>" + process.zFlag + "</td>";
+                var cols = "<td>" + process.pid + "</td>" + "<td>" + process.pc + "</td>" + "<td>" + process.ir + "</td>" + "<td>" + process.acc + "</td>" + "<td>" + process.xFlag + "</td>" + "<td>" + process.yFlag + "</td>" + "<td>" + process.zFlag + "</td>" + "<td>" + process.state + "</td>";
                 var row = "<tr id = 'pid-" + process.pid + "'>" + cols + "</tr>";
                 $("#pcbDisplay > tbody:last").append(row);
             }
@@ -32,7 +32,7 @@ var TSOS;
                     // get the html element
                     var processRow = $("#pid-" + pid);
                     processRow.empty();
-                    var cols = "<td>" + process.pid + "</td>" + "<td>" + process.pc + "</td>" + "<td>" + process.ir + "</td>" + "<td>" + process.acc + "</td>" + "<td>" + process.xFlag + "</td>" + "<td>" + process.yFlag + "</td>" + "<td>" + process.zFlag + "</td>";
+                    var cols = "<td>" + process.pid + "</td>" + "<td>" + process.pc + "</td>" + "<td>" + process.ir + "</td>" + "<td>" + process.acc + "</td>" + "<td>" + process.xFlag + "</td>" + "<td>" + process.yFlag + "</td>" + "<td>" + process.zFlag + "</td>" + "<td>" + process.state + "</td>";
                     processRow.append(cols);
                 }
             }

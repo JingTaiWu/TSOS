@@ -73,6 +73,7 @@ var TSOS;
 
             // Execute the instruction
             this.execute(instruction);
+            this.updateProcess();
             this.updateDisplay();
         };
 
@@ -84,6 +85,9 @@ var TSOS;
             this.currentProcess.xFlag = this.Xreg;
             this.currentProcess.yFlag = this.Yreg;
             this.currentProcess.zFlag = this.Zflag;
+
+            // update the display
+            _PCBDisplay.update();
         };
 
         // update the display in the client OS
@@ -157,6 +161,12 @@ var TSOS;
             var address = parseInt(addressStr, 16);
             _MemoryManager.writeByte(address, this.Acc + "");
             this.incrementPC(3);
+        };
+
+        // BRK - break (which is really a system call)
+        Cpu.prototype.breakFromProcess = function () {
+            // terminate the process
+            _Kernel.krnInterruptHandler(SYSTEM_CALL_IRQ, [0, this.currentProcess]);
         };
         return Cpu;
     })();

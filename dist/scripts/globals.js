@@ -23,6 +23,8 @@ var EXCEED_MEMORY_SIZE_IRQ = 2;
 
 var MEMORY_OUT_OF_BOUND = 3;
 
+var SYSTEM_CALL_IRQ = 4;
+
 //
 // Global Variables
 //

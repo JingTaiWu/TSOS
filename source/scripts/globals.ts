@@ -23,7 +23,9 @@ var KEYBOARD_IRQ: number = 1;
 
 var EXCEED_MEMORY_SIZE_IRQ: number = 2;
 
-var MEMORY_OUT_OF_BOUND = 3;
+var MEMORY_OUT_OF_BOUND: number = 3;
+
+var SYSTEM_CALL_IRQ: number = 4;
 
 
 //

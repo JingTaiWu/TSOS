@@ -11,7 +11,7 @@ module TSOS {
     public lastPid : number = 0;
 
     // Add User input program to pcb
-    public addProcess(program : string[]) : number{
+    public addProcess(program : string[]): number{
       // reset the memory
       _MemoryManager.resetMemory();
       var process = new Process();
@@ -22,6 +22,13 @@ module TSOS {
       this.residentQueue[process.pid] = process;
       _PCBDisplay.update();
       return process.pid;
+    }
+
+    // Removes a process
+    public removeProcess(process: Process) {
+      this.residentQueue.splice(process.pid, 1);
+      // reset the memory
+      _MemoryManager.resetMemory();
     }
   }
 }

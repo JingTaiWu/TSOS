@@ -25,6 +25,14 @@ var TSOS;
             _PCBDisplay.update();
             return process.pid;
         };
+
+        // Removes a process
+        ProcessManager.prototype.removeProcess = function (process) {
+            this.residentQueue.splice(process.pid, 1);
+
+            // reset the memory
+            _MemoryManager.resetMemory();
+        };
         return ProcessManager;
     })();
     TSOS.ProcessManager = ProcessManager;

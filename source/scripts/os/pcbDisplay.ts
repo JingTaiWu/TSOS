@@ -23,7 +23,8 @@ module TSOS {
                    "<td>" + process.acc + "</td>" +
                    "<td>" + process.xFlag + "</td>" +
                    "<td>" + process.yFlag + "</td>" +
-                   "<td>" + process.zFlag + "</td>";
+                   "<td>" + process.zFlag + "</td>" +
+                   "<td>" + process.state + "</td>";
         var row = "<tr id = 'pid-" + process.pid + "'>" + cols + "</tr>";
         $("#pcbDisplay > tbody:last").append(row);
       }
@@ -45,7 +46,8 @@ module TSOS {
                      "<td>" + process.acc + "</td>" +
                      "<td>" + process.xFlag + "</td>" +
                      "<td>" + process.yFlag + "</td>" +
-                     "<td>" + process.zFlag + "</td>";
+                     "<td>" + process.zFlag + "</td>" +
+                     "<td>" + process.state + "</td>";
           processRow.append(cols);
         }
       }

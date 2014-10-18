@@ -9,10 +9,12 @@ var TSOS;
 (function (TSOS) {
     var Kernel = (function () {
         function Kernel() {
+            //
+            // OS Startup and Shutdown Routines
+            //
+            // System call library
+            this.systemCalls = new TSOS.SystemCalls();
         }
-        //
-        // OS Startup and Shutdown Routines
-        //
         Kernel.prototype.krnBootstrap = function () {
             TSOS.Control.hostLog("bootstrap", "host"); // Use hostLog because we ALWAYS want this, even if _Trace is off.
 
@@ -129,6 +131,8 @@ var TSOS;
                 case MEMORY_OUT_OF_BOUND:
                     this.memoryOutOfBound();
                     break;
+                case SYSTEM_CALL_IRQ:
+                    this.systemCallISR(params);
                 default:
                     this.krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");
             }
@@ -170,6 +174,14 @@ var TSOS;
 
             // reset the memory
             _MemoryManager.resetMemory();
+        };
+
+        // handles system calls from a process
+        Kernel.prototype.systemCallISR = function (params) {
+            var callId = params[0];
+            var param = params[1];
+            var sysCall = this.systemCalls[callId];
+            sysCall(param);
         };
 
         //

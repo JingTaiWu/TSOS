@@ -12,10 +12,15 @@ var TSOS;
             this.xFlag = 0;
             this.yFlag = 0;
             this.zFlag = 0;
+            this.location = "";
             this.base = 0;
             this.limit = 0;
+            this.state = Process.NOT_RUNNING;
             this.program = [];
         }
+        Process.RUNNING = "Running";
+        Process.NOT_RUNNING = "Not Running";
+        Process.TERMINATED = "Terminated";
         return Process;
     })();
     TSOS.Process = Process;

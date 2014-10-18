@@ -15,6 +15,8 @@ module TSOS {
         //
         // OS Startup and Shutdown Routines
         //
+        // System call library
+        private systemCalls = new SystemCalls();
         public krnBootstrap() {      // Page 8. {
             Control.hostLog("bootstrap", "host");  // Use hostLog because we ALWAYS want this, even if _Trace is off.
 
@@ -138,6 +140,8 @@ module TSOS {
                 case MEMORY_OUT_OF_BOUND:
                     this.memoryOutOfBound();
                     break;
+                case SYSTEM_CALL_IRQ:
+                    this.systemCallISR(params);
                 default:
                     this.krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");
             }
@@ -178,6 +182,13 @@ module TSOS {
           _MemoryManager.resetMemory();
         }
 
+        // handles system calls from a process
+        public systemCallISR(params) {
+          var callId = params[0];
+          var param = params[1];
+          var sysCall = this.systemCalls[callId];
+          sysCall(param);
+        }
         //
         // OS Utility Routines
         //

@@ -69,6 +69,7 @@ module TSOS {
             var instruction = _MemoryManager.readByte(this.PC);
             // Execute the instruction
             this.execute(instruction);
+            this.updateProcess();
             this.updateDisplay();
         }
 
@@ -80,6 +81,8 @@ module TSOS {
            this.currentProcess.xFlag = this.Xreg;
            this.currentProcess.yFlag = this.Yreg;
            this.currentProcess.zFlag = this.Zflag;
+           // update the display
+           _PCBDisplay.update();
         }
 
         // update the display in the client OS
@@ -150,6 +153,12 @@ module TSOS {
           var address: number = parseInt(addressStr, 16);
           _MemoryManager.writeByte(address, this.Acc + "");
           this.incrementPC(3);
+        }
+
+        // BRK - break (which is really a system call)
+        public breakFromProcess(): void {
+          // terminate the process
+          _Kernel.krnInterruptHandler(SYSTEM_CALL_IRQ, [0, this.currentProcess]);
         }
     }
 }
