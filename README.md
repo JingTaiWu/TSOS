@@ -34,3 +34,5 @@ To Do List
 -	~~Develop a core memory prototype and implement ti in the *host OS*.~~
 
 -	~~Develop a CPU prototype and implement it in the *host OS*.~~
+
+- ~~implement step mode~~

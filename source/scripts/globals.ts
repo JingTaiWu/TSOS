@@ -27,6 +27,7 @@ var MEMORY_OUT_OF_BOUND: number = 3;
 
 var SYSTEM_CALL_IRQ: number = 4;
 
+var STEP_MODE_ISR: number = 5;
 
 //
 // Global Variables
@@ -36,6 +37,7 @@ var _CPU: TSOS.Cpu;  // Utilize TypeScript's type annotation system to ensure th
 var _OSclock: number = 0;  // Page 23.
 
 var _Mode: number = 0;     // (currently unused)  0 = Kernel Mode, 1 = User Mode.  See page 21.
+var _StepMode: boolean = false;
 
 var _Canvas: HTMLCanvasElement = null;  // Initialized in hostInit().
 var _Buffer: HTMLCanvasElement = null;  // to redraw the canvas initlized in hostInit().

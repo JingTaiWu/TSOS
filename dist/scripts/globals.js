@@ -25,6 +25,8 @@ var MEMORY_OUT_OF_BOUND = 3;
 
 var SYSTEM_CALL_IRQ = 4;
 
+var STEP_MODE_ISR = 5;
+
 //
 // Global Variables
 //
@@ -33,6 +35,7 @@ var _CPU;
 var _OSclock = 0;
 
 var _Mode = 0;
+var _StepMode = false;
 
 var _Canvas = null;
 var _Buffer = null;

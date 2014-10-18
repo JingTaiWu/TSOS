@@ -50,3 +50,8 @@ body {
   overflow: auto;
   height: 70px;
 }
+
+#cpuDiv {
+  overflow: none;
+  height: 75px;
+}

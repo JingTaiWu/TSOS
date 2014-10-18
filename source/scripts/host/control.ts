@@ -1,5 +1,6 @@
 ///<reference path="../globals.ts" />
 ///<reference path="../os/canvastext.ts" />
+///<reference path="../os/jquery.d.ts" />
 
 /* ------------
      Control.ts
@@ -112,6 +113,32 @@ module TSOS {
             // That boolean parameter is the 'forceget' flag. When it is true it causes the page to always
             // be reloaded from the server. If it is false or not specified the browser may reload the
             // page from its cache, which is not what we want.
+        }
+
+        public static stepModeButton(btn): void {
+          // enable/disable step mode
+          _StepMode = !_StepMode;
+          if(_StepMode == true) {
+            // if it is step mode, the button should show disable
+            $("#enableStepMode").toggleClass("btn-success", false);
+            $("#enableStepMode").toggleClass("btn-danger", true);
+            $("#enableStepMode").text("Disable Step Mode");
+            // enable the arrow button
+            $("#nextStep").removeAttr("disabled");
+          } else {
+            // if it is not step mode, the button should show enable
+            $("#enableStepMode").toggleClass("btn-danger", false);
+            $("#enableStepMode").toggleClass("btn-success", true);
+            $("#enableStepMode").text("Enable Step Mode");
+            // disable the arrow button
+            $("#nextStep").attr("disabled", "disabled");
+          }
+        }
+
+        public static nextStepButton(btn): void {
+          // if it is step mode, wait for the button click
+          // when clicked, generate an ISR
+          _KernelInterruptQueue.enqueue(new Interrupt(STEP_MODE_ISR, []));
         }
     }
 }

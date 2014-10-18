@@ -61,6 +61,7 @@ var TSOS;
         // Stop CPU execution
         Cpu.prototype.stop = function () {
             this.init();
+            _MemoryDisplay.update();
         };
 
         Cpu.prototype.cycle = function () {
@@ -69,14 +70,13 @@ var TSOS;
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
             // Get the Current instruction
-            var instruction = _MemoryManager.readByte(this.PC);
-
-            // Execute the instruction
-            this.execute(instruction);
-
             // If there is an process running, update the process
             if (this.currentProcess) {
                 this.updateProcess();
+                var instruction = _MemoryManager.readByte(this.currentProcess.pc);
+
+                // Execute the instruction
+                this.execute(instruction);
             }
 
             // update the pcb display

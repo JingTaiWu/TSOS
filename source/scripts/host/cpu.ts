@@ -59,23 +59,24 @@ module TSOS {
         // Stop CPU execution
         public stop() {
           this.init();
+          _MemoryDisplay.update();
         }
 
         public cycle(): void {
-            _Kernel.krnTrace('CPU cycle');
-            // TODO: Accumulate CPU usage and profiling statistics here.
-            // Do the real work here. Be sure to set this.isExecuting appropriately.
-            // Get the Current instruction
-            var instruction = _MemoryManager.readByte(this.PC);
+          _Kernel.krnTrace('CPU cycle');
+          // TODO: Accumulate CPU usage and profiling statistics here.
+          // Do the real work here. Be sure to set this.isExecuting appropriately.
+          // Get the Current instruction
+          // If there is an process running, update the process
+          if(this.currentProcess) {
+            this.updateProcess();
+            var instruction = _MemoryManager.readByte(this.currentProcess.pc);
             // Execute the instruction
             this.execute(instruction);
-            // If there is an process running, update the process
-            if(this.currentProcess) {
-              this.updateProcess();
-            }
-            // update the pcb display
-            _PCBDisplay.update();
-            this.updateDisplay();
+          }
+          // update the pcb display
+          _PCBDisplay.update();
+          this.updateDisplay();
         }
 
         // update the current running process

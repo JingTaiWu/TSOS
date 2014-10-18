@@ -151,6 +151,22 @@
   <!-- The Console -->
    <div id="divConsole" class="row">
      <div class="col-md-8">
+         <div class="btn-group btn-group-lg">
+           <button type="button"
+                   class="btn btn-default btn-success"
+                   id="enableStepMode"
+                   onclick="TSOS.Control.stepModeButton(this);">
+             Enable Step Mode
+           </button>
+           <button type="button"
+                   class="btn btn-default btn-success"
+                   disabled="disabled"
+                   id="nextStep"
+                   onclick="TSOS.Control.nextStepButton(this);">
+                   <span class="glyphicon glyphicon-chevron-right"></span>
+           </button>
+         </div>
+         <p></p>
        <div class="panel panel-primary">
          <div class="panel-heading">
            <div class="panel-title">
@@ -226,21 +242,23 @@
           </div>
 
           <div class="panel-body">
-            <table class="table text-center" id="cpu">
-              <thead>
-                <tr style="font-weight: bold;">
-                  <td>PC</td>
-                  <td>IR</td>
-                  <td>ACC</td>
-                  <td>X</td>
-                  <td>Y</td>
-                  <td>Z</td>
-                </tr>
-              </thead>
+            <div id="cpuDiv">
+              <table class="table text-center" id="cpu">
+                <thead>
+                  <tr style="font-weight: bold;">
+                    <td>PC</td>
+                    <td>IR</td>
+                    <td>ACC</td>
+                    <td>X</td>
+                    <td>Y</td>
+                    <td>Z</td>
+                  </tr>
+                </thead>
 
-              <tbody>
-              </tbody>
-            </table>
+                <tbody>
+                </tbody>
+              </table>
+          </div>
           </div>
         </div>
       </div>
