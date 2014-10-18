@@ -378,10 +378,6 @@ var TSOS;
                 }
             }
 
-            /*if (sum % 2 !== 0) {
-            _StdOut.putText("Your Program didn't add up right... try again.");
-            return;
-            }*/
             // if it is valid, load it into the memory
             var pid = _ProcessManager.addProcess(ls);
             _StdOut.putText("Process ID: " + pid);

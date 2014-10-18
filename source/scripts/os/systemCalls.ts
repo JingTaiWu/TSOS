@@ -16,8 +16,8 @@ module TSOS {
       var process: Process = params;
       // changes the state of the process
       process.state = Process.TERMINATED;
-      //_ProcessManager.removeProcess(process);
-      _CPU.isExecuting = false;
+      _ProcessManager.removeProcess(process);
+      _CPU.stop();
       // update all the display
       _MemoryDisplay.update();
       _PCBDisplay.update();
