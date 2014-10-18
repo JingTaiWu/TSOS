@@ -9,15 +9,15 @@ module TSOS {
     public systemCallInterface = {
       0: this.terminateProcess
     }
-    
+
     // terminates the current running process
     public terminateProcess(params) {
-      var process: Process = params[0];
+      var process: Process = params;
       // changes the state of the process
       process.state = Process.TERMINATED;
-      _ProcessManager.removeProcess(process);
+      //_ProcessManager.removeProcess(process);
       // reinitialize CPU
-      _CPU.init();
+      _CPU.stop();
 
       // update all the display
       _MemoryDisplay.update();

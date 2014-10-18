@@ -425,7 +425,7 @@ module TSOS {
             _StdOut.putText("This process does not exists.");
           } else {
             // Execute the CPU
-            //_CPU.start();
+            _CPU.start(_ProcessManager.residentQueue[args[0]]);
           }
         }
 

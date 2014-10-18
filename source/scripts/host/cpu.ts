@@ -21,11 +21,11 @@ module TSOS {
     export class Cpu {
 
         constructor(public PC: number = 0,
-                    public Acc: number = 0,
-                    public Xreg: number = 0,
-                    public Yreg: number = 0,
-                    public Zflag: number = 0,
-                    public IR: number = 0,
+                    public Acc: string = "00",
+                    public Xreg: string = "00",
+                    public Yreg: string = "00",
+                    public Zflag: string = "00",
+                    public IR: string = "00",
                     public currentProcess: Process = null,
                     public isExecuting: boolean = false) {
 
@@ -33,11 +33,11 @@ module TSOS {
 
         public init(): void {
             this.PC = 0;
-            this.Acc = 0;
-            this.Xreg = 0;
-            this.Yreg = 0;
-            this.Zflag = 0;
-            this.IR = 0;
+            this.Acc = "00";
+            this.Xreg = "00";
+            this.Yreg = "00";
+            this.Zflag = "00";
+            this.IR = "00";
             this.isExecuting = false;
             this.currentProcess = null;
             this.updateDisplay();
@@ -69,7 +69,10 @@ module TSOS {
             var instruction = _MemoryManager.readByte(this.PC);
             // Execute the instruction
             this.execute(instruction);
-            this.updateProcess();
+            // If there is an process running, update the process
+            if(this.currentProcess) {
+              this.updateProcess();
+            }
             this.updateDisplay();
         }
 
@@ -114,6 +117,9 @@ module TSOS {
             break;
             case "8D":
             this.storeAccInMemory();
+            break;
+            case "00":
+            this.breakFromProcess();
           }
         }
 
@@ -126,28 +132,28 @@ module TSOS {
         // Assembly instruction
         // LDA - Load the accumulator with a constant
         public loadAccWithConstant(): void {
-          this.IR = parseInt(_MemoryManager.readByte(this.PC), 16);
+          this.IR = _MemoryManager.readByte(this.PC);
           // Get the constant from memory
           // Set the constant to Accumulator
-          this.Acc = parseInt(_MemoryManager.readByte(this.PC + 1), 16);
+          this.Acc = _MemoryManager.readByte(this.PC + 1);
           // Increment the Program counter
           this.incrementPC(2);
         }
 
         // LDA - Load the accumulator from memory
         public loadAccFromMemory(): void {
-          this.IR = parseInt(_MemoryManager.readByte(this.PC), 16);
+          this.IR = _MemoryManager.readByte(this.PC);
           // Get the memory address
           var addressStr = _MemoryManager.readByte(this.PC + 1) + _MemoryManager.readByte(this.PC + 2);
           var address: number = parseInt(addressStr, 16);
           // Load the number into accumulator
-          this.Acc = parseInt(_MemoryManager.readByte(address), 16);
+          this.Acc = _MemoryManager.readByte(address);
           this.incrementPC(3);
         }
 
         // STA - Store the accumulator in memory
         public storeAccInMemory(): void {
-          this.IR = parseInt(_MemoryManager.readByte(this.PC), 16);
+          this.IR = _MemoryManager.readByte(this.PC);
           // Get the memory address
           var addressStr = _MemoryManager.readByte(this.PC + 1) + _MemoryManager.readByte(this.PC + 2);
           var address: number = parseInt(addressStr, 16);

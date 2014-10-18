@@ -142,6 +142,7 @@ module TSOS {
                     break;
                 case SYSTEM_CALL_IRQ:
                     this.systemCallISR(params);
+                    break;
                 default:
                     this.krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");
             }
@@ -186,8 +187,13 @@ module TSOS {
         public systemCallISR(params) {
           var callId = params[0];
           var param = params[1];
-          var sysCall = this.systemCalls[callId];
-          sysCall(param);
+          var sysCall = this.systemCalls.systemCallInterface[callId];
+          if(sysCall) {
+            sysCall(param);
+          } else {
+            // stop CPU from running
+            _CPU.isExecuting = false;
+          }
         }
         //
         // OS Utility Routines

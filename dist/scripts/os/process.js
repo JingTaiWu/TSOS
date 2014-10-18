@@ -7,11 +7,11 @@ var TSOS;
     var Process = (function () {
         function Process() {
             this.pc = 0;
-            this.acc = 0;
-            this.ir = 0;
-            this.xFlag = 0;
-            this.yFlag = 0;
-            this.zFlag = 0;
+            this.acc = "00";
+            this.ir = "00";
+            this.xFlag = "00";
+            this.yFlag = "00";
+            this.zFlag = "00";
             this.location = "";
             this.base = 0;
             this.limit = 0;

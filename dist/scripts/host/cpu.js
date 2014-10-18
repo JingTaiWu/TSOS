@@ -16,11 +16,11 @@ var TSOS;
     var Cpu = (function () {
         function Cpu(PC, Acc, Xreg, Yreg, Zflag, IR, currentProcess, isExecuting) {
             if (typeof PC === "undefined") { PC = 0; }
-            if (typeof Acc === "undefined") { Acc = 0; }
-            if (typeof Xreg === "undefined") { Xreg = 0; }
-            if (typeof Yreg === "undefined") { Yreg = 0; }
-            if (typeof Zflag === "undefined") { Zflag = 0; }
-            if (typeof IR === "undefined") { IR = 0; }
+            if (typeof Acc === "undefined") { Acc = "00"; }
+            if (typeof Xreg === "undefined") { Xreg = "00"; }
+            if (typeof Yreg === "undefined") { Yreg = "00"; }
+            if (typeof Zflag === "undefined") { Zflag = "00"; }
+            if (typeof IR === "undefined") { IR = "00"; }
             if (typeof currentProcess === "undefined") { currentProcess = null; }
             if (typeof isExecuting === "undefined") { isExecuting = false; }
             this.PC = PC;
@@ -34,11 +34,11 @@ var TSOS;
         }
         Cpu.prototype.init = function () {
             this.PC = 0;
-            this.Acc = 0;
-            this.Xreg = 0;
-            this.Yreg = 0;
-            this.Zflag = 0;
-            this.IR = 0;
+            this.Acc = "00";
+            this.Xreg = "00";
+            this.Yreg = "00";
+            this.Zflag = "00";
+            this.IR = "00";
             this.isExecuting = false;
             this.currentProcess = null;
             this.updateDisplay();
@@ -73,7 +73,11 @@ var TSOS;
 
             // Execute the instruction
             this.execute(instruction);
-            this.updateProcess();
+
+            // If there is an process running, update the process
+            if (this.currentProcess) {
+                this.updateProcess();
+            }
             this.updateDisplay();
         };
 
@@ -117,6 +121,9 @@ var TSOS;
                     break;
                 case "8D":
                     this.storeAccInMemory();
+                    break;
+                case "00":
+                    this.breakFromProcess();
             }
         };
 
@@ -129,11 +136,11 @@ var TSOS;
         // Assembly instruction
         // LDA - Load the accumulator with a constant
         Cpu.prototype.loadAccWithConstant = function () {
-            this.IR = parseInt(_MemoryManager.readByte(this.PC), 16);
+            this.IR = _MemoryManager.readByte(this.PC);
 
             // Get the constant from memory
             // Set the constant to Accumulator
-            this.Acc = parseInt(_MemoryManager.readByte(this.PC + 1), 16);
+            this.Acc = _MemoryManager.readByte(this.PC + 1);
 
             // Increment the Program counter
             this.incrementPC(2);
@@ -141,20 +148,20 @@ var TSOS;
 
         // LDA - Load the accumulator from memory
         Cpu.prototype.loadAccFromMemory = function () {
-            this.IR = parseInt(_MemoryManager.readByte(this.PC), 16);
+            this.IR = _MemoryManager.readByte(this.PC);
 
             // Get the memory address
             var addressStr = _MemoryManager.readByte(this.PC + 1) + _MemoryManager.readByte(this.PC + 2);
             var address = parseInt(addressStr, 16);
 
             // Load the number into accumulator
-            this.Acc = parseInt(_MemoryManager.readByte(address), 16);
+            this.Acc = _MemoryManager.readByte(address);
             this.incrementPC(3);
         };
 
         // STA - Store the accumulator in memory
         Cpu.prototype.storeAccInMemory = function () {
-            this.IR = parseInt(_MemoryManager.readByte(this.PC), 16);
+            this.IR = _MemoryManager.readByte(this.PC);
 
             // Get the memory address
             var addressStr = _MemoryManager.readByte(this.PC + 1) + _MemoryManager.readByte(this.PC + 2);
