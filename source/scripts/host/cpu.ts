@@ -247,7 +247,7 @@ module TSOS {
         // BRK - break (which is really a system call)
         public breakFromProcess(): void {
           // terminate the process
-          _KernelInterruptQueue.enqueue(SYSTEM_CALL_IRQ, [0, this.currentProcess]);
+          _KernelInterruptQueue.enqueue(new Interrupt(SYSTEM_CALL_IRQ, [0, this.currentProcess]));
         }
 
         // EC - compare a byte in memory to the X reg
@@ -283,7 +283,7 @@ module TSOS {
         // SYS - SystemCall
         public systemCall(): void {
           // give the current process to the queue
-          _KernelInterruptQueue.enqueue(SYSTEM_CALL_IRQ, [1, this.currentProcess]);
+          _KernelInterruptQueue.enqueue(new Interrupt(SYSTEM_CALL_IRQ, [0, this.currentProcess]));
           this.incrementPC(1);
         }
         // returns the next byte after the program counter

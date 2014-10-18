@@ -255,7 +255,7 @@ var TSOS;
         // BRK - break (which is really a system call)
         Cpu.prototype.breakFromProcess = function () {
             // terminate the process
-            _KernelInterruptQueue.enqueue(SYSTEM_CALL_IRQ, [0, this.currentProcess]);
+            _KernelInterruptQueue.enqueue(new TSOS.Interrupt(SYSTEM_CALL_IRQ, [0, this.currentProcess]));
         };
 
         // EC - compare a byte in memory to the X reg
@@ -292,7 +292,7 @@ var TSOS;
         // SYS - SystemCall
         Cpu.prototype.systemCall = function () {
             // give the current process to the queue
-            _KernelInterruptQueue.enqueue(SYSTEM_CALL_IRQ, [1, this.currentProcess]);
+            _KernelInterruptQueue.enqueue(new TSOS.Interrupt(SYSTEM_CALL_IRQ, [0, this.currentProcess]));
             this.incrementPC(1);
         };
 
