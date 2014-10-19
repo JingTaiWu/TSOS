@@ -43,12 +43,11 @@ module TSOS {
       var newMem = new Memory(this.memorySize);
       this.memory = newMem.bytes;
       this.cursor = 0;
-      _MemoryDisplay.update();
     }
 
     // return a specific byte in the memory
     public readByte(location: number): string{
-      if(location < this.memorySize) {
+      if(location < this.memory.length) {
         return this.memory[location].byte;
       } else {
         _Kernel.krnInterruptHandler(MEMORY_OUT_OF_BOUND, location);
@@ -57,11 +56,9 @@ module TSOS {
 
     // write to a specific byte in the memory
     public writeByte(location: number, byte: string) {
-      if(location < this.memorySize) {
+      if(location < this.memory.length) {
         this.memory[location] = new Byte(byte);
         _MemoryDisplay.update();
-      } else {
-        _Kernel.krnInterruptHandler(MEMORY_OUT_OF_BOUND, location);
       }
     }
   }

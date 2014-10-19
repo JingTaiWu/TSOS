@@ -41,12 +41,11 @@ var TSOS;
             var newMem = new TSOS.Memory(this.memorySize);
             this.memory = newMem.bytes;
             this.cursor = 0;
-            _MemoryDisplay.update();
         };
 
         // return a specific byte in the memory
         MemoryManager.prototype.readByte = function (location) {
-            if (location < this.memorySize) {
+            if (location < this.memory.length) {
                 return this.memory[location].byte;
             } else {
                 _Kernel.krnInterruptHandler(MEMORY_OUT_OF_BOUND, location);
@@ -55,11 +54,9 @@ var TSOS;
 
         // write to a specific byte in the memory
         MemoryManager.prototype.writeByte = function (location, byte) {
-            if (location < this.memorySize) {
+            if (location < this.memory.length) {
                 this.memory[location] = new TSOS.Byte(byte);
                 _MemoryDisplay.update();
-            } else {
-                _Kernel.krnInterruptHandler(MEMORY_OUT_OF_BOUND, location);
             }
         };
         return MemoryManager;

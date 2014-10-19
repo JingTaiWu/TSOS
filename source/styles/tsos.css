@@ -1,11 +1,11 @@
 /* TSOS.css */
-#taHostLog{
+/*#taHostLog{
   resize: none;
   width: 100%;
   height: 120px;
   display: block;
   margin: auto;
-}
+}*/
 
 #taProgramInput{
   resize: none;
@@ -31,6 +31,11 @@
   border-width: 1px;
   display: block;
   margin: auto;
+}
+
+#taHostLogWrapper {
+  overflow: auto;
+  height: 120px;
 }
 
 body {

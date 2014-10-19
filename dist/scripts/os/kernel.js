@@ -211,9 +211,11 @@ var TSOS;
                         // Check the CPU_CLOCK_INTERVAL in globals.ts for an
                         // idea of the tick rate and adjust this line accordingly.
                         TSOS.Control.hostLog(msg, "OS");
+                        _prevTraceMessage = msg;
                     }
                 } else {
                     TSOS.Control.hostLog(msg, "OS");
+                    _prevTraceMessage = msg;
                 }
             }
         };
