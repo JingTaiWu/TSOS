@@ -118,7 +118,7 @@
       <div class="col-md-5">
         <div class="panel panel-info" style="text-align:left;">
           <div class="panel-heading">
-            <h4 style="font-weight: bold;">Status</h3>
+            <h4 style="font-weight: bold;">Status</h4>
             </div>
             <div id="statusMessage" class="panel-body">
               <span class="glyphicon glyphicon-pencil"></span>
@@ -139,7 +139,7 @@
       <div class="col-md-4">
         <div class="panel panel-success">
           <div class="panel-heading">
-            <h4 style="font-weight: bold;">Accurate Clock</h3>
+            <h4 style="font-weight: bold;">Accurate Clock</h4>
           </div>
             <div id="clock" class="panel-body" style="font-weight:bold;">
             </div>
@@ -151,22 +151,29 @@
   <!-- The Console -->
    <div id="divConsole" class="row">
      <div class="col-md-8">
-         <div class="btn-group btn-group-lg">
+           <div class="btn-group btn-group-lg">
+             <button type="button"
+                     class="btn btn-default btn-success"
+                     id="enableStepMode"
+                     onclick="TSOS.Control.stepModeButton(this);">
+               Enable Step Mode
+             </button>
+             <button type="button"
+                     class="btn btn-default btn-success"
+                     disabled="disabled"
+                     id="nextStep"
+                     onclick="TSOS.Control.nextStepButton(this);">
+                     <span class="glyphicon glyphicon-chevron-right"></span>
+             </button>
+           </div>
+
            <button type="button"
-                   class="btn btn-default btn-success"
-                   id="enableStepMode"
-                   onclick="TSOS.Control.stepModeButton(this);">
-             Enable Step Mode
+                   class="btn btn-lg btn-info"
+                   data-toggle="modal" data-target="#userProgramModal"
+                   style="float: right;">
+                   Enter an User Program
            </button>
-           <button type="button"
-                   class="btn btn-default btn-success"
-                   disabled="disabled"
-                   id="nextStep"
-                   onclick="TSOS.Control.nextStepButton(this);">
-                   <span class="glyphicon glyphicon-chevron-right"></span>
-           </button>
-         </div>
-         <p></p>
+           <p></p>
        <div class="panel panel-primary">
          <div class="panel-heading">
            <div class="panel-title">
@@ -216,7 +223,7 @@
             Process Control Block
           </div>
 
-          <div clas="panel-body">
+          <div class="panel-body">
             <div id="pcbDiv">
               <table class="table text-center" id="pcbDisplay">
                 <thead>
@@ -292,21 +299,27 @@
    </div>
 
    <!-- User program -->
-   <div id="divUserProgramInput" class="row">
-     <div class="col-md-4">
-       <div class="panel panel-warning">
-             <div class="panel-heading">
-               User Program Input
-             </div>
-
-             <div class="panel-body">
-               <textarea name="taProgramInput"
-                         id  ="taProgramInput"></textarea>
-             </div>
+   <div class="modal fade" id="userProgramModal" aria-hidden="true">
+     <div class="modal-dialog">
+       <div class="modal-content">
+         <div class="modal-header">
+           <button type="button" class="close" data-dismiss="modal">
+             <span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+             <h4 class="modal-title" id="myModalLabel">User Program Input</h4>
+         </div>
+         <div class="modal-body">
+           <div id="divUserProgramInput" class="row">
+                <textarea name="taProgramInput"
+                          id  ="taProgramInput"></textarea>
+               </div>
+           </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+          </div>
+         </div>
        </div>
      </div>
  </div>
-</div>
 
 <!-- The Footer -->
 <div class="navbar navbar-default navbar-static-bottom">
