@@ -172,7 +172,7 @@ var TSOS;
 
         Kernel.prototype.memoryOutOfBound = function () {
             // throw error in host log
-            this.krnTrace("Memory out of bound.");
+            this.krnTrace("Cannot write to memory.");
 
             // stop the cpu cycle
             _CPU.stop();
@@ -195,7 +195,7 @@ var TSOS;
                 sysCall(param);
             } else {
                 // stop CPU from running
-                _CPU.isExecuting = false;
+                _CPU.stop();
             }
         };
 

@@ -40,7 +40,6 @@ module TSOS {
             this.IR = "00";
             this.isExecuting = false;
             this.currentProcess = null;
-            this.updateDisplay();
         }
 
         // load the current running process and start the CPU cycle
@@ -60,6 +59,7 @@ module TSOS {
         public stop() {
           this.init();
           _MemoryDisplay.update();
+          this.updateDisplay();
         }
 
         public cycle(): void {

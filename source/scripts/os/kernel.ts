@@ -180,7 +180,7 @@ module TSOS {
 
         public memoryOutOfBound() {
           // throw error in host log
-          this.krnTrace("Memory out of bound.");
+          this.krnTrace("Cannot write to memory.");
           // stop the cpu cycle
           _CPU.stop();
           // reset the memory
@@ -201,7 +201,7 @@ module TSOS {
             sysCall(param);
           } else {
             // stop CPU from running
-            _CPU.isExecuting = false;
+            _CPU.stop();
           }
         }
         //

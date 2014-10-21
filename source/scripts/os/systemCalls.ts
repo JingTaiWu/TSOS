@@ -19,8 +19,6 @@ module TSOS {
       // _ProcessManager.removeProcess(process);
       _CPU.stop();
       // update all the display
-      // reset the memory
-      _MemoryManager.resetMemory();
       _MemoryDisplay.update();
       _PCBDisplay.update();
       _CPU.updateDisplay();

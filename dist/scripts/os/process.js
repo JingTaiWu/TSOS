@@ -11,7 +11,7 @@ var TSOS;
             this.ir = "00";
             this.xFlag = "00";
             this.yFlag = "00";
-            this.zFlag = "00";
+            this.zFlag = "0";
             this.location = "";
             this.base = 0;
             this.limit = 0;

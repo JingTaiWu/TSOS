@@ -62,22 +62,17 @@ module TSOS {
             // Note the REAL clock in milliseconds since January 1, 1970.
             var now = new Date();
 
+            // build the log string
+            var div: string = "<p>" + "<span class='label label-default'>" + source + "</span>" + " Time: " + now.toLocaleTimeString() + "." +
+                                                "Clock: " + clock + "<br>"
+                                                + " Message: " + msg + "</p>";
             // if the previous trace message is idle, update the first child
             if(_prevTraceMessage === msg) {
               $("#taHostLog").find('p').first().remove();
-              var div: string = "<p>" + "<span class='label label-default'>" + source + "</span>" + " Time: " + now.toLocaleTimeString() + "." +
-                                                  "Clock: " + clock + "<br>"
-                                                  + " Message: " + msg + "</p>";
               $("#taHostLog").prepend(div);
             } else {
-              // Build the log string.
-              var div: string = "<p>" + "<span class='label label-default'>" + source + "</span>" + " Time: " + now.toLocaleTimeString() + "." +
-                                "Clock: " + clock + "<br>"
-                                + " Message: " + msg + "</p>";
-
               // Update the log console.
-              var taLogDiv = $("#taHostLog");
-              taLogDiv.prepend(div);
+              $("#taHostLog").prepend(div);
               // Optionally update a log database or some streaming service.
             }
         }

@@ -41,7 +41,6 @@ var TSOS;
             this.IR = "00";
             this.isExecuting = false;
             this.currentProcess = null;
-            this.updateDisplay();
         };
 
         // load the current running process and start the CPU cycle
@@ -62,6 +61,7 @@ var TSOS;
         Cpu.prototype.stop = function () {
             this.init();
             _MemoryDisplay.update();
+            this.updateDisplay();
         };
 
         Cpu.prototype.cycle = function () {

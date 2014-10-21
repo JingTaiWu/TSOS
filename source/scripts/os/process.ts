@@ -14,7 +14,7 @@ module TSOS {
     public ir: string = "00"; // Current Instruction
     public xFlag: string = "00"; // x register
     public yFlag: string = "00"; // y register
-    public zFlag: string = "00"; // zero flag
+    public zFlag: string = "0"; // zero flag
     public location: string = ""; // current location of the process
     public base: number = 0;
     public limit: number = 0;
