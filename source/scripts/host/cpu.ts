@@ -58,7 +58,8 @@ module TSOS {
         // Stop CPU execution
         public stop() {
           this.init();
-          _MemoryDisplay.update();
+          this.currentProcess.state = Process.TERMINATED;
+          _PCBDisplay.update();
           this.updateDisplay();
         }
 
@@ -70,7 +71,7 @@ module TSOS {
           // If there is an process running, update the process
           if(this.currentProcess) {
             this.updateProcess();
-            var instruction = _MemoryManager.readByte(this.currentProcess.pc);
+            var instruction = _MemoryManager.readByte(this.currentProcess.pc, this.currentProcess);
             // Execute the instruction
             this.execute(instruction);
           }
@@ -186,7 +187,7 @@ module TSOS {
           var addressStr = this.readNextTwoBytes();
           var address: number = parseInt(addressStr, 16);
           // Load the number into accumulator
-          this.Acc = _MemoryManager.readByte(address);
+          this.Acc = _MemoryManager.readByte(address, this.currentProcess);
           this.incrementPC(3);
         }
 
@@ -195,7 +196,7 @@ module TSOS {
           // Get the memory address
           var addressStr = this.readNextTwoBytes();
           var address: number = parseInt(addressStr, 16);
-          _MemoryManager.writeByte(address, this.Acc);
+          _MemoryManager.writeByte(address, this.Acc, this.currentProcess);
           this.incrementPC(3);
         }
 
@@ -205,7 +206,7 @@ module TSOS {
           var addressStr = this.readNextTwoBytes();
           var address: number = parseInt(addressStr, 16);
           // Add the content from the address to the accumulator (remember to convert to decimal)
-          var sum: number = parseInt(_MemoryManager.readByte(address), 16) + parseInt(this.Acc, 16);
+          var sum: number = parseInt(_MemoryManager.readByte(address, this.currentProcess), 16) + parseInt(this.Acc, 16);
           // convert the sum back to base 16
           this.Acc = sum.toString(16);
           this.incrementPC(3);
@@ -221,7 +222,7 @@ module TSOS {
         public loadXRegFromMemory(): void {
           var addressStr = this.readNextTwoBytes();
           var address: number = parseInt(addressStr, 16);
-          this.Xreg = _MemoryManager.readByte(address);
+          this.Xreg = _MemoryManager.readByte(address, this.currentProcess);
           this.incrementPC(3);
         }
 
@@ -235,7 +236,7 @@ module TSOS {
         public loadYRegFromMemory(): void {
           var addressStr = this.readNextTwoBytes();
           var address: number = parseInt(addressStr, 16);
-          this.Yreg = _MemoryManager.readByte(address);
+          this.Yreg = _MemoryManager.readByte(address, this.currentProcess);
           this.incrementPC(3);
         }
 
@@ -258,7 +259,7 @@ module TSOS {
         public compareXReg(): void {
           var addressStr = this.readNextTwoBytes();
           var address: number = parseInt(addressStr, 16);
-          var byte = parseInt(_MemoryManager.readByte(address), 16);
+          var byte = parseInt(_MemoryManager.readByte(address, this.currentProcess), 16);
           var x = parseInt(this.Xreg, 16);
           if(byte == x) {
             this.Zflag = "1";
@@ -285,10 +286,10 @@ module TSOS {
         // INC - increment the value of a byte
         public incrementValueOfByte(): void {
           var addressStr = this.readNextTwoBytes();
-          var data: string = _MemoryManager.readByte(parseInt(addressStr, 16));
+          var data: string = _MemoryManager.readByte(parseInt(addressStr, 16), this.currentProcess);
           var byte: number = parseInt(data, 16);
           byte++;
-          _MemoryManager.writeByte(parseInt(addressStr, 16), byte.toString(16));
+          _MemoryManager.writeByte(parseInt(addressStr, 16), byte.toString(16), this.currentProcess);
           this.incrementPC(3);
         }
 
@@ -300,12 +301,12 @@ module TSOS {
         }
         // returns the next byte after the program counter
         public readNextByte(): string {
-          return _MemoryManager.readByte(this.PC + 1);
+          return _MemoryManager.readByte(this.PC + 1, this.currentProcess);
         }
 
         // return the next two bytes after the program counter
         public readNextTwoBytes(): string {
-          return _MemoryManager.readByte(this.PC + 2) + _MemoryManager.readByte(this.PC + 1);
+          return _MemoryManager.readByte(this.PC + 2, this.currentProcess) + _MemoryManager.readByte(this.PC + 1, this.currentProcess);
         }
     }
 }

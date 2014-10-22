@@ -41,7 +41,7 @@ module TSOS {
       } else if(xFlag == 2) {
         var location: number = yFlag;
         var output = "";
-        var currentByte = _MemoryManager.readByte(location);
+        var currentByte = _MemoryManager.readByte(location, process);
         while(currentByte !== "00") {
           // concat current byte with the output string
           // convert character into Char
@@ -49,7 +49,7 @@ module TSOS {
           // increment the location
           location += 1;
           // reassign the currentByte to a newByte in memory
-          currentByte = _MemoryManager.readByte(location);
+          currentByte = _MemoryManager.readByte(location, process);
         }
         // print the reresult to console
         _StdOut.putText(output);

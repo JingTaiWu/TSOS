@@ -25,7 +25,7 @@ var TSOS;
 
                 for (var col = 0; col < 8; col++) {
                     var location = index + col;
-                    cols += "<td id='" + location + "'>" + _MemoryManager.readByte(location) + "</td>";
+                    cols += "<td id='" + location + "'>" + memory[location].byte + "</td>";
                 }
 
                 // increment the index

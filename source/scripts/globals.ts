@@ -21,13 +21,11 @@ var TIMER_IRQ: number = 0;  // Pages 23 (timer), 9 (interrupts), and 561 (interr
                             // NOTE: The timer is different from hardware/host clock pulses. Don't confuse these.
 var KEYBOARD_IRQ: number = 1;
 
-var EXCEED_MEMORY_SIZE_IRQ: number = 2;
+var INVALID_MEMORY_OP: number = 2;
 
-var MEMORY_OUT_OF_BOUND: number = 3;
+var SYSTEM_CALL_IRQ: number = 3;
 
-var SYSTEM_CALL_IRQ: number = 4;
-
-var STEP_MODE_ISR: number = 5;
+var STEP_MODE_ISR: number = 4;
 
 //
 // Global Variables

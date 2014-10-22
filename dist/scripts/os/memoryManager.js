@@ -24,7 +24,7 @@ var TSOS;
                     this.memory[location] = new TSOS.Byte(process.program[i]);
                 } else {
                     // trap error
-                    _Kernel.krnInterruptHandler(EXCEED_MEMORY_SIZE_IRQ, process);
+                    _Kernel.krnInterruptHandler(INVALID_MEMORY_OP, process);
                     return;
                 }
             }
@@ -41,25 +41,24 @@ var TSOS;
             var newMem = new TSOS.Memory(this.memorySize);
             this.memory = newMem.bytes;
             this.cursor = 0;
-            _MemoryDisplay.update();
         };
 
         // return a specific byte in the memory
-        MemoryManager.prototype.readByte = function (location) {
-            if (location < this.memorySize) {
+        MemoryManager.prototype.readByte = function (location, process) {
+            if (location < process.limit && location >= process.base) {
                 return this.memory[location].byte;
             } else {
-                _Kernel.krnInterruptHandler(MEMORY_OUT_OF_BOUND, location);
+                _Kernel.krnInterruptHandler(INVALID_MEMORY_OP, process);
             }
         };
 
         // write to a specific byte in the memory
-        MemoryManager.prototype.writeByte = function (location, byte) {
-            if (location < this.memorySize) {
+        MemoryManager.prototype.writeByte = function (location, byte, process) {
+            if (location < process.limit && location >= process.base) {
                 this.memory[location] = new TSOS.Byte(byte);
                 _MemoryDisplay.update();
             } else {
-                _Kernel.krnInterruptHandler(MEMORY_OUT_OF_BOUND, location);
+                _Kernel.krnInterruptHandler(INVALID_MEMORY_OP, process);
             }
         };
         return MemoryManager;

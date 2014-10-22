@@ -135,11 +135,8 @@ module TSOS {
                     _krnKeyboardDriver.isr(params);   // Kernel mode device driver
                     _StdIn.handleInput();
                     break;
-                case EXCEED_MEMORY_SIZE_IRQ:
-                    this.exceedMemorySize();
-                    break;
-                case MEMORY_OUT_OF_BOUND:
-                    this.memoryOutOfBound();
+                case INVALID_MEMORY_OP:
+                    this.invalidMemoryOp(params);
                     break;
                 case SYSTEM_CALL_IRQ:
                     this.systemCallISR(params);
@@ -171,18 +168,13 @@ module TSOS {
         // - ReadFile
         // - WriteFile
         // - CloseFile
-        public exceedMemorySize() {
-          // throw error in host log
-          this.krnTrace("Program is bigger than the size of memory.");
-          // reset the memory
-          _MemoryManager.resetMemory();
-        }
-
-        public memoryOutOfBound() {
-          // throw error in host log
-          this.krnTrace("Cannot write to memory.");
-          // stop the cpu cycle
+        public invalidMemoryOp(params) {
+          // Throw error in host log
+          this.krnTrace("Invalid memory operation. Stopping the CPU.");
+          // Stopping the CPU
           _CPU.stop();
+          // update the pcb
+          _PCBDisplay.update();
           // reset the memory
           _MemoryManager.resetMemory();
         }

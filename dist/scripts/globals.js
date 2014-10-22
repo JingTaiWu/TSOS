@@ -19,13 +19,11 @@ var TIMER_IRQ = 0;
 // NOTE: The timer is different from hardware/host clock pulses. Don't confuse these.
 var KEYBOARD_IRQ = 1;
 
-var EXCEED_MEMORY_SIZE_IRQ = 2;
+var INVALID_MEMORY_OP = 2;
 
-var MEMORY_OUT_OF_BOUND = 3;
+var SYSTEM_CALL_IRQ = 3;
 
-var SYSTEM_CALL_IRQ = 4;
-
-var STEP_MODE_ISR = 5;
+var STEP_MODE_ISR = 4;
 
 //
 // Global Variables

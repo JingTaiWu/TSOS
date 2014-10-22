@@ -60,7 +60,8 @@ var TSOS;
         // Stop CPU execution
         Cpu.prototype.stop = function () {
             this.init();
-            _MemoryDisplay.update();
+            this.currentProcess.state = TSOS.Process.TERMINATED;
+            _PCBDisplay.update();
             this.updateDisplay();
         };
 
@@ -73,7 +74,7 @@ var TSOS;
             // If there is an process running, update the process
             if (this.currentProcess) {
                 this.updateProcess();
-                var instruction = _MemoryManager.readByte(this.currentProcess.pc);
+                var instruction = _MemoryManager.readByte(this.currentProcess.pc, this.currentProcess);
 
                 // Execute the instruction
                 this.execute(instruction);
@@ -191,7 +192,7 @@ var TSOS;
             var address = parseInt(addressStr, 16);
 
             // Load the number into accumulator
-            this.Acc = _MemoryManager.readByte(address);
+            this.Acc = _MemoryManager.readByte(address, this.currentProcess);
             this.incrementPC(3);
         };
 
@@ -200,7 +201,7 @@ var TSOS;
             // Get the memory address
             var addressStr = this.readNextTwoBytes();
             var address = parseInt(addressStr, 16);
-            _MemoryManager.writeByte(address, this.Acc);
+            _MemoryManager.writeByte(address, this.Acc, this.currentProcess);
             this.incrementPC(3);
         };
 
@@ -211,7 +212,7 @@ var TSOS;
             var address = parseInt(addressStr, 16);
 
             // Add the content from the address to the accumulator (remember to convert to decimal)
-            var sum = parseInt(_MemoryManager.readByte(address), 16) + parseInt(this.Acc, 16);
+            var sum = parseInt(_MemoryManager.readByte(address, this.currentProcess), 16) + parseInt(this.Acc, 16);
 
             // convert the sum back to base 16
             this.Acc = sum.toString(16);
@@ -228,7 +229,7 @@ var TSOS;
         Cpu.prototype.loadXRegFromMemory = function () {
             var addressStr = this.readNextTwoBytes();
             var address = parseInt(addressStr, 16);
-            this.Xreg = _MemoryManager.readByte(address);
+            this.Xreg = _MemoryManager.readByte(address, this.currentProcess);
             this.incrementPC(3);
         };
 
@@ -242,7 +243,7 @@ var TSOS;
         Cpu.prototype.loadYRegFromMemory = function () {
             var addressStr = this.readNextTwoBytes();
             var address = parseInt(addressStr, 16);
-            this.Yreg = _MemoryManager.readByte(address);
+            this.Yreg = _MemoryManager.readByte(address, this.currentProcess);
             this.incrementPC(3);
         };
 
@@ -265,7 +266,7 @@ var TSOS;
         Cpu.prototype.compareXReg = function () {
             var addressStr = this.readNextTwoBytes();
             var address = parseInt(addressStr, 16);
-            var byte = parseInt(_MemoryManager.readByte(address), 16);
+            var byte = parseInt(_MemoryManager.readByte(address, this.currentProcess), 16);
             var x = parseInt(this.Xreg, 16);
             if (byte == x) {
                 this.Zflag = "1";
@@ -293,10 +294,10 @@ var TSOS;
         // INC - increment the value of a byte
         Cpu.prototype.incrementValueOfByte = function () {
             var addressStr = this.readNextTwoBytes();
-            var data = _MemoryManager.readByte(parseInt(addressStr, 16));
+            var data = _MemoryManager.readByte(parseInt(addressStr, 16), this.currentProcess);
             var byte = parseInt(data, 16);
             byte++;
-            _MemoryManager.writeByte(parseInt(addressStr, 16), byte.toString(16));
+            _MemoryManager.writeByte(parseInt(addressStr, 16), byte.toString(16), this.currentProcess);
             this.incrementPC(3);
         };
 
@@ -309,12 +310,12 @@ var TSOS;
 
         // returns the next byte after the program counter
         Cpu.prototype.readNextByte = function () {
-            return _MemoryManager.readByte(this.PC + 1);
+            return _MemoryManager.readByte(this.PC + 1, this.currentProcess);
         };
 
         // return the next two bytes after the program counter
         Cpu.prototype.readNextTwoBytes = function () {
-            return _MemoryManager.readByte(this.PC + 2) + _MemoryManager.readByte(this.PC + 1);
+            return _MemoryManager.readByte(this.PC + 2, this.currentProcess) + _MemoryManager.readByte(this.PC + 1, this.currentProcess);
         };
         return Cpu;
     })();

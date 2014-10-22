@@ -47,7 +47,7 @@ var TSOS;
             } else if (xFlag == 2) {
                 var location = yFlag;
                 var output = "";
-                var currentByte = _MemoryManager.readByte(location);
+                var currentByte = _MemoryManager.readByte(location, process);
                 while (currentByte !== "00") {
                     // concat current byte with the output string
                     // convert character into Char
@@ -57,7 +57,7 @@ var TSOS;
                     location += 1;
 
                     // reassign the currentByte to a newByte in memory
-                    currentByte = _MemoryManager.readByte(location);
+                    currentByte = _MemoryManager.readByte(location, process);
                 }
 
                 // print the reresult to console
