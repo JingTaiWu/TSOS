@@ -60,8 +60,6 @@ var TSOS;
         // Stop CPU execution
         Cpu.prototype.stop = function () {
             this.init();
-            this.currentProcess.state = TSOS.Process.TERMINATED;
-            _PCBDisplay.update();
             this.updateDisplay();
         };
 

@@ -173,6 +173,8 @@ module TSOS {
           this.krnTrace("Invalid memory operation. Stopping the CPU.");
           // Stopping the CPU
           _CPU.stop();
+          var process: Process = params[0];
+          process.state = Process.TERMINATED;
           // update the pcb
           _PCBDisplay.update();
           // reset the memory

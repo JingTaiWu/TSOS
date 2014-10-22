@@ -165,6 +165,8 @@ var TSOS;
 
             // Stopping the CPU
             _CPU.stop();
+            var process = params[0];
+            process.state = TSOS.Process.TERMINATED;
 
             // update the pcb
             _PCBDisplay.update();

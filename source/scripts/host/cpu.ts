@@ -58,8 +58,6 @@ module TSOS {
         // Stop CPU execution
         public stop() {
           this.init();
-          this.currentProcess.state = Process.TERMINATED;
-          _PCBDisplay.update();
           this.updateDisplay();
         }
 

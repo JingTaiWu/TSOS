@@ -50,7 +50,7 @@ module TSOS {
       if(location < process.limit && location >= process.base) {
         return this.memory[location].byte;
       } else {
-        _Kernel.krnInterruptHandler(INVALID_MEMORY_OP, process);
+        _Kernel.krnInterruptHandler(INVALID_MEMORY_OP, [process]);
       }
     }
 
@@ -60,7 +60,7 @@ module TSOS {
         this.memory[location] = new Byte(byte);
         _MemoryDisplay.update();
       } else {
-        _Kernel.krnInterruptHandler(INVALID_MEMORY_OP, process);
+        _Kernel.krnInterruptHandler(INVALID_MEMORY_OP, [process]);
       }
     }
   }
