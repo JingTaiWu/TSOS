@@ -168,7 +168,7 @@ var TSOS;
         // Increment Program Counter
         Cpu.prototype.incrementPC = function (bytes) {
             // The memory is only 256 bytes
-            this.PC = (this.PC + bytes) % 255;
+            this.PC = (this.PC + bytes) % 256;
         };
 
         // Assembly instruction
@@ -278,14 +278,14 @@ var TSOS;
         Cpu.prototype.branchNotEqual = function () {
             // read next byte and calculate number of bytes to move forward
             var numOfBytes = parseInt(this.readNextByte(), 16);
+            this.incrementPC(2);
             var zflag = parseInt(this.Zflag, 16);
 
             // if z flag = 0, branch
             if (zflag == 0) {
-                this.incrementPC(numOfBytes + 1);
-            } else {
-                // increment program counter
-                this.incrementPC(2);
+                var offset = numOfBytes;
+                this.incrementPC(offset);
+                //this.incrementPC(numOfBytes + 1);
             }
         };
 
