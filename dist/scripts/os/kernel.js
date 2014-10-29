@@ -34,6 +34,9 @@ var TSOS;
             _ProcessManager = new TSOS.ProcessManager();
             _PCBDisplay = new TSOS.PcbDisplay();
 
+            // Initialize CPU Display
+            _CPUDisplay = new TSOS.CPUDisplay();
+
             // Initialize the console.
             _Console.init();
 
@@ -93,6 +96,7 @@ var TSOS;
                 this.krnInterruptHandler(interrupt.irq, interrupt.params);
             } else if (_CPU.isExecuting && !_StepMode) {
                 _CPU.cycle();
+                _CPUDisplay.updateDisplay();
             } else {
                 this.krnTrace("Idle");
             }
@@ -178,6 +182,9 @@ var TSOS;
         // For step mode
         Kernel.prototype.stepIsr = function () {
             _CPU.cycle();
+
+            // Update the display
+            _CPUDisplay.updateDisplay();
         };
 
         // handles system calls from a process

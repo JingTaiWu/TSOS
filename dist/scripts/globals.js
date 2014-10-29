@@ -29,6 +29,7 @@ var STEP_MODE_ISR = 4;
 // Global Variables
 //
 var _CPU;
+var _CPUDisplay;
 
 var _OSclock = 0;
 

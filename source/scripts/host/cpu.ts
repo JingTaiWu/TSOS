@@ -58,7 +58,6 @@ module TSOS {
         // Stop CPU execution
         public stop() {
           this.init();
-          this.updateDisplay();
         }
 
         public cycle(): void {
@@ -75,7 +74,6 @@ module TSOS {
           }
           // update the pcb display
           _PCBDisplay.update();
-          this.updateDisplay();
         }
 
         // update the current running process
@@ -87,24 +85,6 @@ module TSOS {
            this.currentProcess.yFlag = this.Yreg;
            this.currentProcess.zFlag = this.Zflag;
            this.currentProcess.state = Process.RUNNING;
-        }
-
-        // update the display in the client OS
-        public updateDisplay() {
-          // Grab a reference to the CPU Div in the HTML page
-          var cpuDiv = $("#cpu > tbody");
-          // Empty the table
-          cpuDiv.empty();
-          // Formulate string
-          var cols = "<td>" + this.PC + "</td>" +
-                     "<td>" + this.IR + "</td>" +
-                     "<td>" + this.Acc + "</td>" +
-                     "<td>" + this.Xreg + "</td>" +
-                     "<td>" + this.Yreg + "</td>" +
-                     "<td>" + this.Zflag + "</td>";
-          var row = "<tr>" + cols + "</tr>";
-          // Append the string to the Div
-          cpuDiv.append(row);
         }
 
         // Fetch the correct instruction
@@ -240,7 +220,7 @@ module TSOS {
 
         // EA - no operation
         public noOperation(): void {
-          // you literally no nothing....
+          // you literally do nothing....
           // but increase the program counter though
           this.incrementPC(1);
         }

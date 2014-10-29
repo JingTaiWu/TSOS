@@ -25,7 +25,7 @@ var TSOS;
             // update all the display
             _MemoryDisplay.update();
             _PCBDisplay.update();
-            _CPU.updateDisplay();
+            _CPUDisplay.updateDisplay();
         };
 
         // this handles the output of a process when it reaches Op code FF

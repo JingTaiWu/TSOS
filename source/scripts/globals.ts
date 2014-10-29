@@ -31,6 +31,7 @@ var STEP_MODE_ISR: number = 4;
 // Global Variables
 //
 var _CPU: TSOS.Cpu;  // Utilize TypeScript's type annotation system to ensure that _CPU is an instance of the Cpu class.
+var _CPUDisplay: TSOS.CPUDisplay; // For CPU display update
 
 var _OSclock: number = 0;  // Page 23.
 

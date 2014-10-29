@@ -60,7 +60,6 @@ var TSOS;
         // Stop CPU execution
         Cpu.prototype.stop = function () {
             this.init();
-            this.updateDisplay();
         };
 
         Cpu.prototype.cycle = function () {
@@ -80,7 +79,6 @@ var TSOS;
 
             // update the pcb display
             _PCBDisplay.update();
-            this.updateDisplay();
         };
 
         // update the current running process
@@ -92,22 +90,6 @@ var TSOS;
             this.currentProcess.yFlag = this.Yreg;
             this.currentProcess.zFlag = this.Zflag;
             this.currentProcess.state = TSOS.Process.RUNNING;
-        };
-
-        // update the display in the client OS
-        Cpu.prototype.updateDisplay = function () {
-            // Grab a reference to the CPU Div in the HTML page
-            var cpuDiv = $("#cpu > tbody");
-
-            // Empty the table
-            cpuDiv.empty();
-
-            // Formulate string
-            var cols = "<td>" + this.PC + "</td>" + "<td>" + this.IR + "</td>" + "<td>" + this.Acc + "</td>" + "<td>" + this.Xreg + "</td>" + "<td>" + this.Yreg + "</td>" + "<td>" + this.Zflag + "</td>";
-            var row = "<tr>" + cols + "</tr>";
-
-            // Append the string to the Div
-            cpuDiv.append(row);
         };
 
         // Fetch the correct instruction
@@ -247,7 +229,7 @@ var TSOS;
 
         // EA - no operation
         Cpu.prototype.noOperation = function () {
-            // you literally no nothing....
+            // you literally do nothing....
             // but increase the program counter though
             this.incrementPC(1);
         };

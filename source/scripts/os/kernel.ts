@@ -36,6 +36,9 @@ module TSOS {
             _ProcessManager = new ProcessManager();
             _PCBDisplay = new PcbDisplay();
 
+            // Initialize CPU Display
+            _CPUDisplay = new CPUDisplay();
+
             // Initialize the console.
             _Console.init();
 
@@ -97,6 +100,7 @@ module TSOS {
                 this.krnInterruptHandler(interrupt.irq, interrupt.params);
             } else if (_CPU.isExecuting && !_StepMode) { // If there are no interrupts then run one CPU cycle if there is anything being processed. {
                 _CPU.cycle();
+                _CPUDisplay.updateDisplay();
             } else {                      // If there are no interrupts and there is nothing being executed then just be idle. {
                 this.krnTrace("Idle");
             }
@@ -184,6 +188,8 @@ module TSOS {
         // For step mode
         public stepIsr() {
           _CPU.cycle();
+          // Update the display
+          _CPUDisplay.updateDisplay();
         }
 
         // handles system calls from a process
