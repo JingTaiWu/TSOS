@@ -59,6 +59,7 @@ var TSOS;
 
         // return a specific byte in the memory
         MemoryManager.prototype.readByte = function (location, process) {
+            location = location + process.base;
             if (location < process.limit && location >= process.base) {
                 return this.memory[location].byte;
             } else {
@@ -68,6 +69,7 @@ var TSOS;
 
         // write to a specific byte in the memory
         MemoryManager.prototype.writeByte = function (location, byte, process) {
+            location = location + process.base;
             if (location < process.limit && location >= process.base) {
                 this.memory[location] = new TSOS.Byte(byte);
                 _MemoryDisplay.update();

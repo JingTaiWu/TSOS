@@ -64,6 +64,7 @@
 
     // return a specific byte in the memory
     public readByte(location: number, process: Process): string{
+      location = location + process.base;
       if(location < process.limit && location >= process.base) {
         return this.memory[location].byte;
         } else {
@@ -73,6 +74,7 @@
 
     // write to a specific byte in the memory
     public writeByte(location: number, byte: string, process: Process) {
+      location = location + process.base;
       if(location < process.limit && location >= process.base) {
         this.memory[location] = new Byte(byte);
         _MemoryDisplay.update();
