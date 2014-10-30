@@ -12,6 +12,7 @@
       public numberOfBlocks: number = 3;
       // A reference to hardware memory
       public memory: Byte[];
+      // A cursor to keep track of the current block
       private cursor: number;
 
       constructor() {
@@ -60,6 +61,7 @@
       var newMem = new Memory(this.memorySize);
       this.memory = newMem.bytes;
       this.cursor = 0;
+      _MemoryDisplay.update();
     }
 
     // return a specific byte in the memory

@@ -51,7 +51,7 @@ module TSOS {
           // reassign the currentByte to a newByte in memory
           currentByte = _MemoryManager.readByte(location, process);
         }
-        // print the reresult to console
+        // print the result to console
         _StdOut.putText(output);
         _StdOut.advanceLine();
         _StdOut.putText(">");

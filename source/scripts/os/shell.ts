@@ -125,6 +125,19 @@ module TSOS {
                                   "bsod",
                                   " - triggers the blue screen of death.");
             this.commandList[this.commandList.length] = sc;
+
+            // clearmem
+            sc = new ShellCommand(this.shellClearmem,
+                                  "clearmem",
+                                  " - clears the current memory.");
+            this.commandList[this.commandList.length] = sc;
+
+            // quantum <int>
+            sc = new ShellCommand(this.shellQuantum,
+                                  "quantum", 
+                                  " - sets the quantum for Round Robin Scheduling.");
+            this.commandList[this.commandList.length] = sc;
+
             // processes - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -417,7 +430,7 @@ module TSOS {
           if (args.length <= 0) {
             _StdOut.putText("Please give me a process id to run.");
           } else if(!_ProcessManager.residentQueue[args[0]]) {
-            _StdOut.putText("This process does not exists.");
+            _StdOut.putText("This process does not exist.");
           } else {
             // Execute the CPU
             _CPU.start(_ProcessManager.residentQueue[args[0]]);
@@ -429,6 +442,33 @@ module TSOS {
           // add an irq to the queue
           var irq = new Interrupt("meant to break the OS", "BREAK IT");
           _KernelInterruptQueue.enqueue(irq);
+        }
+
+        // clearmem - Clears current memory
+        public shellClearmem(args) {
+          // Make sure CPU isn't running, things can go horribly wrong
+          if(!_CPU.isExecuting) {
+            _MemoryManager.resetMemory();
+            _StdOut.putText("Memory has been cleared.");
+          } else {
+            _StdOut.putText("Please wait until the CPU stops executing!");
+          }
+        }
+
+        // quantum - sets the quantum for Round Robin scheduling
+        public shellQuantum(args) {
+          if(args.length != 0) {
+            var newQuantum = args[0];
+            // make sure the evil user doesn't set the quantum to 0.
+            if(newQuantum > 0) { 
+              _QUANTUM = newQuantum;
+              _StdOut.putText("Set current quantum to " + newQuantum + "."); 
+            } else {
+              _StdOut.putText("Please don't be evil....");
+            }
+          } else {
+            _StdOut.putText("Please Give me a number.");
+          }
         }
     }
 }

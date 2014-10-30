@@ -6,7 +6,7 @@
 module TSOS {
   export class Process {
     public static RUNNING: string = "Running";
-    public static NOT_RUNNING: string = "Not Running";
+    public static NOT_RUNNING: string = "Resident";
     public static TERMINATED: string = "Terminated";
     public pid: number; // Process ID
     public pc:  number = 0; // Program Counter

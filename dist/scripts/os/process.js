@@ -19,7 +19,7 @@ var TSOS;
             this.program = [];
         }
         Process.RUNNING = "Running";
-        Process.NOT_RUNNING = "Not Running";
+        Process.NOT_RUNNING = "Resident";
         Process.TERMINATED = "Terminated";
         return Process;
     })();

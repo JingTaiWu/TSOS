@@ -31,6 +31,8 @@ var STEP_MODE_ISR = 4;
 var _CPU;
 var _CPUDisplay;
 
+var _QUANTUM = 6;
+
 var _OSclock = 0;
 
 var _Mode = 0;

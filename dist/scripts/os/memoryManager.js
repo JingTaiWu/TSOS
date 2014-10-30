@@ -55,6 +55,7 @@ var TSOS;
             var newMem = new TSOS.Memory(this.memorySize);
             this.memory = newMem.bytes;
             this.cursor = 0;
+            _MemoryDisplay.update();
         };
 
         // return a specific byte in the memory

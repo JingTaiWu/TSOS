@@ -267,7 +267,6 @@ var TSOS;
             if (zflag == 0) {
                 var offset = numOfBytes;
                 this.incrementPC(offset);
-                //this.incrementPC(numOfBytes + 1);
             }
         };
 
