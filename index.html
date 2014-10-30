@@ -1,332 +1,332 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-   <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-   <meta name="author"             content="Jing Tai Wu" />
-   <!-- UI Design -->
-   <link rel="stylesheet" type="text/css" href="resources/bootstrap/css/bootstrap.css">
-   <script type="text/javascript" src="resources/jquery-1.11.1.min.js"></script>
-   <script type="text/javascript" src="resources/bootstrap/js/bootstrap.js"></script>
-   <script type="text/javascript" src="resources/UIControl.js"></script>
-   <link rel="shortcut icon" href="resources/bells.png" />
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<meta name="author"             content="Jing Tai Wu" />
+	<!-- UI Design -->
+	<link rel="stylesheet" type="text/css" href="resources/bootstrap/css/bootstrap.css">
+	<script type="text/javascript" src="resources/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="resources/bootstrap/js/bootstrap.js"></script>
+	<script type="text/javascript" src="resources/UIControl.js"></script>
+	<link rel="shortcut icon" href="resources/bells.png" />
 
-   <!-- TSOS CSS-->
-   <link rel="stylesheet" href="dist/styles/tsos.css" type="text/css" media="screen" />
+	<!-- TSOS CSS-->
+	<link rel="stylesheet" href="dist/styles/tsos.css" type="text/css" media="screen" />
 
-   <title>
-      Jingle OS - An operating system built with TypeScript
-   </title>
+	<title>
+		Jingle OS - An operating system built with TypeScript
+	</title>
 
-   <!-- Globals CONSTANTS and _Variables. Must included be first. -->
-   <script type="text/javascript" src="dist/scripts/globals.js"></script>
+	<!-- Globals CONSTANTS and _Variables. Must included be first. -->
+	<script type="text/javascript" src="dist/scripts/globals.js"></script>
 
-   <!-- Host (Hardware Simulation) Routines -->
-   <script type="text/javascript" src="dist/scripts/host/control.js"></script>
-   <script type="text/javascript" src="dist/scripts/host/devices.js"></script>
-   <script type="text/javascript" src="dist/scripts/host/cpu.js"></script>
-   <script type="text/javascript" src="dist/scripts/host/memory.js"></script>
+	<!-- Host (Hardware Simulation) Routines -->
+	<script type="text/javascript" src="dist/scripts/host/control.js"></script>
+	<script type="text/javascript" src="dist/scripts/host/devices.js"></script>
+	<script type="text/javascript" src="dist/scripts/host/cpu.js"></script>
+	<script type="text/javascript" src="dist/scripts/host/memory.js"></script>
 
-   <!-- Virtual OS Routines: Make sure Kernel code is last, since it needs those above it. -->
-   <script type="text/javascript" src="dist/scripts/os/CPUDisplay.js"></script>
-   <script type="text/javascript" src="dist/scripts/os/memoryManager.js"></script>
-   <script type="text/javascript" src="dist/scripts/os/memoryDisplay.js"></script>
-   <script type="text/javascript" src="dist/scripts/os/processManager.js"></script>
-   <script type="text/javascript" src="dist/scripts/os/pcbDisplay.js"></script>
-   <script type="text/javascript" src="dist/scripts/os/process.js"></script>
-   <script type="text/javascript" src="dist/scripts/os/systemCalls.js"></script>
-   <script type="text/javascript" src="dist/scripts/os/interrupt.js"></script>
-   <script type="text/javascript" src="dist/scripts/os/canvastext.js"></script>
-   <script type="text/javascript" src="dist/scripts/os/console.js"></script>
-   <script type="text/javascript" src="dist/scripts/os/deviceDriver.js"></script>
-   <script type="text/javascript" src="dist/scripts/os/deviceDriverKeyboard.js"></script>
-   <script type="text/javascript" src="dist/scripts/os/queue.js"></script>
-   <script type="text/javascript" src="dist/scripts/os/shell.js"></script>
-   <script type="text/javascript" src="dist/scripts/os/shellCommand.js"></script>
-   <script type="text/javascript" src="dist/scripts/os/userCommand.js"></script>
-   <script type="text/javascript" src="dist/scripts/os/kernel.js"></script>
+	<!-- Virtual OS Routines: Make sure Kernel code is last, since it needs those above it. -->
+	<script type="text/javascript" src="dist/scripts/os/CPUDisplay.js"></script>
+	<script type="text/javascript" src="dist/scripts/os/memoryManager.js"></script>
+	<script type="text/javascript" src="dist/scripts/os/memoryDisplay.js"></script>
+	<script type="text/javascript" src="dist/scripts/os/processManager.js"></script>
+	<script type="text/javascript" src="dist/scripts/os/pcbDisplay.js"></script>
+	<script type="text/javascript" src="dist/scripts/os/process.js"></script>
+	<script type="text/javascript" src="dist/scripts/os/systemCalls.js"></script>
+	<script type="text/javascript" src="dist/scripts/os/interrupt.js"></script>
+	<script type="text/javascript" src="dist/scripts/os/canvastext.js"></script>
+	<script type="text/javascript" src="dist/scripts/os/console.js"></script>
+	<script type="text/javascript" src="dist/scripts/os/deviceDriver.js"></script>
+	<script type="text/javascript" src="dist/scripts/os/deviceDriverKeyboard.js"></script>
+	<script type="text/javascript" src="dist/scripts/os/queue.js"></script>
+	<script type="text/javascript" src="dist/scripts/os/shell.js"></script>
+	<script type="text/javascript" src="dist/scripts/os/shellCommand.js"></script>
+	<script type="text/javascript" src="dist/scripts/os/userCommand.js"></script>
+	<script type="text/javascript" src="dist/scripts/os/kernel.js"></script>
 
-   <!-- Other Routines -->
-   <script type="text/javascript" src="dist/scripts/utils.js"></script>
-   <!-- Uncomment this line below to enable Glados testing -->
-   <!-- <script type="text/javascript" src="http://www.labouseur.com/courses/os/projects/glados.js"></script> -->
+	<!-- Other Routines -->
+	<script type="text/javascript" src="dist/scripts/utils.js"></script>
+	<!-- Uncomment this line below to enable Glados testing -->
+	<!-- <script type="text/javascript" src="http://www.labouseur.com/courses/os/projects/glados.js"></script> -->
 
 </head>
 
 <!-- style ="background-image: url('resources/giftly.png');" -->
 <body onload="onDocumentLoad();">
 
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <h2><span class="glyphicon glyphicon-bell"></span>&nbsp;&nbsp;<a href="http://foxweb.marist.edu/users/jing.wu1/">Jingle</a> <span style="color:#c7951f">OS</span></h2>
-    </div>
-    <div id="divButtonBar" class="navbar-right">
-      <div class="btn-group">
-       <button type="button"
-              id = "btnStartOS"
-              name="brnStartOS"
-              class="btn btn-default btn-lg navbar-btn btn-success"
-              value="Start"
-              tabindex="0"
-              onclick="TSOS.Control.hostBtnStartOS_click(this);">
-              Start &nbsp;
-              <span class="glyphicon glyphicon-off"></span>
-       </button>
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<h2><span class="glyphicon glyphicon-bell"></span>&nbsp;&nbsp;<a href="http://foxweb.marist.edu/users/jing.wu1/">Jingle</a> <span style="color:#c7951f">OS</span></h2>
+			</div>
+			<div id="divButtonBar" class="navbar-right">
+				<div class="btn-group">
+					<button type="button"
+					id = "btnStartOS"
+					name="brnStartOS"
+					class="btn btn-default btn-lg navbar-btn btn-success"
+					value="Start"
+					tabindex="0"
+					onclick="TSOS.Control.hostBtnStartOS_click(this);">
+					Start &nbsp;
+					<span class="glyphicon glyphicon-off"></span>
+				</button>
 
-       <button type="button"
-              id = "btnHaltOS"
-              name="brnHaltOS"
-              class="btn btn-default btn-lg navbar-btn btn-danger"
-              disabled="disabled"
-              value="Staph"
-              tabindex="1"
-              onclick="TSOS.Control.hostBtnHaltOS_click(this);">
-              Stop &nbsp;
-              <span class="glyphicon glyphicon-stop"></span>
-       </button>
-       <button type="button"
-              id = "btnReset"
-              name="brnReset"
-              class="btn btn-default btn-lg navbar-btn btn-info"
-              disabled="disabled"
-              value="Re-Jingle"
-              tabindex="2"
-              onclick="TSOS.Control.hostBtnReset_click(this);">
-              Re-Jingle &nbsp;
-              <span class="glyphicon glyphicon-refresh"></span>
-      </button>
-      </div>
-    </div>
-  </div>
+				<button type="button"
+				id = "btnHaltOS"
+				name="brnHaltOS"
+				class="btn btn-default btn-lg navbar-btn btn-danger"
+				disabled="disabled"
+				value="Staph"
+				tabindex="1"
+				onclick="TSOS.Control.hostBtnHaltOS_click(this);">
+				Stop &nbsp;
+				<span class="glyphicon glyphicon-stop"></span>
+			</button>
+			<button type="button"
+			id = "btnReset"
+			name="brnReset"
+			class="btn btn-default btn-lg navbar-btn btn-info"
+			disabled="disabled"
+			value="Re-Jingle"
+			tabindex="2"
+			onclick="TSOS.Control.hostBtnReset_click(this);">
+			Re-Jingle &nbsp;
+			<span class="glyphicon glyphicon-refresh"></span>
+		</button>
+	</div>
+</div>
+</div>
 </nav>
 
 <!--Main container -->
 <div id="divMain" class="container theme-showcase" role="main">
 
-  <!-- Welcome Panel -->
-  <div id="welcome" class="jumbotron" style="text-align:center">
-    <h1>Welcome to <em><span style="color:#0080c1">Jingle</span> <span style="color:#c7951f">OS</span></em></h1>
-    <p class="lead">Press Start to Begin...</p>
-    <p>But first, enjoy a picture of Hawaii</p>
-    <div>
-    <img src="resources/Hawaii.jpg" alt="" class="img-rounded" style="width: 100%; height: 100%">
-    </div>
-  </div>
+	<!-- Welcome Panel -->
+	<div id="welcome" class="jumbotron" style="text-align:center">
+		<h1>Welcome to <em><span style="color:#0080c1">Jingle</span> <span style="color:#c7951f">OS</span></em></h1>
+		<p class="lead">Press Start to Begin...</p>
+		<p>But first, enjoy a picture of Hawaii</p>
+		<div>
+			<img src="resources/Hawaii.jpg" alt="" class="img-rounded" style="width: 100%; height: 100%">
+		</div>
+	</div>
 
-  <!-- status board -->
-  <div id="statusBoard" class="row">
-      <!-- Status -->
-      <div class="col-md-5">
-        <div class="panel panel-info" style="text-align:left;">
-          <div class="panel-heading">
-            <h4 style="font-weight: bold;">Status</h4>
-            </div>
-            <div id="statusMessage" class="panel-body">
-              <span class="glyphicon glyphicon-pencil"></span>
-              Start the OS and type in a status!
-              </div>
-      </div>
-    </div>
+	<!-- status board -->
+	<div id="statusBoard" class="row">
+		<!-- Status -->
+		<div class="col-md-5">
+			<div class="panel panel-info" style="text-align:left;">
+				<div class="panel-heading">
+					<h4 style="font-weight: bold;">Status</h4>
+				</div>
+				<div id="statusMessage" class="panel-body">
+					<span class="glyphicon glyphicon-pencil"></span>
+					Start the OS and type in a status!
+				</div>
+			</div>
+		</div>
 
-    <!-- Place holder -->
-    <div class="col-md-3">
-      <div class="panel panel-default" style="display:none" id="doge">
-        <div class="panel-body">
-          <img src="resources/doge.png" style="display:block;width:auto; height:98px;text-align:center;margin:auto;" alt="">
-        </div>
-      </div>
-    </div>
-      <!-- Clock -->
-      <div class="col-md-4">
-        <div class="panel panel-success">
-          <div class="panel-heading">
-            <h4 style="font-weight: bold;">Accurate Clock</h4>
-          </div>
-            <div id="clock" class="panel-body" style="font-weight:bold;">
-            </div>
-      </div>
-    </div>
-  </div>
-  <br>
+		<!-- Place holder -->
+		<div class="col-md-3">
+			<div class="panel panel-default" style="display:none" id="doge">
+				<div class="panel-body">
+					<img src="resources/doge.png" style="display:block;width:auto; height:98px;text-align:center;margin:auto;" alt="">
+				</div>
+			</div>
+		</div>
+		<!-- Clock -->
+		<div class="col-md-4">
+			<div class="panel panel-success">
+				<div class="panel-heading">
+					<h4 style="font-weight: bold;">Accurate Clock</h4>
+				</div>
+				<div id="clock" class="panel-body" style="font-weight:bold;">
+				</div>
+			</div>
+		</div>
+	</div>
+	<br>
 
-  <!-- The Console -->
-   <div id="divConsole" class="row">
-     <div class="col-md-8">
-           <div class="btn-group btn-group-lg">
-             <button type="button"
-                     class="btn btn-default btn-success"
-                     id="enableStepMode"
-                     onclick="TSOS.Control.stepModeButton(this);">
-               Enable Step Mode
-             </button>
-             <button type="button"
-                     class="btn btn-default btn-success"
-                     disabled="disabled"
-                     id="nextStep"
-                     onclick="TSOS.Control.nextStepButton(this);">
-                     <span class="glyphicon glyphicon-chevron-right"></span>
-             </button>
-           </div>
+	<!-- The Console -->
+	<div id="divConsole" class="row">
+		<div class="col-md-8">
+			<div class="btn-group btn-group-lg">
+				<button type="button"
+				class="btn btn-default btn-success"
+				id="enableStepMode"
+				onclick="TSOS.Control.stepModeButton(this);">
+				Enable Step Mode
+			</button>
+			<button type="button"
+			class="btn btn-default btn-success"
+			disabled="disabled"
+			id="nextStep"
+			onclick="TSOS.Control.nextStepButton(this);">
+			<span class="glyphicon glyphicon-chevron-right"></span>
+		</button>
+	</div>
 
-           <button type="button"
-                   class="btn btn-lg btn-info"
-                   data-toggle="modal" data-target="#userProgramModal"
-                   style="float: right;">
-                   Click To Enter a User Program
-           </button>
-           <p></p>
-       <div class="panel panel-primary">
-         <div class="panel-heading">
-           <div class="panel-title">
-             <h3 style="font-weight: bold;">The Almighty Console</h3>
-            </div>
-          </div>
-          <div class="panel-body">
-            <div id="displayWrapper">
-              <canvas id="display"
-                      width="700"
-                      height="500"
-                      tabindex="3">
-           </canvas>
-              <canvas id="buffer" style="display:none;"
-                      width="700"
-                      height="1000"></canvas>
-            </div>
-          </div>
-      </div>
-    </div>
+	<button type="button"
+	class="btn btn-lg btn-info"
+	data-toggle="modal" data-target="#userProgramModal"
+	style="float: right;">
+	Click To Enter a User Program
+</button>
+<p></p>
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<div class="panel-title">
+			<h3 style="font-weight: bold;">The Almighty Console</h3>
+		</div>
+	</div>
+	<div class="panel-body">
+		<div id="displayWrapper">
+			<canvas id="display"
+			width="700"
+			height="500"
+			tabindex="3">
+		</canvas>
+		<canvas id="buffer" style="display:none;"
+		width="700"
+		height="1000"></canvas>
+	</div>
+</div>
+</div>
+</div>
 
-  <!-- The log -->
-    <div class="col-md-4">
-      <div class="row">
-        <div id="divLog" class="panel panel-default">
-             <div class="panel-heading">
-              Host Log
-            </div>
-             <div class="panel-body">
+<!-- The log -->
+<div class="col-md-4">
+	<div class="row">
+		<div id="divLog" class="panel panel-default">
+			<div class="panel-heading">
+				Host Log
+			</div>
+			<div class="panel-body">
                <!--
               <textarea name="taHostLog"
                         id  ="taHostLog"
                         readonly></textarea>
-                      -->
-              <div id="taHostLogWrapper">
-                <div id="taHostLog">
+                    -->
+                    <div id="taHostLogWrapper">
+                    	<div id="taHostLog">
+                    	</div>
+                    </div>
                 </div>
-              </div>
-             </div>
-        </div>
-      </div>
-
-      <!-- Process Control block panel -->
-      <div class="row">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            Process Control Block
-          </div>
-
-          <div class="panel-body">
-            <div id="pcbDiv">
-              <table class="table text-center" id="pcbDisplay">
-                <thead>
-                  <tr style="font-weight: bold;">
-                    <td>PID</td>
-                    <td>PC</td>
-                    <td>IR</td>
-                    <td>ACC</td>
-                    <td>X</td>
-                    <td>Y</td>
-                    <td>Z</td>
-                    <td>State</td>
-                  </tr>
-                </thead>
-
-                <tbody>
-                </tbody>
-              </table>
             </div>
-          </div>
         </div>
-      </div>
 
-      <!-- CPU Panel -->
-      <div class="row">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            CPU
-          </div>
+        <!-- Process Control block panel -->
+        <div class="row">
+        	<div class="panel panel-default">
+        		<div class="panel-heading">
+        			Process Control Block
+        		</div>
 
-          <div class="panel-body">
-            <div id="cpuDiv">
-              <table class="table text-center" id="cpu">
-                <thead>
-                  <tr style="font-weight: bold;">
-                    <td>PC</td>
-                    <td>IR</td>
-                    <td>ACC</td>
-                    <td>X</td>
-                    <td>Y</td>
-                    <td>Z</td>
-                  </tr>
-                </thead>
+        		<div class="panel-body">
+        			<div id="pcbDiv">
+        				<table class="table text-center" id="pcbDisplay">
+        					<thead>
+        						<tr style="font-weight: bold;">
+        							<td>PID</td>
+        							<td>PC</td>
+        							<td>IR</td>
+        							<td>ACC</td>
+        							<td>X</td>
+        							<td>Y</td>
+        							<td>Z</td>
+        							<td>State</td>
+        						</tr>
+        					</thead>
 
-                <tbody>
-                </tbody>
-              </table>
-          </div>
-          </div>
+        					<tbody>
+        					</tbody>
+        				</table>
+        			</div>
+        		</div>
+        	</div>
         </div>
-      </div>
 
-      <!-- Memory Panel -->
-      <div class="row">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            Memory
-          </div>
+        <!-- CPU Panel -->
+        <div class="row">
+        	<div class="panel panel-default">
+        		<div class="panel-heading">
+        			CPU
+        		</div>
 
-          <div class="panel-body">
-            <div id="memoryDiv">
-              <table id="memoryDisplay" class="table text-center">
-                <tbody>
-                </tbody>
-              </table>
-            </div>
-          </div>
+        		<div class="panel-body">
+        			<div id="cpuDiv">
+        				<table class="table text-center" id="cpu">
+        					<thead>
+        						<tr style="font-weight: bold;">
+        							<td>PC</td>
+        							<td>IR</td>
+        							<td>ACC</td>
+        							<td>X</td>
+        							<td>Y</td>
+        							<td>Z</td>
+        						</tr>
+        					</thead>
 
+        					<tbody>
+        					</tbody>
+        				</table>
+        			</div>
+        		</div>
+        	</div>
         </div>
-      </div>
+
+        <!-- Memory Panel -->
+        <div class="row">
+        	<div class="panel panel-default">
+        		<div class="panel-heading">
+        			Memory
+        		</div>
+
+        		<div class="panel-body">
+        			<div id="memoryDiv">
+        				<table id="memoryDisplay" class="table text-center">
+        					<tbody>
+        					</tbody>
+        				</table>
+        			</div>
+        		</div>
+
+        	</div>
+        </div>
     </div>
 
-   </div>
+</div>
 
-   <!-- User program -->
-   <div class="modal fade" id="userProgramModal" aria-hidden="true">
-     <div class="modal-dialog">
-       <div class="modal-content">
-         <div class="modal-header">
-           <button type="button" class="close" data-dismiss="modal">
-             <span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-             <h4 class="modal-title" id="myModalLabel">User Program Input</h4>
-         </div>
-         <div class="modal-body">
-           <div id="divUserProgramInput" class="row">
-                <textarea name="taProgramInput"
-                          id  ="taProgramInput"></textarea>
-               </div>
-           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
-          </div>
-         </div>
-       </div>
-     </div>
- </div>
+<!-- User program -->
+<div class="modal fade" id="userProgramModal" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title" id="myModalLabel">User Program Input</h4>
+				</div>
+				<div class="modal-body">
+					<div id="divUserProgramInput" class="row">
+						<textarea name="taProgramInput"
+						id  ="taProgramInput"></textarea>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
 <!-- The Footer -->
 <div class="navbar navbar-default navbar-static-bottom">
-  <div class="container">
-    <p class="navbar-text">No Rights Reserved</p>
-  </div>
+	<div class="container">
+		<p class="navbar-text">No Rights Reserved</p>
+	</div>
 </div>
 
 

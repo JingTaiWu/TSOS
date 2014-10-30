@@ -3,11 +3,11 @@
 
 module TSOS {
   export class Memory {
-    public bytes : Byte[] = [];
+    public bytes: Byte[] = [];
 
-    constructor(size : number) {
+    constructor(size: number) {
       // initialize the array to size
-      for (var i : number = 0; i < size; i++) {
+      for (var i: number = 0; i < size; i++) {
         this.bytes[i] = new Byte("00");
       }
     }
@@ -15,8 +15,8 @@ module TSOS {
 
   // Represntation of a byte
   export class Byte {
-    public byte : string;
-    constructor(data : string) {
+    public byte: string;
+    constructor(data: string) {
       this.byte = data;
     }
   }

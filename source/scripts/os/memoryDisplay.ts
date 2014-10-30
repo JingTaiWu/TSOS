@@ -16,6 +16,7 @@ module TSOS {
 
       // display the memory
       var index : number = 0;
+      
       while (index < memory.length) {
         // The first column should display the address
         var cols = "<td style='font-weight: bold;'>" + "0x0" + index.toString(16).toUpperCase() + "</td>";
@@ -31,6 +32,7 @@ module TSOS {
 
         // form the string for one row
         row += "<tr>" + cols + "</tr>";
+
         // append it to the table
         $("#memoryDisplay > tbody:last").append(row);
       }

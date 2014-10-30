@@ -1,10 +1,10 @@
 /*
   Process Control block - save the state of the process
   The information of the process is displayed on the Process Control Block panel
-*/
+  */
 
-module TSOS {
-  export class ProcessManager {
+  module TSOS {
+    export class ProcessManager {
     // where all the processes resides
     public residentQueue : Process[] = [];
     public readyQueue : Process[] = [];
@@ -12,13 +12,9 @@ module TSOS {
 
     // Add User input program to pcb
     public addProcess(program : string[]): number{
-      // reset the memory
-      _MemoryManager.resetMemory();
       var process = new Process();
       process.pid = this.lastPid++;
       process.program = program;
-      process.base = 0;
-      process.limit = 255;
       _MemoryManager.allocate(process);
       // add it to the resident queue
       this.residentQueue[process.pid] = process;

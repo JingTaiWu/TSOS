@@ -21,7 +21,8 @@ Shell Related
 -	Add a shell command, *clearmem*, to clear all memory partitions.
 -	Allow the user to load three programs into memory at once.
 -	Add a shell command, *runall*, to execute all the programs at once
--	Add a shell command, *quantum (int)* , to let the user set the **Round Robin quantum** (measured in clock ticks)
+-	Add a shell command, *quantum (int)* , to let the user set the
+ **Round Robin quantum** (measured in clock ticks)
 -	Display the Ready queue and its (PCB) contents (including process state) in real time.
 -	Add a shell command, *ps*, to display the PIDs of all active processes.
 -	Add a shell command, *kill (pid)*, to kill an active process.

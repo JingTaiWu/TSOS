@@ -13,13 +13,9 @@ var TSOS;
         }
         // Add User input program to pcb
         ProcessManager.prototype.addProcess = function (program) {
-            // reset the memory
-            _MemoryManager.resetMemory();
             var process = new TSOS.Process();
             process.pid = this.lastPid++;
             process.program = program;
-            process.base = 0;
-            process.limit = 255;
             _MemoryManager.allocate(process);
 
             // add it to the resident queue

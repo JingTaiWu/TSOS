@@ -16,30 +16,30 @@
      Operating System Concepts 8th edition by Silberschatz, Galvin, and Gagne.  ISBN 978-0-470-12872-5
      ------------ */
 
-module TSOS {
+     module TSOS {
 
-    export class Cpu {
+      export class Cpu {
 
         constructor(public PC: number = 0,
-                    public Acc: string = "00",
-                    public Xreg: string = "00",
-                    public Yreg: string = "00",
-                    public Zflag: string = "0",
-                    public IR: string = "00",
-                    public currentProcess: Process = null,
-                    public isExecuting: boolean = false) {
+          public Acc: string = "00",
+          public Xreg: string = "00",
+          public Yreg: string = "00",
+          public Zflag: string = "0",
+          public IR: string = "00",
+          public currentProcess: Process = null,
+          public isExecuting: boolean = false) {
 
         }
 
         public init(): void {
-            this.PC = 0;
-            this.Acc = "00";
-            this.Xreg = "00";
-            this.Yreg = "00";
-            this.Zflag = "0";
-            this.IR = "00";
-            this.isExecuting = false;
-            this.currentProcess = null;
+          this.PC = 0;
+          this.Acc = "00";
+          this.Xreg = "00";
+          this.Yreg = "00";
+          this.Zflag = "0";
+          this.IR = "00";
+          this.isExecuting = false;
+          this.currentProcess = null;
         }
 
         // load the current running process and start the CPU cycle
@@ -78,14 +78,14 @@ module TSOS {
 
         // update the current running process
         public updateProcess(): void {
-           this.currentProcess.pc = this.PC;
-           this.currentProcess.acc = this.Acc;
-           this.currentProcess.ir = this.IR;
-           this.currentProcess.xFlag = this.Xreg;
-           this.currentProcess.yFlag = this.Yreg;
-           this.currentProcess.zFlag = this.Zflag;
-           this.currentProcess.state = Process.RUNNING;
-        }
+         this.currentProcess.pc = this.PC;
+         this.currentProcess.acc = this.Acc;
+         this.currentProcess.ir = this.IR;
+         this.currentProcess.xFlag = this.Xreg;
+         this.currentProcess.yFlag = this.Yreg;
+         this.currentProcess.zFlag = this.Zflag;
+         this.currentProcess.state = Process.RUNNING;
+       }
 
         // Fetch the correct instruction
         public execute(instruction : string): void {
@@ -241,11 +241,11 @@ module TSOS {
           var x = parseInt(this.Xreg, 16);
           if(byte == x) {
             this.Zflag = "1";
-          } else {
-            this.Zflag = "0";
+            } else {
+              this.Zflag = "0";
+            }
+            this.incrementPC(3);
           }
-          this.incrementPC(3);
-        }
 
         // D0 - Branch n bytes if Z flag = 0
         public branchNotEqual(): void {
@@ -286,5 +286,5 @@ module TSOS {
         public readNextTwoBytes(): string {
           return _MemoryManager.readByte(this.PC + 2, this.currentProcess) + _MemoryManager.readByte(this.PC + 1, this.currentProcess);
         }
+      }
     }
-}

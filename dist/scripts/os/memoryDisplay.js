@@ -18,6 +18,7 @@ var TSOS;
 
             // display the memory
             var index = 0;
+
             while (index < memory.length) {
                 // The first column should display the address
                 var cols = "<td style='font-weight: bold;'>" + "0x0" + index.toString(16).toUpperCase() + "</td>";

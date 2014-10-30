@@ -6,7 +6,11 @@ var TSOS;
 (function (TSOS) {
     var MemoryManager = (function () {
         function MemoryManager() {
-            this.memorySize = 256;
+            // Total memory size is 768
+            this.memorySize = 768;
+            // There are 3 blocks, each block is 256
+            this.blockSize = 256;
+            this.numberOfBlocks = 3;
             // Initializes the memory
             var mem = new TSOS.Memory(this.memorySize);
             this.memory = mem.bytes;
@@ -15,12 +19,15 @@ var TSOS;
         // allocate memory for a given process
         MemoryManager.prototype.allocate = function (process) {
             // set the base and the limit of the current program
-            process.base = this.cursor;
-            process.limit = this.memorySize;
+            process.base = (this.cursor % this.numberOfBlocks) * this.blockSize;
+            process.limit = process.base + this.blockSize;
+
+            // deallocate the code that is currrently in this block of memory
+            this.deallocate(process.base, process.limit);
 
             for (var i = 0; i < process.program.length; i++) {
                 var location = process.base + i;
-                if (location < this.memory.length) {
+                if (location < process.limit) {
                     this.memory[location] = new TSOS.Byte(process.program[i]);
                 } else {
                     // trap error
@@ -30,10 +37,17 @@ var TSOS;
             }
 
             // update the current cursor
-            this.cursor += process.program.length;
+            this.cursor++;
 
             // Update the memory display
             _MemoryDisplay.update();
+        };
+
+        // deallocate a block of memory
+        MemoryManager.prototype.deallocate = function (base, limit) {
+            for (var i = base; i < limit; i++) {
+                this.memory[i] = new TSOS.Byte("00");
+            }
         };
 
         // reset memory
