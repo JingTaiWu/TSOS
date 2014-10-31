@@ -33,7 +33,7 @@ var STEP_MODE_ISR: number = 4;
 var _CPU: TSOS.Cpu;  // Utilize TypeScript's type annotation system to ensure that _CPU is an instance of the Cpu class.
 var _CPUDisplay: TSOS.CPUDisplay; // For CPU display update
 
-var _QUANTUM: number = 6; // Default Quantum for Round Robin Scheduling is 6
+var _CPUScheduler: TSOS.CPUScheduler; // Default Quantum for Round Robin Scheduling is 6
 
 var _OSclock: number = 0;  // Page 23.
 

@@ -461,8 +461,8 @@ module TSOS {
             var newQuantum = args[0];
             // make sure the evil user doesn't set the quantum to 0.
             if(newQuantum > 0) { 
-              _QUANTUM = newQuantum;
-              _StdOut.putText("Set current quantum to " + newQuantum + "."); 
+              _CPUScheduler.QUANTUM = newQuantum;
+              _StdOut.putText("Set current quantum to " + _CPUScheduler.QUANTUM + "."); 
             } else {
               _StdOut.putText("Please don't be evil....");
             }

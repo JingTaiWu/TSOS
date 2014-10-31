@@ -16,7 +16,7 @@ module TSOS {
       this.pcbTableBody.empty();
       var residentQueue = _ProcessManager.residentQueue;
       for (var i = 0; i < residentQueue.getSize(); i++) {
-        var process = residentQueue.getProcess(i);
+        var process = residentQueue.q[i];
         var cols = "<td>" + process.pid + "</td>" +
                    "<td>" + process.pc + "</td>" +
                    "<td>" + process.ir + "</td>" +

@@ -8,7 +8,6 @@ var TSOS;
         function ProcessManager() {
             // where all the processes resides
             this.residentQueue = new TSOS.ProcessQueue();
-            this.readyQueue = new TSOS.Queue();
             this.lastPid = 0;
         }
         // Add User input program to pcb

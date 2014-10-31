@@ -7,7 +7,6 @@ module TSOS {
     export class ProcessManager {
         // where all the processes resides
         public residentQueue: ProcessQueue = new ProcessQueue();
-        public readyQueue: Queue = new Queue();
         public lastPid: number = 0;
 
         // Add User input program to pcb

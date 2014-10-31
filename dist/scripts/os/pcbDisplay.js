@@ -14,7 +14,7 @@ var TSOS;
             this.pcbTableBody.empty();
             var residentQueue = _ProcessManager.residentQueue;
             for (var i = 0; i < residentQueue.getSize(); i++) {
-                var process = residentQueue.getProcess(i);
+                var process = residentQueue.q[i];
                 var cols = "<td>" + process.pid + "</td>" + "<td>" + process.pc + "</td>" + "<td>" + process.ir + "</td>" + "<td>" + process.acc + "</td>" + "<td>" + process.xFlag + "</td>" + "<td>" + process.yFlag + "</td>" + "<td>" + process.zFlag + "</td>" + "<td>" + process.state + "</td>";
                 var row = "<tr id = 'pid-" + process.pid + "'>" + cols + "</tr>";
                 $("#pcbDisplay > tbody:last").append(row);
