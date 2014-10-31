@@ -18,8 +18,7 @@ var TSOS;
 
             // changes the state of the process
             process.state = TSOS.Process.TERMINATED;
-
-            // _ProcessManager.removeProcess(process);
+            _ProcessManager.removeProcess(process);
             _CPU.stop();
 
             // update all the display

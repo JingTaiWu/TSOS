@@ -13,8 +13,8 @@ var TSOS;
             // empty the table first
             this.pcbTableBody.empty();
             var residentQueue = _ProcessManager.residentQueue;
-            for (var i = 0; i < residentQueue.length; i++) {
-                var process = residentQueue[i];
+            for (var i = 0; i < residentQueue.getSize(); i++) {
+                var process = residentQueue.getProcess(i);
                 var cols = "<td>" + process.pid + "</td>" + "<td>" + process.pc + "</td>" + "<td>" + process.ir + "</td>" + "<td>" + process.acc + "</td>" + "<td>" + process.xFlag + "</td>" + "<td>" + process.yFlag + "</td>" + "<td>" + process.zFlag + "</td>" + "<td>" + process.state + "</td>";
                 var row = "<tr id = 'pid-" + process.pid + "'>" + cols + "</tr>";
                 $("#pcbDisplay > tbody:last").append(row);
@@ -24,8 +24,8 @@ var TSOS;
         // update a single row given a process id
         PcbDisplay.prototype.updateProcess = function (pid) {
             var residentQueue = _ProcessManager.residentQueue;
-            for (var i = 0; i < residentQueue.length; i++) {
-                var process = residentQueue[i];
+            for (var i = 0; i < residentQueue.getSize(); i++) {
+                var process = residentQueue.getProcess(i);
 
                 // if it matches, update the row
                 if (process.pid == pid) {

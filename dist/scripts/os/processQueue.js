@@ -1,3 +1,6 @@
+/*
+ProcessQueue - Extends from Queue which is designed for resident/ready queues
+*/
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -6,26 +9,27 @@ var __extends = this.__extends || function (d, b) {
 };
 var TSOS;
 (function (TSOS) {
-    var ResidentQueue = (function (_super) {
-        __extends(ResidentQueue, _super);
-        function ResidentQueue() {
+    var ProcessQueue = (function (_super) {
+        __extends(ProcessQueue, _super);
+        function ProcessQueue() {
+            // Typescript requires calling the super constuctor
             _super.call(this);
         }
         // Process Queue exclusive functions
         // To get a specific process
-        ResidentQueue.prototype.getProcess = function (pid) {
-            var currentProcess = null;
+        ProcessQueue.prototype.getProcess = function (pid) {
+            var retVal = undefined;
             for (var i = 0; i < this.getSize(); i++) {
-                currentProcess = this.q[i];
+                var currentProcess = this.q[i];
                 if (currentProcess.pid == pid) {
                     return currentProcess;
                 }
             }
-            return currentProcess;
+            return retVal;
         };
 
         // To remove a specific process
-        ResidentQueue.prototype.removeProcess = function (pid) {
+        ProcessQueue.prototype.removeProcess = function (pid) {
             for (var i = 0; i < this.getSize(); i++) {
                 var currentProcess = this.q[i];
                 if (currentProcess.pid == pid) {
@@ -33,7 +37,7 @@ var TSOS;
                 }
             }
         };
-        return ResidentQueue;
+        return ProcessQueue;
     })(TSOS.Queue);
-    TSOS.ResidentQueue = ResidentQueue;
+    TSOS.ProcessQueue = ProcessQueue;
 })(TSOS || (TSOS = {}));

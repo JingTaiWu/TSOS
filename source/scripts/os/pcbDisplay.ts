@@ -15,8 +15,8 @@ module TSOS {
       // empty the table first
       this.pcbTableBody.empty();
       var residentQueue = _ProcessManager.residentQueue;
-      for (var i = 0; i < residentQueue.length; i++) {
-        var process = residentQueue[i];
+      for (var i = 0; i < residentQueue.getSize(); i++) {
+        var process = residentQueue.getProcess(i);
         var cols = "<td>" + process.pid + "</td>" +
                    "<td>" + process.pc + "</td>" +
                    "<td>" + process.ir + "</td>" +
@@ -33,8 +33,8 @@ module TSOS {
     // update a single row given a process id
     public updateProcess(pid : number) {
       var residentQueue = _ProcessManager.residentQueue;
-      for (var i = 0; i < residentQueue.length; i++) {
-        var process = residentQueue[i];
+      for (var i = 0; i < residentQueue.getSize(); i++) {
+        var process = residentQueue.getProcess(i);
         // if it matches, update the row
         if(process.pid == pid) {
           // get the html element

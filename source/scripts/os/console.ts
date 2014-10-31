@@ -78,7 +78,6 @@ module TSOS {
                       }
                     }
                   }
-
                 } else {
                     // This is a "normal" character, so ...
                     // ... draw it on the screen...
@@ -93,39 +92,38 @@ module TSOS {
         //Delete Text
         public deleteLastChar(): void {
             if(this.buffer.length != 0){
-              if(this.currentXPosition < 0){
-                // if the string is at a new line, go back to the previous line
-                var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, this.buffer[this.buffer.length - 1]);
-                this.currentXPosition = _Canvas.width + offset + 1.5;
-                this.currentYPosition -= _DefaultFontSize +
-                                         _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
-                                         _FontHeightMargin;
-              } else {
-                // else handle it like a regular delete
-                var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, this.buffer[this.buffer.length - 1]);
-                this.currentXPosition = this.currentXPosition - offset;
-                //_DrawingContext.fillStyle="#FFFFFF";
-                _DrawingContext.clearRect(this.currentXPosition, this.currentYPosition - this.currentFontSize - 2, offset, _DefaultFontSize + 10);
-                //delete the last character in the buffer
-                this.buffer = this.buffer.slice(0,-1);
-              }
+                if(this.currentXPosition < 0){
+                  // if the string is at a new line, go back to the previous line
+                  var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, this.buffer[this.buffer.length - 1]);
+                  this.currentXPosition = _Canvas.width + offset + 1.5;
+                  this.currentYPosition -= _DefaultFontSize +
+                                           _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
+                                           _FontHeightMargin;
+                } else {
+                  // else handle it like a regular delete
+                  var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, this.buffer[this.buffer.length - 1]);
+                  this.currentXPosition = this.currentXPosition - offset;
+                  //_DrawingContext.fillStyle="#FFFFFF";
+                  _DrawingContext.clearRect(this.currentXPosition, this.currentYPosition - this.currentFontSize - 2, offset, _DefaultFontSize + 10);
+                  //delete the last character in the buffer
+                  this.buffer = this.buffer.slice(0,-1);
+                }
             }
-
         }
 
         //clear the current input
         public clearInput(): void {
-          //calculate the offset of the entire input
-          var offset: number = 0;
-          for(var i = 0; i < this.buffer.length; i++){
-            offset = offset + _DrawingContext.measureText(this.currentFont, this.currentFontSize, this.buffer[i]);
-          }
-          //reset the x pos
-          this.currentXPosition = this.currentXPosition - offset;
-          //clear the current input
-          _DrawingContext.clearRect(this.currentXPosition, this.currentYPosition - this.currentFontSize - 2, offset, _DefaultFontSize + 5);
-          //clear the buffer
-          this.buffer = "";
+            //calculate the offset of the entire input
+            var offset: number = 0;
+            for(var i = 0; i < this.buffer.length; i++){
+              offset = offset + _DrawingContext.measureText(this.currentFont, this.currentFontSize, this.buffer[i]);
+            }
+            //reset the x pos
+            this.currentXPosition = this.currentXPosition - offset;
+            //clear the current input
+            _DrawingContext.clearRect(this.currentXPosition, this.currentYPosition - this.currentFontSize - 2, offset, _DefaultFontSize + 5);
+            //clear the buffer
+            this.buffer = "";
         }
 
         public putText(text): void {

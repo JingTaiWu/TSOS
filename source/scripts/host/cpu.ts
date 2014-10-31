@@ -40,7 +40,7 @@
           this.IR = "00";
           this.isExecuting = false;
           this.currentProcess = null;
-        }
+      }
 
         // load the current running process and start the CPU cycle
         public start(pcb: Process) {
@@ -53,14 +53,14 @@
           this.Zflag = pcb.zFlag;
           this.IR = pcb.ir;
           this.isExecuting = true;
-        }
+      }
 
         // Stop CPU execution
         public stop() {
           this.init();
-        }
+      }
 
-        public cycle(): void {
+      public cycle(): void {
           _Kernel.krnTrace('CPU cycle');
           // TODO: Accumulate CPU usage and profiling statistics here.
           // Do the real work here. Be sure to set this.isExecuting appropriately.
@@ -71,20 +71,20 @@
             var instruction = _MemoryManager.readByte(this.currentProcess.pc, this.currentProcess);
             // Execute the instruction
             this.execute(instruction);
-          }
+        }
           // update the pcb display
           _PCBDisplay.update();
-        }
+      }
 
         // update the current running process
         public updateProcess(): void {
-         this.currentProcess.pc = this.PC;
-         this.currentProcess.acc = this.Acc;
-         this.currentProcess.ir = this.IR;
-         this.currentProcess.xFlag = this.Xreg;
-         this.currentProcess.yFlag = this.Yreg;
-         this.currentProcess.zFlag = this.Zflag;
-         this.currentProcess.state = Process.RUNNING;
+           this.currentProcess.pc = this.PC;
+           this.currentProcess.acc = this.Acc;
+           this.currentProcess.ir = this.IR;
+           this.currentProcess.xFlag = this.Xreg;
+           this.currentProcess.yFlag = this.Yreg;
+           this.currentProcess.zFlag = this.Zflag;
+           this.currentProcess.state = Process.RUNNING;
        }
 
         // Fetch the correct instruction
@@ -139,14 +139,14 @@
             // just terminate the process for now
             _Kernel.krnTrace("Invalid Instruction!");
             this.breakFromProcess();
-          }
         }
+    }
 
         // Increment Program Counter
         public incrementPC(bytes: number): void {
           // The memory is only 256 bytes
           this.PC = (this.PC + bytes) % 256;
-        }
+      }
 
         // Assembly instruction
         // LDA - Load the accumulator with a constant
@@ -156,7 +156,7 @@
           this.Acc = this.readNextByte();
           // Increment the Program counter
           this.incrementPC(2);
-        }
+      }
 
         // LDA - Load the accumulator from memory
         public loadAccFromMemory(): void {
@@ -167,7 +167,7 @@
           // Load the number into accumulator
           this.Acc = _MemoryManager.readByte(address, this.currentProcess);
           this.incrementPC(3);
-        }
+      }
 
         // STA - Store the accumulator in memory
         public storeAccInMemory(): void {
@@ -176,7 +176,7 @@
           var address: number = parseInt(addressStr, 16);
           _MemoryManager.writeByte(address, this.Acc, this.currentProcess);
           this.incrementPC(3);
-        }
+      }
 
         // ADC - Add with carry: adds contents of an address to the contents of the accumulator and keeps
         // the result in the accumulator
@@ -188,13 +188,13 @@
           // convert the sum back to base 16
           this.Acc = sum.toString(16);
           this.incrementPC(3);
-        }
+      }
 
         // LDX - Load the X register with a constant
         public loadXRegWithConstant(): void {
           this.Xreg = this.readNextByte();
           this.incrementPC(2);
-        }
+      }
 
         // LDX - Load the X register from memory
         public loadXRegFromMemory(): void {
@@ -202,13 +202,13 @@
           var address: number = parseInt(addressStr, 16);
           this.Xreg = _MemoryManager.readByte(address, this.currentProcess);
           this.incrementPC(3);
-        }
+      }
 
         // LDY - Load the Y register with a constant
         public loadYRegWithConstant(): void {
           this.Yreg = this.readNextByte();
           this.incrementPC(2);
-        }
+      }
 
         // LDY - Load the Y register from memory
         public loadYRegFromMemory(): void {
@@ -216,21 +216,21 @@
           var address: number = parseInt(addressStr, 16);
           this.Yreg = _MemoryManager.readByte(address, this.currentProcess);
           this.incrementPC(3);
-        }
+      }
 
         // EA - no operation
         public noOperation(): void {
           // you literally do nothing....
           // but increase the program counter though
           this.incrementPC(1);
-        }
+      }
 
         // BRK - break (which is really a system call)
         public breakFromProcess(): void {
           // terminate the process
           _KernelInterruptQueue.enqueue(new Interrupt(SYSTEM_CALL_IRQ, [0, this.currentProcess]));
           this.incrementPC(1);
-        }
+      }
 
         // EC - compare a byte in memory to the X reg
         // sets the z flag  = 1 if equal
@@ -243,9 +243,9 @@
             this.Zflag = "1";
             } else {
               this.Zflag = "0";
-            }
-            this.incrementPC(3);
           }
+          this.incrementPC(3);
+      }
 
         // D0 - Branch n bytes if Z flag = 0
         public branchNotEqual(): void {
@@ -257,8 +257,8 @@
           if(zflag == 0) {
             var offset = numOfBytes;
             this.incrementPC(offset);
-          }
         }
+    }
 
         // INC - increment the value of a byte
         public incrementValueOfByte(): void {
@@ -268,22 +268,23 @@
           byte++;
           _MemoryManager.writeByte(parseInt(addressStr, 16), byte.toString(16), this.currentProcess);
           this.incrementPC(3);
-        }
+      }
 
         // SYS - SystemCall
         public systemCall(): void {
           // give the current process to the queue
           _KernelInterruptQueue.enqueue(new Interrupt(SYSTEM_CALL_IRQ, [1, this.currentProcess]));
           this.incrementPC(1);
-        }
+      }
         // returns the next byte after the program counter
         public readNextByte(): string {
-          return _MemoryManager.readByte(this.PC + 1, this.currentProcess);
+            return _MemoryManager.readByte(this.PC + 1, this.currentProcess);
         }
 
         // return the next two bytes after the program counter
         public readNextTwoBytes(): string {
-          return _MemoryManager.readByte(this.PC + 2, this.currentProcess) + _MemoryManager.readByte(this.PC + 1, this.currentProcess);
+            // Little Endian - The second byte comes first
+            return _MemoryManager.readByte(this.PC + 2, this.currentProcess) + _MemoryManager.readByte(this.PC + 1, this.currentProcess);
         }
-      }
     }
+}

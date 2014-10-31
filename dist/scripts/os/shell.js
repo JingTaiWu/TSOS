@@ -395,11 +395,11 @@ var TSOS;
         Shell.prototype.shellRun = function (args) {
             if (args.length <= 0) {
                 _StdOut.putText("Please give me a process id to run.");
-            } else if (!_ProcessManager.residentQueue[args[0]]) {
+            } else if (!_ProcessManager.residentQueue.getProcess(parseInt(args[0], 10))) {
                 _StdOut.putText("This process does not exist.");
             } else {
                 // Execute the CPU
-                _CPU.start(_ProcessManager.residentQueue[args[0]]);
+                _CPU.start(_ProcessManager.residentQueue.getProcess(parseInt(args[0], 10)));
             }
         };
 

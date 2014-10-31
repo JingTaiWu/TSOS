@@ -14,7 +14,7 @@ module TSOS {
 
         }
 
-        public getSize() {
+        public getSize(): number {
             return this.q.length;
         }
 

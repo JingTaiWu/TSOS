@@ -294,6 +294,7 @@ var TSOS;
 
         // return the next two bytes after the program counter
         Cpu.prototype.readNextTwoBytes = function () {
+            // Little Endian - The second byte comes first
             return _MemoryManager.readByte(this.PC + 2, this.currentProcess) + _MemoryManager.readByte(this.PC + 1, this.currentProcess);
         };
         return Cpu;
