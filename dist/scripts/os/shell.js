@@ -96,6 +96,9 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
 
             // processes - list the running processes and their IDs
+            sc = new TSOS.ShellCommand(this.shellPs, "ps", " - list all the running processes.");
+            this.commandList[this.commandList.length] = sc;
+
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
             this.putPrompt();
@@ -398,8 +401,12 @@ var TSOS;
             } else if (!_ProcessManager.residentQueue.getProcess(parseInt(args[0], 10))) {
                 _StdOut.putText("This process does not exist.");
             } else {
-                // Execute the CPU
-                _CPU.start(_ProcessManager.residentQueue.getProcess(parseInt(args[0], 10)));
+                var process = _ProcessManager.residentQueue.getProcess(parseInt(args[0], 10));
+                if (process.state != TSOS.Process.TERMINATED) {
+                    _ProcessManager.execute(process);
+                } else {
+                    _StdOut.putText("Process Terminated.");
+                }
             }
         };
 
@@ -435,6 +442,23 @@ var TSOS;
                 }
             } else {
                 _StdOut.putText("Please Give me a number.");
+            }
+        };
+
+        // ps - Display all the running processes
+        Shell.prototype.shellPs = function (args) {
+            var processQueue = _ProcessManager.residentQueue;
+            if (!processQueue.isEmpty()) {
+                _StdOut.putText("PID \t" + "PC \t" + "IR \t" + "ACC   \t" + "X   \t" + "Y   \t" + "Z \t");
+                _StdOut.advanceLine();
+                for (var i = 0; i < processQueue.getSize(); i++) {
+                    var process = processQueue.q[i];
+                    if (process.state == TSOS.Process.RUNNING) {
+                        _StdOut.putText(process.pid + "   \t" + process.pc + "  \t" + process.ir + "  \t" + process.acc + "  \t" + process.xFlag + " \t" + process.yFlag + " \t" + process.zFlag + " \t");
+                    }
+                }
+            } else {
+                _StdOut.putText("There are no running processes.");
             }
         };
         return Shell;

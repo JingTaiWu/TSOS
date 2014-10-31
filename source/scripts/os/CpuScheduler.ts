@@ -3,7 +3,8 @@
 */
 module TSOS {
 	export class CPUScheduler {
-		constructor(public readyQueue = new Queue(),
-                    public QUANTUM = 6) {}
+		constructor(public readyQueue = new ProcessQueue(),
+                    public QUANTUM = 6,
+                    public cycleRan = 0) {}
 	}
 }

@@ -15,6 +15,8 @@ var TSOS;
             var process = new TSOS.Process();
             process.pid = this.lastPid++;
             process.program = program;
+
+            // allocate space for process
             _MemoryManager.allocate(process);
 
             // add it to the resident queue
@@ -28,6 +30,11 @@ var TSOS;
         // Removes a process
         ProcessManager.prototype.removeProcess = function (process) {
             this.residentQueue.removeProcess(process.pid);
+        };
+
+        // Execute Process (Avoid Calling CPU directly from shell)
+        ProcessManager.prototype.execute = function (process) {
+            _CPU.start(process);
         };
         return ProcessManager;
     })();

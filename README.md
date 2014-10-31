@@ -24,7 +24,7 @@ Shell Related
 -	~~Add a shell command, *quantum (int)* , to let the user set the
  **Round Robin quantum** (measured in clock ticks)~~
 -	Display the Ready queue and its (PCB) contents (including process state) in real time.
--	Add a shell command, *ps*, to display the PIDs of all active processes.
+-	~~Add a shell command, *ps*, to display the PIDs of all active processes.~~
 -	Add a shell command, *kill (pid)*, to kill an active process.
 
 Memory Related

@@ -139,6 +139,10 @@ module TSOS {
             this.commandList[this.commandList.length] = sc;
 
             // processes - list the running processes and their IDs
+            sc = new ShellCommand(this.shellPs,
+                                  "ps",
+                                  " - list all the running processes.");
+            this.commandList[this.commandList.length] = sc;            
             // kill <id> - kills the specified process id.
 
             // Display the initial prompt.
@@ -400,41 +404,45 @@ module TSOS {
 
         // load - validate user program input
         public shellLoad(args) {
-          var textArea = <HTMLInputElement> document.getElementById('taProgramInput');
-          var input = textArea.value.trim();
-          var ls = input.split(" ");
-          var regEx = /^([a-f]|[0-9])*$/i;
-          if (input === ""){
-            _StdOut.putText("Please Enter a program first!");
-            return;
-          }
-
-          var sum = 0;
-          for (var i = 0; i < ls.length; i++) {
-            // sum of the program must be even
-            sum += parseInt(ls[i], 16);
-            // if it is not valid, tell the user
-            if (!regEx.test(ls[i]) || ls[i].length != 2) {
-              _StdOut.putText("Your program is invalid. Enter a correct program, pls...");
-              return;
+            var textArea = <HTMLInputElement> document.getElementById('taProgramInput');
+            var input = textArea.value.trim();
+            var ls = input.split(" ");
+            var regEx = /^([a-f]|[0-9])*$/i;
+            if (input === ""){
+                _StdOut.putText("Please Enter a program first!");
+                return;
             }
-          }
 
-          // if it is valid, load it into the memory
-          var pid = _ProcessManager.addProcess(ls);
-          _StdOut.putText("Process ID: " + pid);
+            var sum = 0;
+            for (var i = 0; i < ls.length; i++) {
+                // sum of the program must be even
+                sum += parseInt(ls[i], 16);
+                // if it is not valid, tell the user
+                if (!regEx.test(ls[i]) || ls[i].length != 2) {
+                  _StdOut.putText("Your program is invalid. Enter a correct program, pls...");
+                  return;
+                }
+            }
+
+            // if it is valid, load it into the memory
+            var pid = _ProcessManager.addProcess(ls);
+            _StdOut.putText("Process ID: " + pid);
         }
 
         // run - a process in the resident queue
         public shellRun(args) {
-          if (args.length <= 0) {
-            _StdOut.putText("Please give me a process id to run.");
-          } else if(!_ProcessManager.residentQueue.getProcess(parseInt(args[0], 10))) {
-            _StdOut.putText("This process does not exist.");
-          } else {
-            // Execute the CPU
-            _CPU.start(_ProcessManager.residentQueue.getProcess(parseInt(args[0], 10)));
-          }
+            if (args.length <= 0) {
+                _StdOut.putText("Please give me a process id to run.");
+            } else if(!_ProcessManager.residentQueue.getProcess(parseInt(args[0], 10))) {
+                _StdOut.putText("This process does not exist.");
+            } else {
+                var process: Process = _ProcessManager.residentQueue.getProcess(parseInt(args[0], 10));
+                if(process.state != Process.TERMINATED) {
+                    _ProcessManager.execute(process);
+                } else {
+                    _StdOut.putText("Process Terminated.")
+                }
+            }
         }
 
         // Bsod - triggers bosd
@@ -447,28 +455,46 @@ module TSOS {
         // clearmem - Clears current memory
         public shellClearmem(args) {
           // Make sure CPU isn't running, things can go horribly wrong
-          if(!_CPU.isExecuting) {
-            _MemoryManager.resetMemory();
-            _StdOut.putText("Memory has been cleared.");
-          } else {
-            _StdOut.putText("Please wait until the CPU stops executing!");
-          }
+            if(!_CPU.isExecuting) {
+                _MemoryManager.resetMemory();
+                _StdOut.putText("Memory has been cleared.");
+            } else {
+                _StdOut.putText("Please wait until the CPU stops executing!");
+            }
         }
 
         // quantum - sets the quantum for Round Robin scheduling
         public shellQuantum(args) {
-          if(args.length != 0) {
-            var newQuantum = args[0];
-            // make sure the evil user doesn't set the quantum to 0.
-            if(newQuantum > 0) { 
-              _CPUScheduler.QUANTUM = newQuantum;
-              _StdOut.putText("Set current quantum to " + _CPUScheduler.QUANTUM + "."); 
+            if(args.length != 0) {
+                var newQuantum = args[0];
+                // make sure the evil user doesn't set the quantum to 0.
+                if(newQuantum > 0) { 
+                    _CPUScheduler.QUANTUM = newQuantum;
+                    _StdOut.putText("Set current quantum to " + _CPUScheduler.QUANTUM + "."); 
+                } else {
+                    _StdOut.putText("Please don't be evil....");
+                }
             } else {
-              _StdOut.putText("Please don't be evil....");
+                _StdOut.putText("Please Give me a number.");
             }
-          } else {
-            _StdOut.putText("Please Give me a number.");
-          }
+        }
+
+        // ps - Display all the running processes
+        public shellPs(args) {
+            var processQueue = _ProcessManager.residentQueue;
+            if(!processQueue.isEmpty()) {
+                _StdOut.putText("PID \t" + "PC \t" + "IR \t" + "ACC   \t" + "X   \t" + "Y   \t" + "Z \t");
+                _StdOut.advanceLine();
+                for(var i = 0; i < processQueue.getSize(); i++) {
+                    var process: Process = processQueue.q[i];
+                    if(process.state == Process.RUNNING) {
+                        _StdOut.putText(process.pid + "   \t" + process.pc + "  \t" + process.ir + "  \t" 
+                                        + process.acc + "  \t" + process.xFlag + " \t" + process.yFlag + " \t" + process.zFlag + " \t");
+                    }
+                }
+            } else {
+                _StdOut.putText("There are no running processes.");
+            }
         }
     }
 }
