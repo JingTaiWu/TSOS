@@ -20,10 +20,10 @@ Shell Related
 
 -	~~Add a shell command, *clearmem*, to clear all memory partitions.~~
 -	~~Allow the user to load three programs into memory at once.~~
--	Add a shell command, *runall*, to execute all the programs at once
+-	~~Add a shell command, *runall*, to execute all the programs at once~~
 -	~~Add a shell command, *quantum (int)* , to let the user set the
  **Round Robin quantum** (measured in clock ticks)~~
--	Display the Ready queue and its (PCB) contents (including process state) in real time.
+-	~~Display the Ready queue and its (PCB) contents (including process state) in real time.~~
 -	~~Add a shell command, *ps*, to display the PIDs of all active processes.~~
 -	Add a shell command, *kill (pid)*, to kill an active process.
 
@@ -37,15 +37,15 @@ Memory Related
 Process Related
 ---------------
 
--	Create a Resident list for the loaded processes.
--	Create a Ready queue for the running processes.
--	Instantiate a PCB for each loaded program and put it in the Resident List.
+-	~~Create a Resident list for the loaded processes.~~
+-	~~Create a Ready queue for the running processes.~~
+-	~~Instantiate a PCB for each loaded program and put it in the Resident List.~~
 
 Scheduling Related
 ------------------
 
--	Develop a CPU scheduler in the client OS using Round Robin scheduling with the user-specified quantum measured in clock ticks(default= 6)
-	-	Make the client OS control the host CPU with the client OS CPU scheduler.
-	-	Log all scheduling events
--	Implement context switches with software interrupts. Be sure to update the mode bit(if appropriate), the PCBs and the Ready Queue
--	Detect and gracefully handle errors like invalid op codes, missing operands, and most importantly, memory out of bounds access attempts.
+-	~~Develop a CPU scheduler in the client OS using Round Robin scheduling with the user-specified quantum measured in clock ticks(default= 6)~~
+	-	~~Make the client OS control the host CPU with the client OS CPU scheduler.~~
+	-	~~Log all scheduling events~~
+-	~~Implement context switches with software interrupts. Be sure to update the mode bit(if appropriate), the PCBs and the Ready Queue~~
+-	~~Detect and gracefully handle errors like invalid op codes, missing operands, and most importantly, memory out of bounds access attempts.~~
