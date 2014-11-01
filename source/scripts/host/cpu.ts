@@ -72,8 +72,6 @@
             // Execute the instruction
             this.execute(instruction);
         }
-          // update the pcb display
-          _PCBDisplay.update();
       }
 
         // update the current running process

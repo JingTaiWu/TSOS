@@ -9,6 +9,7 @@ module TSOS {
         public static NOT_RUNNING: string = "Resident";
         public static TERMINATED: string = "Terminated";
         public static READY: string = "Ready";
+        public static WAITING: string = "Waiting";
         public pid: number; // Process ID
         public pc:  number = 0; // Program Counter
         public acc: string = "00";

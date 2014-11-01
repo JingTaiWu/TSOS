@@ -100,11 +100,21 @@ module TSOS {
                 var interrupt = _KernelInterruptQueue.dequeue();
                 this.krnInterruptHandler(interrupt.irq, interrupt.params);
             } else if (_CPU.isExecuting && !_StepMode) { // If there are no interrupts then run one CPU cycle if there is anything being processed. {
+                // increment the cycle counter in cpu scheduler (for round robin)
+                _CPUScheduler.schedule();
+                _CPUScheduler.cycle++;
                 _CPU.cycle();
-                _CPUDisplay.updateDisplay();
+
+                // Update all displays
+                _CPUDisplay.update();
+                _PCBDisplay.update();
+                _MemoryDisplay.update();
             } else {                      // If there are no interrupts and there is nothing being executed then just be idle. {
                 this.krnTrace("Idle");
             }
+
+            // Start the CPU Scheduler
+            _CPUScheduler.schedule();
         }
 
 
@@ -147,7 +157,13 @@ module TSOS {
                     this.systemCallISR(params);
                     break;
                 case STEP_MODE_ISR:
-                    this.stepIsr();
+                    this.stepISR();
+                    break;
+                case PROCESS_EXECUTION_ISR:
+                    this.processExecutionISR(params);
+                    break;
+                case CONTEXT_SWTICH_ISR:
+                    this.contextSwitchISR(params);
                     break;
                 default:
                     this.krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");
@@ -173,6 +189,8 @@ module TSOS {
         // - ReadFile
         // - WriteFile
         // - CloseFile
+
+        // Memory boundary enforcement
         public invalidMemoryOp(params) {
           // Throw error in host log
           this.krnTrace("Invalid memory operation. Stopping the CPU.");
@@ -186,11 +204,45 @@ module TSOS {
           _MemoryManager.resetMemory();
         }
 
+        // Process Execution - Moving the execution of the process from process manager to cpu scheduler
+        public processExecutionISR(params) {
+            _CPUScheduler.readyQueue.enqueue(params[0]);
+        }
+
+        // Context Switch - switch processes
+        public contextSwitchISR(params) {
+            this.krnTrace("Performing a context switch.");
+            // Stop the last running process if there is any
+            var lastProcess: Process = _CPUScheduler.currentProcess;
+            if(lastProcess) {
+                _CPU.stop();
+                lastProcess.state = Process.WAITING;
+                _CPUScheduler.readyQueue.enqueue(_CPUScheduler.currentProcess);
+            }
+
+            // Update the pcb display
+            _PCBDisplay.update();
+
+            // Set the current process to the next process
+            _CPUScheduler.currentProcess = _CPUScheduler.getNextProcess();
+
+            // execute the new process
+            _CPU.start(_CPUScheduler.currentProcess);
+
+            // Reset the cycle
+            _CPUScheduler.cycle = 0;
+
+        }
+
         // For step mode
-        public stepIsr() {
-          _CPU.cycle();
-          // Update the display
-          _CPUDisplay.updateDisplay();
+        public stepISR() {
+            _CPUScheduler.cycle++;
+            _CPUScheduler.schedule();
+            _CPU.cycle();
+            // Update the display
+            _CPUDisplay.update();
+            _MemoryDisplay.update();
+            _PCBDisplay.update();
         }
 
         // handles system calls from a process

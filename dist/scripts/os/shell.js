@@ -99,6 +99,10 @@ var TSOS;
             sc = new TSOS.ShellCommand(this.shellPs, "ps", " - list all the running processes.");
             this.commandList[this.commandList.length] = sc;
 
+            // runall - execute all the processes currently in the resident queue
+            sc = new TSOS.ShellCommand(this.shellRunAll, "runall", " - Run all the processes stored in memory.");
+            this.commandList[this.commandList.length] = sc;
+
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
             this.putPrompt();
@@ -402,10 +406,10 @@ var TSOS;
                 _StdOut.putText("This process does not exist.");
             } else {
                 var process = _ProcessManager.residentQueue.getProcess(parseInt(args[0], 10));
-                if (process.state != TSOS.Process.TERMINATED) {
+                if (process.state != TSOS.Process.TERMINATED && !_CPU.isExecuting) {
                     _ProcessManager.execute(process);
                 } else {
-                    _StdOut.putText("Process Terminated.");
+                    _StdOut.putText("CPU is executing or process is terminated.");
                 }
             }
         };
@@ -459,6 +463,14 @@ var TSOS;
                 }
             } else {
                 _StdOut.putText("There are no running processes.");
+            }
+        };
+
+        // runall - run all the processes in the resident queue with round robin scheduling
+        Shell.prototype.shellRunAll = function (args) {
+            for (var i = 0; i < _ProcessManager.residentQueue.getSize(); i++) {
+                var process = _ProcessManager.residentQueue.q[i];
+                _ProcessManager.execute(process);
             }
         };
         return Shell;

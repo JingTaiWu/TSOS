@@ -18,13 +18,18 @@ var TSOS;
 
             // changes the state of the process
             process.state = TSOS.Process.TERMINATED;
+
+            // Remove the process in the resident queue
             _ProcessManager.removeProcess(process);
+
+            // Remove the process in the ready queue
+            _CPUScheduler.readyQueue.removeProcess(process.pid);
             _CPU.stop();
 
             // update all the display
             _MemoryDisplay.update();
             _PCBDisplay.update();
-            _CPUDisplay.updateDisplay();
+            _CPUDisplay.update();
         };
 
         // this handles the output of a process when it reaches Op code FF

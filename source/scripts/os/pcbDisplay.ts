@@ -14,9 +14,18 @@ module TSOS {
     public update() {
       // empty the table first
       this.pcbTableBody.empty();
-      var residentQueue = _ProcessManager.residentQueue;
-      for (var i = 0; i < residentQueue.getSize(); i++) {
-        var process = residentQueue.q[i];
+      var processls = [];
+      for(var i = 0; i < _CPUScheduler.readyQueue.getSize(); i++) {
+        // get the process from the ready queue
+        var currentProcess = _CPUScheduler.readyQueue.dequeue();
+        // push it to the process list for display
+        processls.push(currentProcess);
+        // push it back to the ready queue
+        _CPUScheduler.readyQueue.enqueue(currentProcess);
+      }
+
+      for(var i = 0; i < processls.length; i++) {
+        var process = processls[i];
         var cols = "<td>" + process.pid + "</td>" +
                    "<td>" + process.pc + "</td>" +
                    "<td>" + process.ir + "</td>" +
@@ -32,9 +41,9 @@ module TSOS {
 
     // update a single row given a process id
     public updateProcess(pid : number) {
-      var residentQueue = _ProcessManager.residentQueue;
-      for (var i = 0; i < residentQueue.getSize(); i++) {
-        var process = residentQueue.getProcess(i);
+      var readyQueue = _CPUScheduler.readyQueue;
+      for(var i = 0; i < readyQueue.getSize(); i++) {
+        var process = readyQueue.getProcess(i);
         // if it matches, update the row
         if(process.pid == pid) {
           // get the html element

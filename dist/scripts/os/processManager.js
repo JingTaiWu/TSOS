@@ -34,7 +34,7 @@ var TSOS;
 
         // Execute Process (Avoid Calling CPU directly from shell)
         ProcessManager.prototype.execute = function (process) {
-            _CPU.start(process);
+            _KernelInterruptQueue.enqueue(new TSOS.Interrupt(PROCESS_EXECUTION_ISR, [process]));
         };
         return ProcessManager;
     })();

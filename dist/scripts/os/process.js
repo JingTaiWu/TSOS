@@ -22,6 +22,7 @@ var TSOS;
         Process.NOT_RUNNING = "Resident";
         Process.TERMINATED = "Terminated";
         Process.READY = "Ready";
+        Process.WAITING = "Waiting";
         return Process;
     })();
     TSOS.Process = Process;

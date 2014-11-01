@@ -4,7 +4,7 @@ var TSOS;
         function CPUDisplay() {
         }
         // update the display in the client OS
-        CPUDisplay.prototype.updateDisplay = function () {
+        CPUDisplay.prototype.update = function () {
             // Grab a reference to the CPU Div in the HTML page
             var cpuDiv = $("#cpu > tbody");
 

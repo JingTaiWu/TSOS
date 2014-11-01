@@ -15,7 +15,7 @@
 var APP_NAME: string    = "Jingle OS";   // 'cause Bob and I were at a loss for a better name.
 var APP_VERSION: string = "42";   // What did you expect?
 
-var CPU_CLOCK_INTERVAL: number = 100;   // This is in ms, or milliseconds, so 1000 = 1 second.
+var CPU_CLOCK_INTERVAL: number = 10;   // This is in ms, or milliseconds, so 1000 = 1 second.
 
 var TIMER_IRQ: number = 0;  // Pages 23 (timer), 9 (interrupts), and 561 (interrupt priority).
                             // NOTE: The timer is different from hardware/host clock pulses. Don't confuse these.
@@ -26,6 +26,10 @@ var INVALID_MEMORY_OP: number = 2;
 var SYSTEM_CALL_IRQ: number = 3;
 
 var STEP_MODE_ISR: number = 4;
+
+var PROCESS_EXECUTION_ISR: number = 5;
+
+var CONTEXT_SWTICH_ISR: number = 6;
 
 //
 // Global Variables

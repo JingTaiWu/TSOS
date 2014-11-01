@@ -1,7 +1,7 @@
 module TSOS {
   export class CPUDisplay {
     // update the display in the client OS
-    public updateDisplay() {
+    public update() {
       // Grab a reference to the CPU Div in the HTML page
       var cpuDiv = $("#cpu > tbody");
       // Empty the table
