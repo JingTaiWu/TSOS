@@ -23,8 +23,27 @@ var TSOS;
             _ProcessManager.removeProcess(process);
 
             // Remove the process in the ready queue
+            // If the current running process of the scheduler is the one being terminated
+            // reset the current process
+            if (_CPUScheduler.currentProcess !== null) {
+                if (_CPUScheduler.currentProcess.pid == process.pid) {
+                    _CPUScheduler.currentProcess = null;
+                    _CPUScheduler.cycle = 0;
+                    _CPU.stop();
+                } else {
+                    for (var i = 0; i < _CPUScheduler.readyQueue.getSize(); i++) {
+                        var currentProcess = _CPUScheduler.getNextProcess();
+
+                        // If the process is not the same as the terminated one
+                        // add it back to the queue
+                        if (currentProcess.pid != process.pid) {
+                            _CPUScheduler.readyQueue.enqueue(currentProcess);
+                        }
+                    }
+                }
+            }
+
             _CPUScheduler.readyQueue.removeProcess(process.pid);
-            _CPU.stop();
 
             // update all the display
             _MemoryDisplay.update();

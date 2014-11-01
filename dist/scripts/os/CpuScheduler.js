@@ -15,19 +15,10 @@ var TSOS;
             this.currentProcess = currentProcess;
         }
         CPUScheduler.prototype.schedule = function () {
-            // If there is something in the ready queue and current process is null
-            // Assign the current process to the first process in the ready queue
-            if (this.currentProcess == null && this.readyQueue.getSize() > 0) {
-                this.currentProcess = this.getNextProcess();
-
-                // Start the CPU
-                _CPU.start(this.currentProcess);
-            }
-
             // If the current cycle is equal to the quantum
             // Generate an context switch isr
             // Also check if there is more than one process in the readyQueue
-            if (this.cycle == this.QUANTUM && this.readyQueue.getSize() > 1) {
+            if ((this.cycle == this.QUANTUM || !this.currentProcess) && this.readyQueue.getSize()) {
                 _KernelInterruptQueue.enqueue(new TSOS.Interrupt(CONTEXT_SWTICH_ISR, []));
             }
         };
