@@ -12,7 +12,7 @@ module TSOS {
             // Generate an context switch isr
             // Also check if there is more than one process in the readyQueue
             if((this.cycle == this.QUANTUM || !this.currentProcess) && this.readyQueue.getSize()) {
-                _KernelInterruptQueue.enqueue(new Interrupt(CONTEXT_SWTICH_ISR, []));
+                _Kernel.krnInterruptHandler(CONTEXT_SWTICH_ISR, []);
             }
         }
  

@@ -138,6 +138,8 @@
             _Kernel.krnTrace("Invalid Instruction!");
             this.breakFromProcess();
         }
+
+        this.updateProcess();
     }
 
         // Increment Program Counter

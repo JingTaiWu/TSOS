@@ -192,16 +192,12 @@ module TSOS {
 
         // Memory boundary enforcement
         public invalidMemoryOp(params) {
-          // Throw error in host log
-          this.krnTrace("Invalid memory operation. Stopping the CPU.");
-          // Stopping the CPU
-          _CPU.stop();
           var process: Process = params[0];
-          process.state = Process.TERMINATED;
+          this.systemCallISR([0, process]);
+          // Throw error in host log
+          this.krnTrace("Invalid memory operation from process " + process.pid + ".");  
           // update the pcb
           _PCBDisplay.update();
-          // reset the memory
-          _MemoryManager.resetMemory();
         }
 
         // Process Execution - Moving the execution of the process from process manager to cpu scheduler
@@ -237,8 +233,8 @@ module TSOS {
 
         // For step mode
         public stepISR() {
-            _CPUScheduler.cycle++;
             _CPUScheduler.schedule();
+            _CPUScheduler.cycle++;
             _CPU.cycle();
             // Update the display
             _CPUDisplay.update();

@@ -30,7 +30,7 @@ module TSOS {
 
         // Execute Process (Avoid Calling CPU directly from shell)
         public execute(process: Process) {
-            _KernelInterruptQueue.enqueue(new Interrupt(PROCESS_EXECUTION_ISR, [process]));
+            _Kernel.krnInterruptHandler(PROCESS_EXECUTION_ISR, [process]);
         } 
     }
 }

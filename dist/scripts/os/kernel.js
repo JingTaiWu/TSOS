@@ -182,19 +182,14 @@ var TSOS;
         // - CloseFile
         // Memory boundary enforcement
         Kernel.prototype.invalidMemoryOp = function (params) {
-            // Throw error in host log
-            this.krnTrace("Invalid memory operation. Stopping the CPU.");
-
-            // Stopping the CPU
-            _CPU.stop();
             var process = params[0];
-            process.state = TSOS.Process.TERMINATED;
+            this.systemCallISR([0, process]);
+
+            // Throw error in host log
+            this.krnTrace("Invalid memory operation from process " + process.pid + ".");
 
             // update the pcb
             _PCBDisplay.update();
-
-            // reset the memory
-            _MemoryManager.resetMemory();
         };
 
         // Process Execution - Moving the execution of the process from process manager to cpu scheduler
@@ -232,8 +227,8 @@ var TSOS;
 
         // For step mode
         Kernel.prototype.stepISR = function () {
-            _CPUScheduler.cycle++;
             _CPUScheduler.schedule();
+            _CPUScheduler.cycle++;
             _CPU.cycle();
 
             // Update the display
