@@ -199,7 +199,9 @@ var TSOS;
 
         // Process Execution - Moving the execution of the process from process manager to cpu scheduler
         Kernel.prototype.processExecutionISR = function (params) {
-            _CPUScheduler.readyQueue.enqueue(params[0]);
+            var process = params[0];
+            process.state = TSOS.Process.READY;
+            _CPUScheduler.readyQueue.enqueue(process);
         };
 
         // Context Switch - switch processes
@@ -210,8 +212,8 @@ var TSOS;
             var lastProcess = _CPUScheduler.currentProcess;
             if (lastProcess) {
                 _CPU.stop();
-                lastProcess.state = TSOS.Process.WAITING;
-                _CPUScheduler.readyQueue.enqueue(_CPUScheduler.currentProcess);
+                lastProcess.state = TSOS.Process.READY;
+                _CPUScheduler.readyQueue.enqueue(lastProcess);
             }
 
             // Update the pcb display
@@ -221,11 +223,11 @@ var TSOS;
             _CPUScheduler.currentProcess = _CPUScheduler.getNextProcess();
             _CPUScheduler.currentProcess.state = TSOS.Process.RUNNING;
 
-            // execute the new process
-            _CPU.start(_CPUScheduler.currentProcess);
-
             // Reset the cycle
             _CPUScheduler.cycle = 0;
+
+            // execute the new process
+            _CPU.start(_CPUScheduler.currentProcess);
         };
 
         // For step mode

@@ -206,7 +206,9 @@ module TSOS {
 
         // Process Execution - Moving the execution of the process from process manager to cpu scheduler
         public processExecutionISR(params) {
-            _CPUScheduler.readyQueue.enqueue(params[0]);
+            var process = params[0];
+            process.state = Process.READY;
+            _CPUScheduler.readyQueue.enqueue(process);
         }
 
         // Context Switch - switch processes
@@ -216,8 +218,8 @@ module TSOS {
             var lastProcess: Process = _CPUScheduler.currentProcess;
             if(lastProcess) {
                 _CPU.stop();
-                lastProcess.state = Process.WAITING;
-                _CPUScheduler.readyQueue.enqueue(_CPUScheduler.currentProcess);
+                lastProcess.state = Process.READY;
+                _CPUScheduler.readyQueue.enqueue(lastProcess);
             }
 
             // Update the pcb display
@@ -226,13 +228,11 @@ module TSOS {
             // Set the current process to the next process
             _CPUScheduler.currentProcess = _CPUScheduler.getNextProcess();
             _CPUScheduler.currentProcess.state = Process.RUNNING;
-
-            // execute the new process
-            _CPU.start(_CPUScheduler.currentProcess);
-
             // Reset the cycle
             _CPUScheduler.cycle = 0;
 
+            // execute the new process
+            _CPU.start(_CPUScheduler.currentProcess);
         }
 
         // For step mode
