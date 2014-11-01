@@ -43,8 +43,6 @@ var TSOS;
                 }
             }
 
-            _CPUScheduler.readyQueue.removeProcess(process.pid);
-
             // update all the display
             _MemoryDisplay.update();
             _PCBDisplay.update();

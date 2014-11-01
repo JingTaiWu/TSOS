@@ -225,6 +225,7 @@ module TSOS {
 
             // Set the current process to the next process
             _CPUScheduler.currentProcess = _CPUScheduler.getNextProcess();
+            _CPUScheduler.currentProcess.state = Process.RUNNING;
 
             // execute the new process
             _CPU.start(_CPUScheduler.currentProcess);
