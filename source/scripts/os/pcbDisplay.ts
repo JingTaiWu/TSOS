@@ -28,18 +28,25 @@ module TSOS {
 
             // display the current running process
             if(_CPUScheduler.currentProcess) {
-                var cols = "<td>" + _CPUScheduler.currentProcess.pid + "</td>" +
-                           "<td>" + _CPUScheduler.currentProcess.pc + "</td>" +
-                           "<td>" + _CPUScheduler.currentProcess.ir + "</td>" +
-                           "<td>" + _CPUScheduler.currentProcess.acc + "</td>" +
-                           "<td>" + _CPUScheduler.currentProcess.xFlag + "</td>" +
-                           "<td>" + _CPUScheduler.currentProcess.yFlag + "</td>" +
-                           "<td>" + _CPUScheduler.currentProcess.zFlag + "</td>" +
-                           "<td>" + _CPUScheduler.currentProcess.state + "</td>";
-                var row = "<tr id = 'pid-" + _CPUScheduler.currentProcess.pid + "'>" + cols + "</tr>";
-                $("#pcbDisplay > tbody:last").append(row);
+                processls.push(_CPUScheduler.currentProcess);
             }
 
+            // define sort function
+            function compareProcesses(a, b) {
+                if(a.pid < b.pid) {
+                    return -1;
+                } else if(a.pid > b.pid) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+
+            // pass it into array sort
+            processls.sort(compareProcesses);
+
+            // Sort the array
+            processls
             for(var i = 0; i < processls.length; i++) {
                 var process = processls[i];
                 var cols = "<td>" + process.pid + "</td>" +
