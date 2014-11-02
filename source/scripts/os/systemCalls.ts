@@ -18,7 +18,6 @@ module TSOS {
             process.state = Process.TERMINATED;
             // Remove the process in the resident queue
             _ProcessManager.removeProcess(process);
-
             // Remove the process in the ready queue
             // If the current running process of the scheduler is the one being terminated
             // reset the current process
@@ -39,6 +38,7 @@ module TSOS {
                     }
                 }
             }
+
             // update all the display
             _MemoryDisplay.update();
             _PCBDisplay.update();

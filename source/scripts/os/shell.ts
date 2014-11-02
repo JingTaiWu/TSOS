@@ -541,8 +541,13 @@ module TSOS {
                 var killable = _CPUScheduler.readyQueue.removeProcess(pid);
                 if(killable) {
                     _StdOut.putText("Process " + pid + " has been removed from ready queue.");
+                } else if(pid == _CPUScheduler.currentProcess.pid) {
+                    // If the current running process is the process to kill
+                    // terminate the process
+                    _Kernel.krnInterruptHandler(SYSTEM_CALL_IRQ, [0, _CPUScheduler.currentProcess]);
+                    _StdOut.putText("Process " + pid + " has been terminated.");
                 } else {
-                    _StdOut.putText("Process not in ready queue or does not exist.");
+                    _StdOut.putText("Cannot terminate Process id " + pid);
                 }
             } else {
                 _StdOut.putText("Give me a process to kill.");

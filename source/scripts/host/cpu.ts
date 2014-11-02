@@ -1,5 +1,4 @@
 /// <reference path="../globals.ts" />
-/// <reference path="../os/jquery.d.ts"/>
 
 /* ------------
      CPU.ts
