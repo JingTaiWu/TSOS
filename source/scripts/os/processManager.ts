@@ -5,9 +5,11 @@
 
 module TSOS {
     export class ProcessManager {
-        // where all the processes resides
-        public residentQueue = new ProcessQueue();
-        public lastPid: number = 0;
+        constructor(// where all the processes resides
+                    public residentQueue = new ProcessQueue(),
+                    // pid will not be recycled
+                    public lastPid: number = 0) {
+        }
 
         // Add User input program to pcb
         public addProcess(program: string[]): number{

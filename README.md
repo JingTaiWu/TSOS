@@ -9,7 +9,7 @@ Progress Check
 
 1.	iProject 1 (Complete!!)
 2.	iProject 2 (DONE!)
-3.	iProject 3 (In Progress)
+3.	iProject 3 (完成)
 4.	iProject 4
 
 To Do List
@@ -25,7 +25,7 @@ Shell Related
  **Round Robin quantum** (measured in clock ticks)~~
 -	~~Display the Ready queue and its (PCB) contents (including process state) in real time.~~
 -	~~Add a shell command, *ps*, to display the PIDs of all active processes.~~
--	Add a shell command, *kill (pid)*, to kill an active process.
+-	~~Add a shell command, *kill (pid)*, to kill an active process.~~
 
 Memory Related
 --------------

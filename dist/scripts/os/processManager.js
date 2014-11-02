@@ -5,10 +5,12 @@ The information of the process is displayed on the Process Control Block panel
 var TSOS;
 (function (TSOS) {
     var ProcessManager = (function () {
-        function ProcessManager() {
-            // where all the processes resides
-            this.residentQueue = new TSOS.ProcessQueue();
-            this.lastPid = 0;
+        function ProcessManager(residentQueue, // pid will not be recycled
+        lastPid) {
+            if (typeof residentQueue === "undefined") { residentQueue = new TSOS.ProcessQueue(); }
+            if (typeof lastPid === "undefined") { lastPid = 0; }
+            this.residentQueue = residentQueue;
+            this.lastPid = lastPid;
         }
         // Add User input program to pcb
         ProcessManager.prototype.addProcess = function (program) {

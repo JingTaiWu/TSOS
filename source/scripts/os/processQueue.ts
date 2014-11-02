@@ -23,13 +23,17 @@ module TSOS {
         } 
 
         // To remove a specific process
-        public removeProcess(pid: number) {
+        public removeProcess(pid: number): boolean {
+            var retVal: boolean = false;
             for(var i = 0; i < this.getSize(); i++) {
                 var currentProcess = this.q[i];
                 if(currentProcess.pid == pid) {
                     this.q.splice(i, 1);
+                    retVal = true;
                 }
             }
+
+            return retVal;
         }
     }
 }

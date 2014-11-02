@@ -30,12 +30,16 @@ var TSOS;
 
         // To remove a specific process
         ProcessQueue.prototype.removeProcess = function (pid) {
+            var retVal = false;
             for (var i = 0; i < this.getSize(); i++) {
                 var currentProcess = this.q[i];
                 if (currentProcess.pid == pid) {
                     this.q.splice(i, 1);
+                    retVal = true;
                 }
             }
+
+            return retVal;
         };
         return ProcessQueue;
     })(TSOS.Queue);

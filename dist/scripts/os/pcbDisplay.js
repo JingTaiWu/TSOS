@@ -44,8 +44,6 @@ var TSOS;
             // pass it into array sort
             processls.sort(compareProcesses);
 
-            // Sort the array
-            processls;
             for (var i = 0; i < processls.length; i++) {
                 var process = processls[i];
                 var cols = "<td>" + process.pid + "</td>" + "<td>" + process.pc + "</td>" + "<td>" + process.ir + "</td>" + "<td>" + process.acc + "</td>" + "<td>" + process.xFlag + "</td>" + "<td>" + process.yFlag + "</td>" + "<td>" + process.zFlag + "</td>" + "<td>" + process.state + "</td>";
