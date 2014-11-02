@@ -28,7 +28,6 @@
           public IR: string = "00",
           public currentProcess: Process = null,
           public isExecuting: boolean = false) {
-
         }
 
         public init(): void {
@@ -139,7 +138,9 @@
             this.breakFromProcess();
         }
 
-        this.updateProcess();
+        if(this.currentProcess) {
+            this.updateProcess();
+        }
     }
 
         // Increment Program Counter

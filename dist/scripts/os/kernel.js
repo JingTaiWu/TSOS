@@ -185,6 +185,9 @@ var TSOS;
             var process = params[0];
             this.systemCallISR([0, process]);
 
+            // reschedule the next process (avoid CPU null error)
+            _CPUScheduler.schedule();
+
             // Throw error in host log
             this.krnTrace("Invalid memory operation from process " + process.pid + ".");
 

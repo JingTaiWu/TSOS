@@ -194,6 +194,8 @@ module TSOS {
         public invalidMemoryOp(params) {
           var process: Process = params[0];
           this.systemCallISR([0, process]);
+          // reschedule the next process (avoid CPU null error)
+          _CPUScheduler.schedule();
           // Throw error in host log
           this.krnTrace("Invalid memory operation from process " + process.pid + ".");  
           // update the pcb

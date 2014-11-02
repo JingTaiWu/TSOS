@@ -143,7 +143,9 @@ var TSOS;
                     this.breakFromProcess();
             }
 
-            this.updateProcess();
+            if (this.currentProcess) {
+                this.updateProcess();
+            }
         };
 
         // Increment Program Counter
