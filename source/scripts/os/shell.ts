@@ -431,6 +431,14 @@ module TSOS {
             }
 
             // if it is valid, load it into the memory
+            // Also check if there is more than three processes in the resident queue right now
+            // Process Manager will automatically remove the least recent process
+            // Just let the user know that
+            if(_ProcessManager.residentQueue.getSize() >= _MemoryManager.numberOfBlocks) {
+                _StdOut.putText("Memory is full. Remove least recent process.");
+                _StdOut.advanceLine();
+            }
+
             var pid = _ProcessManager.addProcess(ls);
             _StdOut.putText("Process ID: " + pid);
         }
@@ -487,16 +495,23 @@ module TSOS {
 
         // ps - Display all the running processes
         public shellPs(args) {
-            var processQueue = _ProcessManager.residentQueue;
+            _StdOut.putText("PID \t" + "PC \t" + "IR \t" + "ACC   \t" + "X   \t" + "Y   \t" + "Z \t");
+            // Display the current running process if there is any
+            if(_CPUScheduler.currentProcess) {
+                _StdOut.advanceLine();
+                _StdOut.putText(_CPUScheduler.currentProcess.pid + "   \t" + _CPUScheduler.currentProcess.pc + "  \t" + _CPUScheduler.currentProcess.ir + "  \t" 
+                + _CPUScheduler.currentProcess.acc + "  \t" + _CPUScheduler.currentProcess.xFlag + " \t" + _CPUScheduler.currentProcess.yFlag + " \t" + _CPUScheduler.currentProcess.zFlag + " \t");
+            }
+
+            // display all the processes in the ready queue
+            var processQueue = _CPUScheduler.readyQueue;
             if(!processQueue.isEmpty()) {
-                _StdOut.putText("PID \t" + "PC \t" + "IR \t" + "ACC   \t" + "X   \t" + "Y   \t" + "Z \t");
                 _StdOut.advanceLine();
                 for(var i = 0; i < processQueue.getSize(); i++) {
                     var process: Process = processQueue.q[i];
-                    if(process.state == Process.RUNNING) {
-                        _StdOut.putText(process.pid + "   \t" + process.pc + "  \t" + process.ir + "  \t" 
-                                        + process.acc + "  \t" + process.xFlag + " \t" + process.yFlag + " \t" + process.zFlag + " \t");
-                    }
+                    _StdOut.putText(process.pid + "   \t" + process.pc + "  \t" + process.ir + "  \t" 
+                                    + process.acc + "  \t" + process.xFlag + " \t" + process.yFlag + " \t" + process.zFlag + " \t");
+                    _StdOut.advanceLine();
                 }
             } else {
                 _StdOut.putText("There are no running processes.");

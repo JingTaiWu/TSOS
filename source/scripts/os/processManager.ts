@@ -14,6 +14,14 @@ module TSOS {
             var process = new Process();
             process.pid = this.lastPid++;
             process.program = program;
+
+            // Current memory only allows 3 programs to be in the resident queue
+            // at the same time. In this case, the OS will overwrite the memory block
+            if(this.residentQueue.getSize() >= _MemoryManager.numberOfBlocks) {
+                // deallocate process at least recently used spot
+                this.residentQueue.dequeue();
+            }
+
             // allocate space for process
             _MemoryManager.allocate(process);
             // add it to the resident queue
