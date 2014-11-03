@@ -440,7 +440,7 @@ module TSOS {
             // Process Manager will automatically remove the least recent process
             // Just let the user know that
             if(_ProcessManager.residentQueue.getSize() >= _MemoryManager.numberOfBlocks) {
-                _StdOut.putText("Memory is full. Replace least recent process with the new process.");
+                _StdOut.putText("Memory is full. Replacing the least recent process with the new process.");
                 _StdOut.advanceLine();
             }
 
@@ -534,21 +534,33 @@ module TSOS {
 
         // kill <pid> - kill a specific pid
         public shellKill(args) {
-            // In this case, we just want to remove the process in the ready queue
+            // In this case, we just want to remove the process in the ready queue and in the resident queue
             // Thankfully, Enhanced Process Queue has a function that does that
             if(args.length > 0) {
                 var pid = parseInt(args[0], 10);
-                var killable = _CPUScheduler.readyQueue.removeProcess(pid);
-                if(killable) {
-                    _StdOut.putText("Process " + pid + " has been removed from ready queue.");
-                } else if(pid == _CPUScheduler.currentProcess.pid) {
+                var removedFromReady = _CPUScheduler.readyQueue.removeProcess(pid);
+                var removedFromResident = _ProcessManager.residentQueue.removeProcess(pid);
+                if(removedFromReady) {
+                    if(removedFromResident) {
+                        _StdOut.putText("Process " + pid + " has been removed.");
+                    } else {
+                        _StdOut.putText("Process " + pid + " is removed from ready queue but it does not exist in residentQueue.");
+                    }
+                } else if(_CPUScheduler.currentProcess) {
                     // If the current running process is the process to kill
-                    // terminate the process
-                    _Kernel.krnInterruptHandler(SYSTEM_CALL_IRQ, [0, _CPUScheduler.currentProcess]);
-                    _StdOut.putText("Process " + pid + " has been terminated.");
+                    // terminate the process with a system call
+                    if(pid == _CPUScheduler.currentProcess.pid) {
+                        _Kernel.krnInterruptHandler(SYSTEM_CALL_IRQ, [0, _CPUScheduler.currentProcess]);
+                        _StdOut.putText("Process " + pid + " has been terminated and removed.");
+                    }
                 } else {
-                    _StdOut.putText("Cannot terminate Process id " + pid);
+                    _StdOut.putText("Process id " + pid + " does not exist.");
                 }
+
+                // Update all the displays
+                _PCBDisplay.update();
+                _MemoryDisplay.update();
+                _CPUDisplay.update();
             } else {
                 _StdOut.putText("Give me a process to kill.");
             }
