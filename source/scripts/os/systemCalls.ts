@@ -54,7 +54,6 @@ module TSOS {
             if(xFlag == 1) {
                 var output: string = yFlag + "";
                 _StdOut.putText(output);
-                //advance the line
                 _StdOut.advanceLine();
                 _StdOut.putText(">");
                 // if the X reg is 2, print the 00-terminated string stored at address

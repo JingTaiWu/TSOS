@@ -5,8 +5,10 @@ module TSOS {
 	export class CPUScheduler {
 		constructor(public readyQueue = new ProcessQueue(),
                     public QUANTUM = 6,
-                    public cycle = 0,
+                    public cycle = 0, // - indicate the amount of cycles current process has ran.
                     public currentProcess: Process = null) {}
+
+        // schedule - schedule the process according to different conditions
         public schedule() {
             // If the current cycle is equal to the quantum
             // Generate an context switch isr

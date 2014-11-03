@@ -14,6 +14,7 @@ var TSOS;
             this.cycle = cycle;
             this.currentProcess = currentProcess;
         }
+        // schedule - schedule the process according to different conditions
         CPUScheduler.prototype.schedule = function () {
             // If the current cycle is equal to the quantum
             // Generate an context switch isr

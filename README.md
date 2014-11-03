@@ -12,6 +12,12 @@ Progress Check
 3.	iProject 3 (完成)
 4.	iProject 4
 
+Hard is the way?
+==========
+But we always figure things out!
+
+山穷水复疑无路, 柳暗花明又一村.
+
 To Do List
 ==========
 

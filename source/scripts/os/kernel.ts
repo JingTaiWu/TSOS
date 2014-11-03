@@ -198,8 +198,10 @@ module TSOS {
           _CPUScheduler.schedule();
           // Throw error in host log
           this.krnTrace("Invalid memory operation from process " + process.pid + ".");  
-          // update the pcb
+          // update the display
           _PCBDisplay.update();
+          _CPUDisplay.update();
+          _MemoryDisplay.update();
         }
 
         // Process Execution - Moving the execution of the process from process manager to cpu scheduler
@@ -220,8 +222,10 @@ module TSOS {
                 _CPUScheduler.readyQueue.enqueue(lastProcess);
             }
 
-            // Update the pcb display
+            // Update the displays
             _PCBDisplay.update();
+            _CPUDisplay.update();
+            _MemoryDisplay.update();
 
             // Set the current process to the next process
             _CPUScheduler.currentProcess = _CPUScheduler.getNextProcess();
