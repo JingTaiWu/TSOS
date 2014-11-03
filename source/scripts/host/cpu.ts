@@ -144,7 +144,7 @@
 
         // Increment Program Counter
         public incrementPC(bytes: number): void {
-          // The memory is only 256 bytes
+          // Each block is 256 bytes
           this.PC = (this.PC + bytes) % 256;
       }
 
@@ -203,7 +203,6 @@
           this.Xreg = _MemoryManager.readByte(address, this.currentProcess);
           this.incrementPC(3);
       }
-
         // LDY - Load the Y register with a constant
         public loadYRegWithConstant(): void {
           this.Yreg = this.readNextByte();

@@ -149,7 +149,7 @@ var TSOS;
 
         // Increment Program Counter
         Cpu.prototype.incrementPC = function (bytes) {
-            // The memory is only 256 bytes
+            // Each block is 256 bytes
             this.PC = (this.PC + bytes) % 256;
         };
 
