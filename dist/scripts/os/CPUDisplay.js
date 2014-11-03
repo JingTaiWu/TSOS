@@ -12,7 +12,7 @@ var TSOS;
             cpuDiv.empty();
 
             // Formulate string
-            var cols = "<td>" + _CPU.PC + "</td>" + "<td>" + _CPU.IR + "</td>" + "<td>" + _CPU.Acc + "</td>" + "<td>" + _CPU.Xreg + "</td>" + "<td>" + _CPU.Yreg + "</td>" + "<td>" + _CPU.Zflag + "</td>";
+            var cols = "<td>" + _CPU.PC + "</td>" + '<td>' + _CPU.IR + "</td>" + "<td>" + _CPU.Acc + "</td>" + "<td>" + _CPU.Xreg + "</td>" + "<td>" + _CPU.Yreg + "</td>" + "<td>" + _CPU.Zflag + "</td>";
             var row = "<tr>" + cols + "</tr>";
 
             // Append the string to the Div

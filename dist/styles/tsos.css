@@ -52,8 +52,8 @@ body {
 }
 
 #pcbDiv {
-  overflow: auto;
-  height: 150px;
+  overflow: hidden;
+  height: 120px;
 }
 
 #cpuDiv {

@@ -46,8 +46,15 @@ var TSOS;
 
             for (var i = 0; i < processls.length; i++) {
                 var process = processls[i];
-                var cols = "<td>" + process.pid + "</td>" + "<td>" + process.pc + "</td>" + "<td>" + process.ir + "</td>" + "<td>" + process.acc + "</td>" + "<td>" + process.xFlag + "</td>" + "<td>" + process.yFlag + "</td>" + "<td>" + process.zFlag + "</td>" + "<td>" + process.state + "</td>";
-                var row = "<tr id = 'pid-" + process.pid + "'>" + cols + "</tr>";
+                var cols = "<td>" + process.pid + "</td>" + "<td>" + process.pc + "</td>" + "<td>" + process.ir + "</td>" + "<td>" + process.acc + "</td>" + "<td>" + process.xFlag + "</td>" + "<td>" + process.yFlag + "</td>" + "<td>" + process.zFlag + "</td>" + "<td style='font-weight: bold;'>" + process.state + "</td>";
+                var row = "";
+
+                // Show the running process in green
+                if (process.state == TSOS.Process.RUNNING) {
+                    row = '<tr class="success">' + cols + "</tr>";
+                } else {
+                    row = '<tr class="warning">' + cols + "</tr>";
+                }
                 $("#pcbDisplay > tbody:last").append(row);
             }
         };

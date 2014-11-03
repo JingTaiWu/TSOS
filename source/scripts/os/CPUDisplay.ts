@@ -8,7 +8,7 @@ module TSOS {
       cpuDiv.empty();
       // Formulate string
       var cols = "<td>" + _CPU.PC + "</td>" +
-                 "<td>" + _CPU.IR + "</td>" +
+                 '<td>' + _CPU.IR + "</td>" +
                  "<td>" + _CPU.Acc + "</td>" +
                  "<td>" + _CPU.Xreg + "</td>" +
                  "<td>" + _CPU.Yreg + "</td>" +
