@@ -15,10 +15,9 @@ var TSOS;
         // Add User input program to pcb
         ProcessManager.prototype.addProcess = function (program) {
             var process = new TSOS.Process();
-            process.program = program;
 
             // try to allocate space for process
-            if (_MemoryManager.allocate(process)) {
+            if (_MemoryManager.allocate(process, program)) {
                 // add it to the resident queue
                 this.residentQueue.enqueue(process);
                 return process;

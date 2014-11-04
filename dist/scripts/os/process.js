@@ -16,7 +16,6 @@ var TSOS;
             this.base = 0;
             this.limit = 0;
             this.state = Process.NOT_RUNNING;
-            this.program = [];
         }
         Process.RUNNING = "Running";
         Process.NOT_RUNNING = "Resident";

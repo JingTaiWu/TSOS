@@ -29,7 +29,7 @@ module TSOS {
         }
 
     // allocate memory for a given process
-    public allocate(process: Process): boolean {
+    public allocate(process: Process, program: string[]): boolean {
         // find a free block for the new process
         for(var i = 0; i < this.numberOfBlocks; i++) {
             if(this.availableBlocks[i] == MEMORY_STATUS.AVAILABLE) {
@@ -40,10 +40,10 @@ module TSOS {
                 process.limit = process.base + this.blockSize;
                 process.blockNumber = i;
                 // fill bytes in
-                for(var j = 0; j < process.program.length; j++) {
+                for(var j = 0; j < program.length; j++) {
                     var location = process.base + j;
                     if(location < process.limit) {
-                        this.memory[location] = new Byte(process.program[j]);
+                        this.memory[location] = new Byte(program[j]);
                     } else {
                       // trap error
                         _Kernel.krnInterruptHandler(INVALID_MEMORY_OP, process);

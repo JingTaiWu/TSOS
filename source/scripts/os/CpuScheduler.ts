@@ -13,7 +13,7 @@ module TSOS {
             // If the current cycle is equal to the quantum
             // Generate an context switch isr
             // Also check if there is more than one process in the readyQueue
-            if((this.cycle == this.QUANTUM || !this.currentProcess) && this.readyQueue.getSize()) {
+            if(this.cycle == this.QUANTUM || (!this.currentProcess && this.readyQueue.getSize() > 0)) {
                 _Kernel.krnInterruptHandler(CONTEXT_SWTICH_ISR, []);
             }
         }

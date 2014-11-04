@@ -29,7 +29,7 @@ var TSOS;
             }
         }
         // allocate memory for a given process
-        MemoryManager.prototype.allocate = function (process) {
+        MemoryManager.prototype.allocate = function (process, program) {
             for (var i = 0; i < this.numberOfBlocks; i++) {
                 if (this.availableBlocks[i] == 0 /* AVAILABLE */) {
                     process.pid = _ProcessManager.lastPid++;
@@ -40,10 +40,10 @@ var TSOS;
                     process.limit = process.base + this.blockSize;
                     process.blockNumber = i;
 
-                    for (var j = 0; j < process.program.length; j++) {
+                    for (var j = 0; j < program.length; j++) {
                         var location = process.base + j;
                         if (location < process.limit) {
-                            this.memory[location] = new TSOS.Byte(process.program[j]);
+                            this.memory[location] = new TSOS.Byte(program[j]);
                         } else {
                             // trap error
                             _Kernel.krnInterruptHandler(INVALID_MEMORY_OP, process);
