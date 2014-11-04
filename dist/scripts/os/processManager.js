@@ -15,29 +15,21 @@ var TSOS;
         // Add User input program to pcb
         ProcessManager.prototype.addProcess = function (program) {
             var process = new TSOS.Process();
-            process.pid = this.lastPid++;
             process.program = program;
 
-            // Current memory only allows 3 programs to be in the resident queue
-            // at the same time. In this case, the OS will overwrite the memory block
-            if (this.residentQueue.getSize() >= _MemoryManager.numberOfBlocks) {
-                // deallocate process at least recently used spot
-                this.residentQueue.dequeue();
+            // try to allocate space for process
+            if (_MemoryManager.allocate(process)) {
+                // add it to the resident queue
+                this.residentQueue.enqueue(process);
+                return process;
+            } else {
+                return null;
             }
-
-            // allocate space for process
-            _MemoryManager.allocate(process);
-
-            // add it to the resident queue
-            this.residentQueue.enqueue(process);
-
-            // Update the display
-            _PCBDisplay.update();
-            return process.pid;
         };
 
         // Removes a process
         ProcessManager.prototype.removeProcess = function (process) {
+            _MemoryManager.deallocate(process);
             this.residentQueue.removeProcess(process.pid);
         };
 

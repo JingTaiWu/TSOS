@@ -4,6 +4,8 @@
   */
 
 module TSOS {
+    // Constants for block availibility
+    export enum MEMORY_STATUS {AVAILABLE, UNAVAILABLE};
     export class MemoryManager {
       // Total memory size is 768
         public memorySize: number = 768;
@@ -12,55 +14,70 @@ module TSOS {
         public numberOfBlocks: number = 3;
         // A reference to hardware memory
         public memory: Byte[];
-        // A cursor to keep track of the current block
-        private cursor: number;
+        // A table to keep track of available blocks
+        private availableBlocks: MEMORY_STATUS[] = [];
 
         constructor() {
             // Initializes the memory
             var mem = new Memory(this.memorySize);
             this.memory = mem.bytes;
-            this.cursor = 0;
-        }
 
-    // allocate memory for a given process
-    public allocate(process: Process) {
-        // set the base and the limit of the current program
-        process.base = (this.cursor % this.numberOfBlocks) * this.blockSize;
-        process.limit = process.base + this.blockSize;
-
-        // deallocate the code that is currrently in this block of memory
-        this.deallocate(process.base, process.limit);
-
-        // populate the block of memory
-        for(var i = 0; i < process.program.length; i++) {
-            var location = process.base + i;
-            if(location < process.limit) {
-                this.memory[location] = new Byte(process.program[i]);
-            } else {
-              // trap error
-                _Kernel.krnInterruptHandler(INVALID_MEMORY_OP, process);
-                return;
+            // Initalize the table for available blocks
+            for(var i  = 0; i < this.blockSize; i++) {
+                this.availableBlocks[i] = MEMORY_STATUS.AVAILABLE;
             }
         }
 
-        // update the current cursor
-        this.cursor++;
-        // Update the memory display
-        _MemoryDisplay.update();
+    // allocate memory for a given process
+    public allocate(process: Process): boolean {
+        // find a free block for the new process
+        for(var i = 0; i < this.numberOfBlocks; i++) {
+            if(this.availableBlocks[i] == MEMORY_STATUS.AVAILABLE) {
+                process.pid = _ProcessManager.lastPid++;
+                // if it find an available block, store the process in
+                // set the base and the limit of the current program
+                process.base = i * this.blockSize;
+                process.limit = process.base + this.blockSize;
+                process.blockNumber = i;
+                // fill bytes in
+                for(var j = 0; j < process.program.length; j++) {
+                    var location = process.base + j;
+                    if(location < process.limit) {
+                        this.memory[location] = new Byte(process.program[j]);
+                    } else {
+                      // trap error
+                        _Kernel.krnInterruptHandler(INVALID_MEMORY_OP, process);
+                        return;
+                    }                    
+                }
+                // Set this block to unavailable
+                this.availableBlocks[i] = MEMORY_STATUS.UNAVAILABLE;
+                // Update the memory display
+                _MemoryDisplay.update();
+                // return true after process is loaded into the memory
+                return true;
+            } 
+        }
+
+        // if it doesnt find any, return false
+        return false;
     }
 
     // deallocate a block of memory
-    public deallocate(base, limit) {
-        for(var i: number = base; i < limit; i++) {
+    public deallocate(process: Process) {
+        // reset the block
+        for(var i: number = process.base; i < process.limit; i++) {
             this.memory[i] = new Byte("00");
         }
+        // make this block available
+        this.availableBlocks[process.blockNumber] = MEMORY_STATUS.AVAILABLE;
+        _MemoryDisplay.update();
     }
 
     // reset memory
     public resetMemory(): void {
         var newMem = new Memory(this.memorySize);
         this.memory = newMem.bytes;
-        this.cursor = 0;
         _MemoryDisplay.update();
     }
 

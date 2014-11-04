@@ -144,8 +144,8 @@
 
         // Increment Program Counter
         public incrementPC(bytes: number): void {
-          // Each block is 256 bytes
-          this.PC = (this.PC + bytes) % 256;
+          // Allow process to loop back 
+          this.PC = (this.PC + bytes) % _MemoryManager.blockSize;
       }
 
         // Assembly instruction

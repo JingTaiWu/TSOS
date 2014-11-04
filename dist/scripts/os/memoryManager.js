@@ -4,6 +4,13 @@ This class has the access to the CPU's memory
 */
 var TSOS;
 (function (TSOS) {
+    // Constants for block availibility
+    (function (MEMORY_STATUS) {
+        MEMORY_STATUS[MEMORY_STATUS["AVAILABLE"] = 0] = "AVAILABLE";
+        MEMORY_STATUS[MEMORY_STATUS["UNAVAILABLE"] = 1] = "UNAVAILABLE";
+    })(TSOS.MEMORY_STATUS || (TSOS.MEMORY_STATUS = {}));
+    var MEMORY_STATUS = TSOS.MEMORY_STATUS;
+    ;
     var MemoryManager = (function () {
         function MemoryManager() {
             // Total memory size is 768
@@ -11,50 +18,69 @@ var TSOS;
             // There are 3 blocks, each block is 256
             this.blockSize = 256;
             this.numberOfBlocks = 3;
+            // A table to keep track of available blocks
+            this.availableBlocks = [];
             // Initializes the memory
             var mem = new TSOS.Memory(this.memorySize);
             this.memory = mem.bytes;
-            this.cursor = 0;
+
+            for (var i = 0; i < this.blockSize; i++) {
+                this.availableBlocks[i] = 0 /* AVAILABLE */;
+            }
         }
         // allocate memory for a given process
         MemoryManager.prototype.allocate = function (process) {
-            // set the base and the limit of the current program
-            process.base = (this.cursor % this.numberOfBlocks) * this.blockSize;
-            process.limit = process.base + this.blockSize;
+            for (var i = 0; i < this.numberOfBlocks; i++) {
+                if (this.availableBlocks[i] == 0 /* AVAILABLE */) {
+                    process.pid = _ProcessManager.lastPid++;
 
-            // deallocate the code that is currrently in this block of memory
-            this.deallocate(process.base, process.limit);
+                    // if it find an available block, store the process in
+                    // set the base and the limit of the current program
+                    process.base = i * this.blockSize;
+                    process.limit = process.base + this.blockSize;
+                    process.blockNumber = i;
 
-            for (var i = 0; i < process.program.length; i++) {
-                var location = process.base + i;
-                if (location < process.limit) {
-                    this.memory[location] = new TSOS.Byte(process.program[i]);
-                } else {
-                    // trap error
-                    _Kernel.krnInterruptHandler(INVALID_MEMORY_OP, process);
-                    return;
+                    for (var j = 0; j < process.program.length; j++) {
+                        var location = process.base + j;
+                        if (location < process.limit) {
+                            this.memory[location] = new TSOS.Byte(process.program[j]);
+                        } else {
+                            // trap error
+                            _Kernel.krnInterruptHandler(INVALID_MEMORY_OP, process);
+                            return;
+                        }
+                    }
+
+                    // Set this block to unavailable
+                    this.availableBlocks[i] = 1 /* UNAVAILABLE */;
+
+                    // Update the memory display
+                    _MemoryDisplay.update();
+
+                    // return true after process is loaded into the memory
+                    return true;
                 }
             }
 
-            // update the current cursor
-            this.cursor++;
-
-            // Update the memory display
-            _MemoryDisplay.update();
+            // if it doesnt find any, return false
+            return false;
         };
 
         // deallocate a block of memory
-        MemoryManager.prototype.deallocate = function (base, limit) {
-            for (var i = base; i < limit; i++) {
+        MemoryManager.prototype.deallocate = function (process) {
+            for (var i = process.base; i < process.limit; i++) {
                 this.memory[i] = new TSOS.Byte("00");
             }
+
+            // make this block available
+            this.availableBlocks[process.blockNumber] = 0 /* AVAILABLE */;
+            _MemoryDisplay.update();
         };
 
         // reset memory
         MemoryManager.prototype.resetMemory = function () {
             var newMem = new TSOS.Memory(this.memorySize);
             this.memory = newMem.bytes;
-            this.cursor = 0;
             _MemoryDisplay.update();
         };
 

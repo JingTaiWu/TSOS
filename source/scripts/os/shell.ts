@@ -439,13 +439,20 @@ module TSOS {
             // Also check if there is more than three processes in the resident queue right now
             // Process Manager will automatically remove the least recent process
             // Just let the user know that
-            if(_ProcessManager.residentQueue.getSize() >= _MemoryManager.numberOfBlocks) {
-                _StdOut.putText("Memory is full. Replacing the least recent process with the new process.");
-                _StdOut.advanceLine();
-            }
 
-            var pid = _ProcessManager.addProcess(ls);
-            _StdOut.putText("Process ID: " + pid);
+            // if(_ProcessManager.residentQueue.getSize() >= _MemoryManager.numberOfBlocks) {
+            //     _StdOut.putText("Memory is full. Replacing the least recent process with the new process.");
+            //     _StdOut.advanceLine();
+            // }
+
+            // var pid = _ProcessManager.addProcess(ls);
+            // _StdOut.putText("Process ID: " + pid);
+            var addedProcess = _ProcessManager.addProcess(ls);
+            if(addedProcess != null) {
+                _StdOut.putText("Process ID: " + addedProcess.pid);
+            } else {
+                _StdOut.putText("Cannot add process.");
+            }
         }
 
         // run - a process in the resident queue
@@ -456,10 +463,10 @@ module TSOS {
                 _StdOut.putText("This process does not exist.");
             } else {
                 var process: Process = _ProcessManager.residentQueue.getProcess(parseInt(args[0], 10));
-                if(process.state != Process.TERMINATED && !_CPU.isExecuting) {
+                if(process.state != Process.TERMINATED) {
                     _ProcessManager.execute(process);
                 } else {
-                    _StdOut.putText("CPU is executing or process is terminated.")
+                    _StdOut.putText("Process was terminated.")
                 }
             }
         }
@@ -540,7 +547,7 @@ module TSOS {
                 var pid = parseInt(args[0], 10);
                 var removedFromReady = _CPUScheduler.readyQueue.removeProcess(pid);
                 var removedFromResident = _ProcessManager.residentQueue.removeProcess(pid);
-                if(removedFromReady) {
+                if(removedFromReady || removedFromResident) {
                     if(removedFromResident) {
                         _StdOut.putText("Process " + pid + " has been removed.");
                     } else {

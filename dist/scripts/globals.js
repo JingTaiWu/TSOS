@@ -12,7 +12,7 @@ Operating System Concepts 8th edition by Silberschatz, Galvin, and Gagne.  ISBN 
 var APP_NAME = "Jingle OS";
 var APP_VERSION = "42";
 
-var CPU_CLOCK_INTERVAL = 100;
+var CPU_CLOCK_INTERVAL = 30;
 
 var TIMER_IRQ = 0;
 
