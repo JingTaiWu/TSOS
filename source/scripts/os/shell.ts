@@ -547,27 +547,26 @@ module TSOS {
                 var pid = parseInt(args[0], 10);
                 var removedFromReady = _CPUScheduler.readyQueue.removeProcess(pid);
                 var removedFromResident = _ProcessManager.residentQueue.removeProcess(pid);
+
+                if(_CPUScheduler.currentProcess) {
+                    // If the current running process is the process to kill
+                    // terminate the process with a system call
+                    if(pid == _CPUScheduler.currentProcess.pid) {
+                        _Kernel.krnInterruptHandler(SYSTEM_CALL_IRQ, [0, _CPUScheduler.currentProcess]);
+                        _StdOut.putText("Process " + pid + " has been terminated and removed.");
+                        return;
+                    }
+                }
+
                 if(removedFromReady || removedFromResident) {
                     if(removedFromResident) {
                         _StdOut.putText("Process " + pid + " has been removed.");
                     } else {
                         _StdOut.putText("Process " + pid + " is removed from ready queue but it does not exist in residentQueue.");
                     }
-                } else if(_CPUScheduler.currentProcess) {
-                    // If the current running process is the process to kill
-                    // terminate the process with a system call
-                    if(pid == _CPUScheduler.currentProcess.pid) {
-                        _Kernel.krnInterruptHandler(SYSTEM_CALL_IRQ, [0, _CPUScheduler.currentProcess]);
-                        _StdOut.putText("Process " + pid + " has been terminated and removed.");
-                    }
                 } else {
                     _StdOut.putText("Process id " + pid + " does not exist.");
                 }
-
-                // Update all the displays
-                _PCBDisplay.update();
-                _MemoryDisplay.update();
-                _CPUDisplay.update();
             } else {
                 _StdOut.putText("Give me a process to kill.");
             }
