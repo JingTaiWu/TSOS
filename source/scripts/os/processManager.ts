@@ -26,8 +26,10 @@ module TSOS {
 
         // Removes a process
         public removeProcess(process: Process) {
-            _MemoryManager.deallocate(process);
-            this.residentQueue.removeProcess(process.pid);
+            if(process) {
+                _MemoryManager.deallocate(process);
+                this.residentQueue.removeProcess(process.pid);
+            }
         }
 
         // Execute Process (Avoid Calling CPU directly from shell)

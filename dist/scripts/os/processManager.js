@@ -28,8 +28,10 @@ var TSOS;
 
         // Removes a process
         ProcessManager.prototype.removeProcess = function (process) {
-            _MemoryManager.deallocate(process);
-            this.residentQueue.removeProcess(process.pid);
+            if (process) {
+                _MemoryManager.deallocate(process);
+                this.residentQueue.removeProcess(process.pid);
+            }
         };
 
         // Execute Process (Avoid Calling CPU directly from shell)
