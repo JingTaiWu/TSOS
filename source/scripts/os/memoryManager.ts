@@ -65,13 +65,15 @@ module TSOS {
 
         // deallocate a block of memory
         public deallocate(process: Process) {
-            // reset the block
-            for(var i: number = process.base; i < process.limit; i++) {
-                this.memory[i] = new Byte("00");
+            if(process) {
+                // reset the block
+                for(var i: number = process.base; i < process.limit; i++) {
+                    this.memory[i] = new Byte("00");
+                }
+                // make this block available
+                this.availableBlocks[process.blockNumber] = MEMORY_STATUS.AVAILABLE;
+                _MemoryDisplay.update();
             }
-            // make this block available
-            this.availableBlocks[process.blockNumber] = MEMORY_STATUS.AVAILABLE;
-            _MemoryDisplay.update();
         }
 
         // reset memory

@@ -467,17 +467,16 @@ var TSOS;
 
         // ps - Display all the running processes
         Shell.prototype.shellPs = function (args) {
-            _StdOut.putText("PID \t" + "PC \t" + "IR \t" + "ACC   \t" + "X   \t" + "Y   \t" + "Z \t");
-
-            // Display the current running process if there is any
-            if (_CPUScheduler.currentProcess) {
-                _StdOut.advanceLine();
-                _StdOut.putText(_CPUScheduler.currentProcess.pid + "   \t" + _CPUScheduler.currentProcess.pc + "  \t" + _CPUScheduler.currentProcess.ir + "  \t" + _CPUScheduler.currentProcess.acc + "  \t" + _CPUScheduler.currentProcess.xFlag + " \t" + _CPUScheduler.currentProcess.yFlag + " \t" + _CPUScheduler.currentProcess.zFlag + " \t");
-            }
-
             // display all the processes in the ready queue
             var processQueue = _CPUScheduler.readyQueue;
-            if (!processQueue.isEmpty()) {
+            if (!processQueue.isEmpty() || _CPUScheduler.currentProcess) {
+                _StdOut.putText("PID \t" + "PC \t" + "IR \t" + "ACC   \t" + "X   \t" + "Y   \t" + "Z \t");
+
+                // Display the current running process if there is any
+                if (_CPUScheduler.currentProcess) {
+                    _StdOut.advanceLine();
+                    _StdOut.putText(_CPUScheduler.currentProcess.pid + "   \t" + _CPUScheduler.currentProcess.pc + "  \t" + _CPUScheduler.currentProcess.ir + "  \t" + _CPUScheduler.currentProcess.acc + "  \t" + _CPUScheduler.currentProcess.xFlag + " \t" + _CPUScheduler.currentProcess.yFlag + " \t" + _CPUScheduler.currentProcess.zFlag + " \t");
+                }
                 _StdOut.advanceLine();
                 for (var i = 0; i < processQueue.getSize(); i++) {
                     var process = processQueue.q[i];
@@ -504,7 +503,7 @@ var TSOS;
             if (args.length > 0) {
                 var pid = parseInt(args[0], 10);
                 var removedFromReady = _CPUScheduler.readyQueue.removeProcess(pid);
-                var removedFromResident = _ProcessManager.residentQueue.removeProcess(pid);
+                var removedFromResident = _ProcessManager.removeProcess(_ProcessManager.residentQueue.getProcess(pid));
 
                 if (_CPUScheduler.currentProcess) {
                     // If the current running process is the process to kill
@@ -517,11 +516,7 @@ var TSOS;
                 }
 
                 if (removedFromReady || removedFromResident) {
-                    if (removedFromResident) {
-                        _StdOut.putText("Process " + pid + " has been removed.");
-                    } else {
-                        _StdOut.putText("Process " + pid + " is removed from ready queue but it does not exist in residentQueue.");
-                    }
+                    _StdOut.putText("Process " + pid + " has been removed.");
                 } else {
                     _StdOut.putText("Process id " + pid + " does not exist.");
                 }

@@ -68,13 +68,15 @@ var TSOS;
 
         // deallocate a block of memory
         MemoryManager.prototype.deallocate = function (process) {
-            for (var i = process.base; i < process.limit; i++) {
-                this.memory[i] = new TSOS.Byte("00");
-            }
+            if (process) {
+                for (var i = process.base; i < process.limit; i++) {
+                    this.memory[i] = new TSOS.Byte("00");
+                }
 
-            // make this block available
-            this.availableBlocks[process.blockNumber] = 0 /* AVAILABLE */;
-            _MemoryDisplay.update();
+                // make this block available
+                this.availableBlocks[process.blockNumber] = 0 /* AVAILABLE */;
+                _MemoryDisplay.update();
+            }
         };
 
         // reset memory
