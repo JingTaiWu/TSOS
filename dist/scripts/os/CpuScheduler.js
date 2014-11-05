@@ -16,9 +16,11 @@ var TSOS;
         }
         // schedule - schedule the process according to different conditions
         CPUScheduler.prototype.schedule = function () {
-            // If the current cycle is equal to the quantum
-            // Generate an context switch isr
-            // Also check if there is more than one process in the readyQueue
+            /*
+            Two Conditions for a context switch:
+            1. When the cycle reaches the quantum, aka the current process has reached its time slice
+            2. When current process is null and there is a process in the ready queue
+            */
             if (this.cycle == this.QUANTUM || (!this.currentProcess && this.readyQueue.getSize() > 0)) {
                 _Kernel.krnInterruptHandler(CONTEXT_SWTICH_ISR, []);
             }

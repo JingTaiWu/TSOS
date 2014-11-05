@@ -3,7 +3,6 @@ module TSOS {
         constructor(public func: any,
                     public command = "",
                     public description = "") {
-
         }
     }
 }

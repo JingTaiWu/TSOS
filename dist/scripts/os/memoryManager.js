@@ -15,7 +15,7 @@ var TSOS;
         function MemoryManager() {
             // Total memory size is 768
             this.memorySize = 768;
-            // There are 3 blocks, each block is 256
+            // There are 3 blocks, each block is 256 bytes
             this.blockSize = 256;
             this.numberOfBlocks = 3;
             // A table to keep track of available blocks
