@@ -554,15 +554,14 @@ module TSOS {
                     if(pid == _CPUScheduler.currentProcess.pid) {
                         _Kernel.krnInterruptHandler(SYSTEM_CALL_IRQ, [0, _CPUScheduler.currentProcess]);
                         _StdOut.putText("Process " + pid + " has been terminated and removed.");
-                        return;
+                        _StdOut.advanceLine();
                     }
                 }
 
                 if(removedFromReady || removedFromResident) {
                     _StdOut.putText("Process " + pid + " has been removed.");
-                } else {
-                    _StdOut.putText("Process id " + pid + " does not exist.");
                 }
+                
             } else {
                 _StdOut.putText("Give me a process to kill.");
             }
