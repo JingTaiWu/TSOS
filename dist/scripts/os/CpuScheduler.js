@@ -16,12 +16,13 @@ var TSOS;
         }
         // schedule - schedule the process according to different conditions
         CPUScheduler.prototype.schedule = function () {
-            /*
-            Two Conditions for a context switch:
-            1. When the cycle reaches the quantum, aka the current process has reached its time slice
-            2. When current process is null and there is a process in the ready queue
+            // if((this.cycle == this.QUANTUM && !this.currentProcess) || (!this.currentProcess && this.readyQueue.getSize() > 0)) {
+            // }
+            /* There are two cases that require a context switch
+            1. There isn't a current process and there is more than 1 process in the queue
+            2. The current process has reached its quantum and there is more than 1 process in the queue
             */
-            if (this.cycle == this.QUANTUM || (!this.currentProcess && this.readyQueue.getSize() > 0)) {
+            if ((!this.currentProcess && this.readyQueue.getSize() > 0) || (this.cycle == this.QUANTUM && this.readyQueue.getSize() > 0)) {
                 _Kernel.krnInterruptHandler(CONTEXT_SWTICH_ISR, []);
             }
         };

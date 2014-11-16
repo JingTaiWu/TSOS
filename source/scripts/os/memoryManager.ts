@@ -39,6 +39,10 @@ module TSOS {
                     process.base = i * this.blockSize;
                     process.limit = process.base + this.blockSize;
                     process.blockNumber = i;
+                    // reset the block
+                    for(var k: number = process.base; k < process.limit; k++) {
+                        this.memory[k] = new Byte("00");
+                    }
                     // fill bytes in
                     for(var j = 0; j < program.length; j++) {
                         var location = process.base + j;
@@ -66,13 +70,8 @@ module TSOS {
         // deallocate a block of memory
         public deallocate(process: Process) {
             if(process) {
-                // reset the block
-                for(var i: number = process.base; i < process.limit; i++) {
-                    this.memory[i] = new Byte("00");
-                }
                 // make this block available
                 this.availableBlocks[process.blockNumber] = MEMORY_STATUS.AVAILABLE;
-                _MemoryDisplay.update();
             }
         }
 

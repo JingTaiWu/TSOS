@@ -40,6 +40,10 @@ var TSOS;
                     process.limit = process.base + this.blockSize;
                     process.blockNumber = i;
 
+                    for (var k = process.base; k < process.limit; k++) {
+                        this.memory[k] = new TSOS.Byte("00");
+                    }
+
                     for (var j = 0; j < program.length; j++) {
                         var location = process.base + j;
                         if (location < process.limit) {
@@ -69,13 +73,8 @@ var TSOS;
         // deallocate a block of memory
         MemoryManager.prototype.deallocate = function (process) {
             if (process) {
-                for (var i = process.base; i < process.limit; i++) {
-                    this.memory[i] = new TSOS.Byte("00");
-                }
-
                 // make this block available
                 this.availableBlocks[process.blockNumber] = 0 /* AVAILABLE */;
-                _MemoryDisplay.update();
             }
         };
 
