@@ -419,15 +419,13 @@ module TSOS {
             var input = textArea.value.trim();
             var ls = input.split(" ");
             var regEx = /^([a-f]|[0-9])*$/i;
+
             if (input === ""){
                 _StdOut.putText("Please Enter a program first!");
                 return;
             }
 
-            var sum = 0;
             for (var i = 0; i < ls.length; i++) {
-                // sum of the program must be even
-                sum += parseInt(ls[i], 16);
                 // if it is not valid, tell the user
                 if (!regEx.test(ls[i]) || ls[i].length != 2) {
                   _StdOut.putText("Your program is invalid. Enter a correct program, pls...");
@@ -435,19 +433,8 @@ module TSOS {
                 }
             }
 
-            // if it is valid, load it into the memory
-            // Also check if there is more than three processes in the resident queue right now
-            // Process Manager will automatically remove the least recent process
-            // Just let the user know that
-
-            // if(_ProcessManager.residentQueue.getSize() >= _MemoryManager.numberOfBlocks) {
-            //     _StdOut.putText("Memory is full. Replacing the least recent process with the new process.");
-            //     _StdOut.advanceLine();
-            // }
-
-            // var pid = _ProcessManager.addProcess(ls);
-            // _StdOut.putText("Process ID: " + pid);
             var addedProcess = _ProcessManager.addProcess(ls);
+            
             if(addedProcess != null) {
                 _StdOut.putText("Process ID: " + addedProcess.pid);
             } else {
