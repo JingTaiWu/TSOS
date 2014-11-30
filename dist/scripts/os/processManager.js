@@ -13,8 +13,15 @@ var TSOS;
             this.lastPid = lastPid;
         }
         // Add User input program to pcb
-        ProcessManager.prototype.addProcess = function (program) {
+        ProcessManager.prototype.addProcess = function (program, priority) {
             var process = new TSOS.Process();
+
+            if (isNaN(priority)) {
+                // give a random priority number (for priority scheduling testing)
+                process.priority = Math.floor(Math.random() * (100 - 10 + 1) + 10);
+            } else {
+                process.priority = parseInt(priority);
+            }
 
             // try to allocate space for process
             if (_MemoryManager.allocate(process, program)) {

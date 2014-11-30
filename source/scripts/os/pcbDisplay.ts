@@ -28,7 +28,6 @@ module TSOS {
                 }
             }
             
-
             // empty the table first
             this.pcbTableBody.empty();
             var processls = [];

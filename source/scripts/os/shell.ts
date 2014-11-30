@@ -428,6 +428,7 @@ module TSOS {
             var input = textArea.value.trim();
             var ls = input.split(" ");
             var regEx = /^([a-f]|[0-9])*$/i;
+            var priority = args[0];
 
             if (input === ""){
                 _StdOut.putText("Please Enter a program first!");
@@ -442,7 +443,7 @@ module TSOS {
                 }
             }
 
-            var addedProcess = _ProcessManager.addProcess(ls);
+            var addedProcess = _ProcessManager.addProcess(ls, priority);
             
             if(addedProcess != null) {
                 _StdOut.putText("Process ID: " + addedProcess.pid);
