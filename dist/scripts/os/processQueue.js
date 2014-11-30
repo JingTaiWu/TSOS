@@ -41,6 +41,23 @@ var TSOS;
 
             return retVal;
         };
+
+        // Get the process with the lowest priority
+        ProcessQueue.prototype.getLowPriority = function () {
+            var min = null;
+            for (var i = 0; i < this.getSize(); i++) {
+                if (!min) {
+                    min = this.q[i];
+                }
+
+                if (this.q[i].priority < min.priority) {
+                    min = this.q[i];
+                }
+            }
+
+            this.removeProcess(min.pid);
+            return min;
+        };
         return ProcessQueue;
     })(TSOS.Queue);
     TSOS.ProcessQueue = ProcessQueue;

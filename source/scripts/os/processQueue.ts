@@ -35,5 +35,22 @@ module TSOS {
 
             return retVal;
         }
+
+        // Get the process with the lowest priority
+        public getLowPriority(): Process {
+            var min: Process = null;
+            for(var i = 0; i < this.getSize(); i++) {
+                if(!min) {
+                    min = this.q[i];
+                }
+
+                if(this.q[i].priority < min.priority) {
+                    min = this.q[i];
+                }
+            }
+
+            this.removeProcess(min.pid);
+            return min;
+        }
     }
 }

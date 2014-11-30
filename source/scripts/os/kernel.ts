@@ -36,6 +36,7 @@ module TSOS {
             // Initialize Process Control Block
             _ProcessManager = new ProcessManager();
             _PCBDisplay = new PcbDisplay();
+            _PCBDisplay.update();
 
             // Initialize CPU Display
             _CPUDisplay = new CPUDisplay();
@@ -228,7 +229,13 @@ module TSOS {
             _MemoryDisplay.update();
 
             // Set the current process to the next process
-            _CPUScheduler.currentProcess = _CPUScheduler.getNextProcess();
+            // if the current scheduling algorithm is priority
+            // Set the current process to the next process with the lowest priority
+            if(_CPUScheduler.currentAlgorithm == Algorithm.Priority) {
+                _CPUScheduler.currentProcess = _CPUScheduler.getLowPriorityProcess();
+            } else {
+                _CPUScheduler.currentProcess = _CPUScheduler.getNextProcess();
+            }
             _CPUScheduler.currentProcess.state = Process.RUNNING;
             // Reset the cycle
             _CPUScheduler.cycle = 0;

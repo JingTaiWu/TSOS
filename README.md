@@ -12,12 +12,6 @@ Progress Check
 3.	iProject 3 (完成)
 4.	iProject 4 (Now in Progress)
 
-Hard is the way?
-==========
-But we always figure things out!
-
-山穷水复疑无路, 柳暗花明又一村.
-
 To Do List
 ==========
 
@@ -29,6 +23,9 @@ Shell Related
 - *write* (filename) --- Write the data inside the quotes to filename and isplay a message denoting success or failure.
 - *delete* (filename) "data" --- Write the data inside the quotes to filename and display a message denoting success or failure.
 - *format* --- Initialize all blocks in all sectors in all tracks and display a message denoting success or failure.
+- *ls* --- list the files currently stored on the disk.
+- ~~*setschedule* --- allow the user to select a CPU scheduling algorithm {rr. fcfs, priority}~~
+- ~~*getschedule* --- return the currently selected cpu scheduling algorithm.~~
 
 
 File System Related
@@ -45,8 +42,8 @@ of your individual blocks on the lcoal storage.
 Scheduling Related
 ------------------
 
-- first-come, first-served (FCFS)
-- non-preemptive priority
+- ~~first-come, first-served (FCFS)~~
+- ~~non-preemptive priority~~
 
 SOMETHING THAT'S WORTH 70 POINTS
 --------------------------------

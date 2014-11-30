@@ -55,6 +55,9 @@ var TSOS;
                         }
                     }
 
+                    // givw a random priority number (for priority scheduling testing)
+                    process.priority = Math.floor(Math.random() * (100 - 10 + 1) + 10);
+
                     // Set this block to unavailable
                     this.availableBlocks[i] = 1 /* UNAVAILABLE */;
 

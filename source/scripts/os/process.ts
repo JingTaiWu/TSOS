@@ -22,5 +22,6 @@ module TSOS {
         public limit: number = 0;
         public state: string = Process.NOT_RUNNING;
         public blockNumber: number;
+        public priority: number;
     }
 }

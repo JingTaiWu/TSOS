@@ -12,6 +12,23 @@ module TSOS {
 
         // update the entire table
         public update() {
+            // update the scheduling algorithm
+            switch (_CPUScheduler.currentAlgorithm)
+            {
+                case Algorithm.FCFS: {
+                    $("#schedulingAlg").text("FCFS");
+                    break;
+                }
+                case Algorithm.Priority: {
+                    $("#schedulingAlg").text("Priority");
+                    break;
+                }
+                default: {
+                    $("#schedulingAlg").text("RoundRobin");
+                }
+            }
+            
+
             // empty the table first
             this.pcbTableBody.empty();
             var processls = [];
@@ -54,6 +71,7 @@ module TSOS {
                            "<td>" + process.xFlag + "</td>" +
                            "<td>" + process.yFlag + "</td>" +
                            "<td>" + process.zFlag + "</td>" +
+                           "<td>" + process.priority + "</td>" +
                            "<td style='font-weight: bold;'>" + process.state + "</td>";
                 var row = "";
                 // Show the running process in green

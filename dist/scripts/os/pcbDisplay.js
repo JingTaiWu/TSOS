@@ -10,6 +10,20 @@ var TSOS;
         }
         // update the entire table
         PcbDisplay.prototype.update = function () {
+            switch (_CPUScheduler.currentAlgorithm) {
+                case 1 /* FCFS */: {
+                    $("#schedulingAlg").text("FCFS");
+                    break;
+                }
+                case 2 /* Priority */: {
+                    $("#schedulingAlg").text("Priority");
+                    break;
+                }
+                default: {
+                    $("#schedulingAlg").text("RoundRobin");
+                }
+            }
+
             // empty the table first
             this.pcbTableBody.empty();
             var processls = [];
@@ -46,7 +60,7 @@ var TSOS;
 
             for (var i = 0; i < processls.length; i++) {
                 var process = processls[i];
-                var cols = "<td>" + process.pid + "</td>" + "<td>" + process.pc + "</td>" + "<td>" + process.ir + "</td>" + "<td>" + process.acc + "</td>" + "<td>" + process.xFlag + "</td>" + "<td>" + process.yFlag + "</td>" + "<td>" + process.zFlag + "</td>" + "<td style='font-weight: bold;'>" + process.state + "</td>";
+                var cols = "<td>" + process.pid + "</td>" + "<td>" + process.pc + "</td>" + "<td>" + process.ir + "</td>" + "<td>" + process.acc + "</td>" + "<td>" + process.xFlag + "</td>" + "<td>" + process.yFlag + "</td>" + "<td>" + process.zFlag + "</td>" + "<td>" + process.priority + "</td>" + "<td style='font-weight: bold;'>" + process.state + "</td>";
                 var row = "";
 
                 // Show the running process in green

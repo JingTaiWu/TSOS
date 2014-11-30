@@ -156,6 +156,15 @@ module TSOS {
                                   " - kills the specified process id.");
             this.commandList[this.commandList.length] = sc;    
             
+            sc = new ShellCommand(this.shellsetSchedule,
+                                  "setschedule",
+                                  " - set a scheduling algorithm {rr, fcfs, priority}.");
+            this.commandList[this.commandList.length] = sc;   
+
+            sc = new ShellCommand(this.shellgetSchedule,
+                                  "getschedule",
+                                  " - get the current algorithm.");
+            this.commandList[this.commandList.length] = sc;   
             // Display the initial prompt.
             this.putPrompt();
         }
@@ -552,6 +561,26 @@ module TSOS {
             } else {
                 _StdOut.putText("Give me a process to kill.");
             }
+        }
+
+        // setschedule -- allow user to select a CPU scheduling algorithm {rr, fcfs, priority}
+        public shellsetSchedule(args) {
+            if(args.length > 0) {
+                var newAlg = args[0].toLowerCase();
+                if(!_CPUScheduler.setAlgorithm(newAlg)) {
+                    // User has selected a non existent algorithm. warn them.
+                    _StdOut.putText("Please choose rr (Round Robin), fcfs (First Come First Serve) or priority (Priority Scheduling).");
+                } else {
+                    _StdOut.putText("Current algorithm is set to " + newAlg);
+                }
+                // update the display
+                _PCBDisplay.update();
+            }
+        }
+
+        // getschedule -- display the current scheduling algorithm
+        public shellgetSchedule(args) {
+            _StdOut.putText(_CPUScheduler.getAlgorithm());
         }
     }
 }

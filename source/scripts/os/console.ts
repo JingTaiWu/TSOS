@@ -58,26 +58,26 @@ module TSOS {
                     this.buffer = _OsShell.traverseHistory(chr);
                     this.putText(this.buffer);
                 } else if (chr === "TAB") {
-                  // if it is a tab key, auto complete the command
-                  if(this.buffer !== "") {
-                    // if the buffer is not an empty string, try look for the command using
-                    // the current input
-                    // Grab a copy of the command list from the shell
-                    var commandList = _OsShell.commandList;
-                    for(var i = 0; i < commandList.length; i++) {
-                      var currentCommand = commandList[i].command;
-                      if(currentCommand.slice(0, this.buffer.length) == this.buffer) {
-                        // clear the current input
-                        this.clearInput();
-                        // sets the current buffer to the current command
-                        this.buffer = currentCommand;
-                        // draw the text onto the canvas
-                        this.putText(this.buffer);
-                        // break from the loop
-                        break;
-                      }
+                    // if it is a tab key, auto complete the command
+                    if(this.buffer !== "") {
+                        // if the buffer is not an empty string, try look for the command using
+                        // the current input
+                        // Grab a copy of the command list from the shell
+                        var commandList = _OsShell.commandList;
+                        for(var i = 0; i < commandList.length; i++) {
+                            var currentCommand = commandList[i].command;
+                            if(currentCommand.slice(0, this.buffer.length) == this.buffer) {
+                                // clear the current input
+                                this.clearInput();
+                                // sets the current buffer to the current command
+                                this.buffer = currentCommand;
+                                // draw the text onto the canvas
+                                this.putText(this.buffer);
+                                // break from the loop
+                                break;
+                            }
+                        }
                     }
-                  }
                 } else {
                     // This is a "normal" character, so ...
                     // ... draw it on the screen...
