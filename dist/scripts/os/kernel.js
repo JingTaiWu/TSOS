@@ -38,8 +38,9 @@ var TSOS;
 
             // Initialize the Hard Drive
             _HardDriveManager = new TSOS.HardDriveManager();
-            _HardDriveManager.initialize();
             _HardDriveDisplay = new TSOS.HardDriveDisplay();
+            _HardDriveManager.initialize();
+            _HardDriveDisplay.update();
 
             // Initialize CPU Display
             _CPUDisplay = new TSOS.CPUDisplay();

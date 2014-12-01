@@ -40,8 +40,9 @@ module TSOS {
 
             // Initialize the Hard Drive
             _HardDriveManager = new HardDriveManager();
-            _HardDriveManager.initialize();
             _HardDriveDisplay = new HardDriveDisplay();
+            _HardDriveManager.initialize();
+            _HardDriveDisplay.update();
 
             // Initialize CPU Display
             _CPUDisplay = new CPUDisplay();

@@ -6,7 +6,7 @@
 module TSOS {
     export class MemoryDisplay {
         // This method updates the memory display in the host OS
-        public update() : void {
+        public update(): void {
             var displayTable = $("#memoryDisplay > tbody");
             var memory = _MemoryManager.memory;
             // To avoid any display conflict
@@ -14,7 +14,7 @@ module TSOS {
             displayTable.empty();
 
             // display the memory
-            var index : number = 0;
+            var index: number = 0;
 
             while (index < memory.length) {
                 // The first column should display the address
@@ -22,8 +22,8 @@ module TSOS {
                 var row = "";
                 // every address has 16 bits
                 for (var col = 0; col < 8; col++) {
-                var location = index + col;
-                cols += "<td id='" + location + "'>" + memory[location].byte + "</td>";
+                    var location = index + col;
+                    cols += "<td id='" + location + "'>" + memory[location].byte + "</td>";
                 }
 
                 // increment the index

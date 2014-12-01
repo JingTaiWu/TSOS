@@ -16,6 +16,7 @@ var TSOS;
             The following characters indicate the location of the connecting TSB
             */
             this.HEADER_LENGTH = 4;
+            this.DATA_LENGTH = this.BLOCK_SIZE * 2 - this.HEADER_LENGTH;
             // Initialize the hard drive
             this.hardDrive = new TSOS.HardDrive(this.TRACKS, this.SECTORS, this.BLOCKS, this.BLOCK_SIZE);
         }
@@ -27,6 +28,10 @@ var TSOS;
                     }
                 }
             }
+
+            // TSB: 000 is reserved for MBR
+            this.setHeader(0, 0, 0, "1000");
+            this.setContent(0, 0, 0, "001100");
         };
 
         // Sets the header for a given TSB
@@ -38,19 +43,42 @@ var TSOS;
             this.hardDrive.write(track, sector, block, newData);
         };
 
-        // write to a specific TSB
+        // Sets the contents for a given TSB
+        HardDriveManager.prototype.setContent = function (track, sector, block, newContent) {
+            var oldData = this.read(track, sector, block);
+            var header = oldData.slice(0, this.HEADER_LENGTH);
+            var newData = header + this.toHexString(newContent);
+            this.write(track, sector, block, newData);
+        };
+
+        // Write to a specific TSB
         HardDriveManager.prototype.write = function (track, sector, block, data) {
-            for (var i = data.length; i < this.BLOCK_SIZE; i++) {
-                data += "00";
+            for (var i = data.length; i < this.DATA_LENGTH; i++) {
+                data += "0";
             }
 
             //data = parseInt(data, 16).toString();
             this.hardDrive.write(track, sector, block, data);
         };
 
-        // read a specific TSB
+        // Read a specific TSB
         HardDriveManager.prototype.read = function (track, sector, block) {
             return this.hardDrive.read(track, sector, block);
+        };
+
+        // Convert a regular String to hex
+        HardDriveManager.prototype.toHexString = function (data) {
+            var retVal = "";
+
+            for (var i = 0; i < data.length; i++) {
+                var hexString = data.charCodeAt(i).toString(16);
+                if (hexString.length < 2) {
+                    hexString = "0" + hexString;
+                }
+                retVal += hexString;
+            }
+
+            return retVal;
         };
         return HardDriveManager;
     })();
