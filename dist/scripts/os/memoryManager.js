@@ -34,7 +34,7 @@ var TSOS;
                 if (this.availableBlocks[i] == 0 /* AVAILABLE */) {
                     process.pid = _ProcessManager.lastPid++;
 
-                    // if it find an available block, store the process in
+                    // if it finds an available block, store the process in
                     // set the base and the limit of the current program
                     process.base = i * this.blockSize;
                     process.limit = process.base + this.blockSize;

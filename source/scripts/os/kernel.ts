@@ -38,6 +38,11 @@ module TSOS {
             _PCBDisplay = new PcbDisplay();
             _PCBDisplay.update();
 
+            // Initialize the Hard Drive
+            _HardDriveManager = new HardDriveManager();
+            _HardDriveManager.initialize();
+            _HardDriveDisplay = new HardDriveDisplay();
+
             // Initialize CPU Display
             _CPUDisplay = new CPUDisplay();
 

@@ -34,7 +34,7 @@ module TSOS {
             for(var i = 0; i < this.numberOfBlocks; i++) {
                 if(this.availableBlocks[i] == MEMORY_STATUS.AVAILABLE) {
                     process.pid = _ProcessManager.lastPid++;
-                    // if it find an available block, store the process in
+                    // if it finds an available block, store the process in
                     // set the base and the limit of the current program
                     process.base = i * this.blockSize;
                     process.limit = process.base + this.blockSize;

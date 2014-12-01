@@ -60,3 +60,8 @@ body {
   overflow: none;
   height: 75px;
 }
+
+#hardDriveDisplayWrapper {
+  overflow: auto;
+  height: 75px;
+}

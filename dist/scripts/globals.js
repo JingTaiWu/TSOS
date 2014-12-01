@@ -75,6 +75,10 @@ var _StdOut = null;
 var _Console;
 var _OsShell;
 
+// Hard Drive
+var _HardDriveManager = null;
+var _HardDriveDisplay = null;
+
 // At least this OS is not trying to kill you. (Yet.)
 var _SarcasticMode = false;
 

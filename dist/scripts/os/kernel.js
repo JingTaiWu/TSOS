@@ -36,6 +36,11 @@ var TSOS;
             _PCBDisplay = new TSOS.PcbDisplay();
             _PCBDisplay.update();
 
+            // Initialize the Hard Drive
+            _HardDriveManager = new TSOS.HardDriveManager();
+            _HardDriveManager.initialize();
+            _HardDriveDisplay = new TSOS.HardDriveDisplay();
+
             // Initialize CPU Display
             _CPUDisplay = new TSOS.CPUDisplay();
 

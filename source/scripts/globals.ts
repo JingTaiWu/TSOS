@@ -37,7 +37,7 @@ var CONTEXT_SWTICH_ISR: number = 6;
 var _CPU: TSOS.Cpu;  // Utilize TypeScript's type annotation system to ensure that _CPU is an instance of the Cpu class.
 var _CPUDisplay: TSOS.CPUDisplay; // For CPU display update
 
-var _CPUScheduler: TSOS.CPUScheduler; // Default Quantum for Round Robin Scheduling is 6
+var _CPUScheduler: TSOS.CPUScheduler; // Global instance for CPU scheduler
 
 var _OSclock: number = 0;  // Page 23.
 
@@ -62,12 +62,12 @@ var _KernelInputQueue = null;
 var _prevTraceMessage;
 
 // Process Control Block
-var _ProcessManager : TSOS.ProcessManager;
-var _PCBDisplay : TSOS.PcbDisplay;
+var _ProcessManager: TSOS.ProcessManager;
+var _PCBDisplay: TSOS.PcbDisplay;
 
 // Memory
-var _MemoryManager : TSOS.MemoryManager;
-var _MemoryDisplay : TSOS.MemoryDisplay;
+var _MemoryManager: TSOS.MemoryManager;
+var _MemoryDisplay: TSOS.MemoryDisplay;
 
 // Standard input and output
 var _StdIn  = null;
@@ -76,6 +76,10 @@ var _StdOut = null;
 // UI
 var _Console: TSOS.Console;
 var _OsShell: TSOS.Shell;
+
+// Hard Drive
+var _HardDriveManager: TSOS.HardDriveManager = null;
+var _HardDriveDisplay: TSOS.HardDriveDisplay = null;
 
 // At least this OS is not trying to kill you. (Yet.)
 var _SarcasticMode: boolean = false;

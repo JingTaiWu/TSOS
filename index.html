@@ -25,9 +25,12 @@
 	<script type="text/javascript" src="dist/scripts/host/devices.js"></script>
 	<script type="text/javascript" src="dist/scripts/host/cpu.js"></script>
 	<script type="text/javascript" src="dist/scripts/host/memory.js"></script>
+    <script type="text/javascript" src="dist/scripts/host/hardDrive.js"></script>
 
 	<!-- Virtual OS Routines: Make sure Kernel code is last, since it needs those above it. -->
 	<script type="text/javascript" src="dist/scripts/os/CPUDisplay.js"></script>
+    <script type="text/javascript" src="dist/scripts/os/hardDriveDeviceManager.js"></script>
+    <script type="text/javascript" src="dist/scripts/os/hardDriveDisplay.js"></script>
 	<script type="text/javascript" src="dist/scripts/os/memoryManager.js"></script>
 	<script type="text/javascript" src="dist/scripts/os/memoryDisplay.js"></script>
 	<script type="text/javascript" src="dist/scripts/os/processManager.js"></script>
@@ -176,26 +179,48 @@
 	style="float: right;">
 	Click To Enter a User Program
 </button>
-<p></p>
-<div class="panel panel-primary">
-	<div class="panel-heading">
-		<div class="panel-title">
-			<h3 style="font-weight: bold;">The Almighty Console</h3>
-		</div>
-	</div>
-	<div class="panel-body">
-		<div id="displayWrapper">
-			<canvas id="display"
-			width="700"
-			height="500"
-			tabindex="3">
-		</canvas>
-		<canvas id="buffer" style="display:none;"
-		width="700"
-		height="1000"></canvas>
-	</div>
-</div>
-</div>
+    <p></p>
+    <div class="panel panel-primary">
+    	<div class="panel-heading">
+    		<div class="panel-title">
+    			<h3 style="font-weight: bold;">The Almighty Console</h3>
+    		</div>
+    	</div>
+    	<div class="panel-body">
+    		<div id="displayWrapper">
+    			<canvas id="display"
+    			width="700"
+    			height="500"
+    			tabindex="3">
+    		</canvas>
+    		<canvas id="buffer" style="display:none;"
+    		width="700"
+    		height="1000"></canvas>
+    	</div>
+    </div>
+    </div>
+
+    <p></p>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Hard Drive
+        </div>
+        <div class="panel-body">
+        <div id="hardDriveDisplayWrapper">
+            <table class="table table-condensed text-center" id="hardDriveDisplay">
+                <thead>
+                    <tr style="font-weight: bold;">
+                        <td>TSB</td>
+                        <td>Header</td>
+                        <td>Data</td>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        </div>
+    </div>
 </div>
 
 <!-- The log -->
