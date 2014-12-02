@@ -27,7 +27,8 @@ module TSOS {
                         // The actual content contained in TSB
                         var content = "<td>" + data.slice(_HardDriveManager.HEADER_LENGTH) + "</td>";
                         
-                        var row = "<tr>" + tsb + usedBit + link + content + "</tr>";
+                        var row = (data.slice(0, 1) === "1") ? "<tr class='text-danger'>" + tsb + usedBit + link + content + "</tr>" : 
+                                                               "<tr class='text-success'>" + tsb + usedBit + link + content + "</tr>";
                         $("#hardDriveDisplay > tbody:last").append(row);
                     }
                 }

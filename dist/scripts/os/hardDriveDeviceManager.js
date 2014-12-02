@@ -17,6 +17,8 @@ var TSOS;
             */
             this.HEADER_LENGTH = 4;
             this.DATA_LENGTH = this.BLOCK_SIZE * 2 - this.HEADER_LENGTH;
+            // Set the limit of the track that stores filename
+            this.FILENAME_TRACKS = 1;
             // Initialize the hard drive
             this.hardDrive = new TSOS.HardDrive(this.TRACKS, this.SECTORS, this.BLOCKS, this.BLOCK_SIZE);
         }
@@ -34,13 +36,65 @@ var TSOS;
             this.setContent(0, 0, 0, "001100");
         };
 
+        // create file with a given filename
+        HardDriveManager.prototype.createFile = function (filename) {
+            // Limit the filename to be block size
+            if (filename.length > this.BLOCK_SIZE)
+                return false;
+
+            var tsb = this.getNextAvailableFilenameLocation();
+
+            if (tsb) {
+                var track = parseInt(tsb.charAt(0), 10);
+                var sector = parseInt(tsb.charAt(1), 10);
+                var block = parseInt(tsb.charAt(2), 10);
+
+                this.setHeader(track, sector, block, "1000");
+                this.setContent(track, sector, block, filename);
+
+                _HardDriveDisplay.update();
+
+                return true;
+            }
+
+            return false;
+        };
+
+        // delete file with the provided filename
+        HardDriveManager.prototype.deleteFile = function (filename) {
+            return true;
+        };
+
+        // returns a location to store the filename
+        HardDriveManager.prototype.getNextAvailableFilenameLocation = function () {
+            for (var x = 0; x < this.FILENAME_TRACKS; x++) {
+                for (var y = 0; y < this.SECTORS; y++) {
+                    for (var z = 0; z < this.BLOCKS; z++) {
+                        var header = this.getHeader(x, y, z);
+                        if (header.slice(0, 1) === "0") {
+                            var retVal = "" + x + y + z;
+                            return retVal;
+                        }
+                    }
+                }
+            }
+
+            return null;
+        };
+
         // Sets the header for a given TSB
         HardDriveManager.prototype.setHeader = function (track, sector, block, newHeader) {
             // slice the first 4 characters of the data
             // and replace it with the new header.
-            var data = this.hardDrive.read(track, sector, block);
-            var newData = newHeader + data.slice(0, this.HEADER_LENGTH);
+            var data = this.read(track, sector, block);
+            var newData = newHeader + data.slice(this.HEADER_LENGTH);
             this.hardDrive.write(track, sector, block, newData);
+        };
+
+        // Get the header for a given TSB
+        HardDriveManager.prototype.getHeader = function (track, sector, block) {
+            var data = this.read(track, sector, block);
+            return data.slice(0, this.HEADER_LENGTH);
         };
 
         // Sets the contents for a given TSB
@@ -51,17 +105,22 @@ var TSOS;
             this.write(track, sector, block, newData);
         };
 
+        // GEt the content for a given TSB
+        HardDriveManager.prototype.getContent = function (track, sector, block, newContent) {
+            var data = this.read(track, sector, block);
+            return data.slice(this.HEADER_LENGTH);
+        };
+
         // Write to a specific TSB
         HardDriveManager.prototype.write = function (track, sector, block, data) {
             for (var i = data.length; i < this.DATA_LENGTH; i++) {
                 data += "0";
             }
 
-            //data = parseInt(data, 16).toString();
             this.hardDrive.write(track, sector, block, data);
         };
 
-        // Read a specific TSB
+        // Read a specific TSB (raw content)
         HardDriveManager.prototype.read = function (track, sector, block) {
             return this.hardDrive.read(track, sector, block);
         };
@@ -76,6 +135,21 @@ var TSOS;
                     hexString = "0" + hexString;
                 }
                 retVal += hexString;
+            }
+
+            return retVal;
+        };
+
+        // Convert a hex string to characters with a given TSB
+        HardDriveManager.prototype.toAsciiString = function (track, sector, block) {
+            var retVal = "";
+            var content = this.read(track, sector, block);
+            for (var i = 0; i < content.length;) {
+                var curByte = content.charAt(i) + content.charAt(i + 1);
+                var character = String.fromCharCode(parseInt(curByte, 16));
+                retVal += character;
+
+                i += 2;
             }
 
             return retVal;
