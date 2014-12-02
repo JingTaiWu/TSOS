@@ -36,12 +36,6 @@ var TSOS;
             _PCBDisplay = new TSOS.PcbDisplay();
             _PCBDisplay.update();
 
-            // Initialize the Hard Drive
-            _HardDriveManager = new TSOS.HardDriveManager();
-            _HardDriveDisplay = new TSOS.HardDriveDisplay();
-            _HardDriveManager.initialize();
-            _HardDriveDisplay.update();
-
             // Initialize CPU Display
             _CPUDisplay = new TSOS.CPUDisplay();
 
@@ -58,9 +52,12 @@ var TSOS;
             _krnKeyboardDriver.driverEntry(); // Call the driverEntry() initialization routine.
             this.krnTrace(_krnKeyboardDriver.status);
 
-            //
-            // ... more?
-            //
+            // Load the Hard Drive Device Driver
+            this.krnTrace("Loading the hard drive device driver.");
+            _krnHardDriveDriver = new TSOS.HardDriveDeviceDriver();
+            _krnHardDriveDriver.driverEntry();
+            this.krnTrace(_krnHardDriveDriver.status);
+
             // Enable the OS Interrupts.  (Not the CPU clock interrupt, as that is done in the hardware sim.)
             this.krnTrace("Enabling the interrupts.");
             this.krnEnableInterrupts();

@@ -76,8 +76,7 @@ var _Console;
 var _OsShell;
 
 // Hard Drive
-var _HardDriveManager = null;
-var _HardDriveDisplay = null;
+var _krnHardDriveDriver;
 
 // At least this OS is not trying to kill you. (Yet.)
 var _SarcasticMode = false;

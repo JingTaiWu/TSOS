@@ -19,6 +19,9 @@ var TSOS;
             this.DATA_LENGTH = this.BLOCK_SIZE * 2 - this.HEADER_LENGTH;
             // Set the limit of the track that stores filename
             this.FILENAME_TRACKS = 1;
+            // A map that keeps track of all the filenames
+            // It is faster than iterating through the hard drive
+            this.filenameMap = {};
             // Initialize the hard drive
             this.hardDrive = new TSOS.HardDrive(this.TRACKS, this.SECTORS, this.BLOCKS, this.BLOCK_SIZE);
         }
@@ -31,7 +34,7 @@ var TSOS;
                 }
             }
 
-            // TSB: 000 is reserved for MBR
+            // TSB: 000 is reserved
             this.setHeader(0, 0, 0, "1000");
             this.setContent(0, 0, 0, "001100");
         };
@@ -39,20 +42,22 @@ var TSOS;
         // create file with a given filename
         HardDriveManager.prototype.createFile = function (filename) {
             // Limit the filename to be block size
-            if (filename.length > this.BLOCK_SIZE)
+            if (filename.length > this.BLOCK_SIZE || this.filenameMap[filename])
                 return false;
 
-            var tsb = this.getNextAvailableFilenameLocation();
+            var tsbFileName = this.getNextAvailableFilenameLocation();
+            var tsbFileLocation = this.getNextAvailableFileLocation();
 
-            if (tsb) {
-                var track = parseInt(tsb.charAt(0), 10);
-                var sector = parseInt(tsb.charAt(1), 10);
-                var block = parseInt(tsb.charAt(2), 10);
+            if (tsbFileName && tsbFileLocation) {
+                var tsbFN = this.toTSBArray(tsbFileName);
+                var header = "1" + tsbFileLocation;
 
-                this.setHeader(track, sector, block, "1000");
-                this.setContent(track, sector, block, filename);
+                // Set the current tsb to in use
+                this.setHeader(tsbFN[0], tsbFN[1], tsbFN[2], header);
+                this.setContent(tsbFN[0], tsbFN[1], tsbFN[2], filename);
 
-                _HardDriveDisplay.update();
+                // Record the filename in the map
+                this.filenameMap[filename] = tsbFileName;
 
                 return true;
             }
@@ -60,6 +65,7 @@ var TSOS;
             return false;
         };
 
+        // write data to a file
         // delete file with the provided filename
         HardDriveManager.prototype.deleteFile = function (filename) {
             return true;
@@ -72,6 +78,22 @@ var TSOS;
                     for (var z = 0; z < this.BLOCKS; z++) {
                         var header = this.getHeader(x, y, z);
                         if (header.slice(0, 1) === "0") {
+                            var retVal = "" + x + y + z;
+                            return retVal;
+                        }
+                    }
+                }
+            }
+
+            return null;
+        };
+
+        // returns the next available tsb for content storage
+        HardDriveManager.prototype.getNextAvailableFileLocation = function () {
+            for (var x = this.FILENAME_TRACKS; x < this.TRACKS; x++) {
+                for (var y = 0; y < this.SECTORS; y++) {
+                    for (var z = 0; z < this.BLOCKS; z++) {
+                        if (this.getHeader(x, y, z).charAt(0) === "0") {
                             var retVal = "" + x + y + z;
                             return retVal;
                         }
@@ -151,6 +173,17 @@ var TSOS;
 
                 i += 2;
             }
+
+            return retVal;
+        };
+
+        // Convert a TSB string to an array of TSB ints
+        HardDriveManager.prototype.toTSBArray = function (tsb) {
+            var track = parseInt(tsb.charAt(0), 10);
+            var sector = parseInt(tsb.charAt(1), 10);
+            var block = parseInt(tsb.charAt(2), 10);
+
+            var retVal = [track, sector, block];
 
             return retVal;
         };

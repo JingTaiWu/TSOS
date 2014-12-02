@@ -78,8 +78,7 @@ var _Console: TSOS.Console;
 var _OsShell: TSOS.Shell;
 
 // Hard Drive
-var _HardDriveManager: TSOS.HardDriveManager = null;
-var _HardDriveDisplay: TSOS.HardDriveDisplay = null;
+var _krnHardDriveDriver: TSOS.HardDriveDeviceDriver;
 
 // At least this OS is not trying to kill you. (Yet.)
 var _SarcasticMode: boolean = false;
