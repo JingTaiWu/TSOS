@@ -611,12 +611,8 @@ module TSOS {
                 return;
             }
 
-            if(_krnHardDriveDriver.createFile(args[0])) {
-                _HardDriveDisplay.update();
-                _StdOut.putText("success");
-            } else {
-                _StdOut.putText("failed");
-            }
+            var filename = args[0];
+            _Kernel.krnInterruptHandler(DISK_OPERATION_ISR, ["create",filename]);
         }
 
         // write to file
@@ -642,24 +638,14 @@ module TSOS {
                 return;
             }
 
-            if(_krnHardDriveDriver.writeFile(filename, data.slice(1, length - 1))) {
-                _HardDriveDisplay.update();
-                _StdOut.putText("Success!");
-            } else {
-                _StdOut.putText("Failed.");
-            }
+            _Kernel.krnInterruptHandler(DISK_OPERATION_ISR, ["write", filename, data]);
         }
 
         // delete a file
         public shellDelete(args) {
             var filename = args[0];
             if(filename) {
-                if(_krnHardDriveDriver.deleteFile(filename)) {
-                    _StdOut.putText("Success!");
-                    _HardDriveDisplay.update();
-                } else {
-                    _StdOut.putText("Failed!");
-                }
+                _Kernel.krnInterruptHandler(DISK_OPERATION_ISR, ["delete", filename]);
             } else {
                 _StdOut.putText("Please provide a filename.");
             }
@@ -671,11 +657,7 @@ module TSOS {
 
             if(filename) {
                 var output = _krnHardDriveDriver.readFile(filename);
-                if(output) {
-                    _StdOut.putText(output);
-                } else {
-                    _StdOut.putText("Cannot read file.");
-                }
+                _Kernel.krnInterruptHandler(DISK_OPERATION_ISR, ["read", filename]);
             } else {
                 _StdOut.putText("Please provide a file name.");
             }

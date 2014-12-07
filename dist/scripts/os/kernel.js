@@ -163,6 +163,7 @@ var TSOS;
                     break;
                 case DISK_OPERATION_ISR:
                     this.hardDriveIsr(params);
+                    break;
                 default:
                     this.krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");
             }
@@ -274,7 +275,42 @@ var TSOS;
         Kernel.prototype.hardDriveIsr = function (params) {
             var operation = params[0];
             var filename = params[1];
-            //var diskOp = _krnHardDriveDriver.serviceMap[operation];
+            var data = params[2];
+
+            switch (operation) {
+                case "create":
+                    if (_krnHardDriveDriver.createFile(filename)) {
+                        _StdOut.putText("New File: " + filename);
+                    } else {
+                        _StdOut.putText("Failed to create new file.");
+                    }
+                    break;
+                case "write":
+                    if (_krnHardDriveDriver.writeFile(filename, data)) {
+                        _StdOut.putText("Success!");
+                    } else {
+                        _StdOut.putText("Failed to write new file.");
+                    }
+                    break;
+                case "delete":
+                    if (_krnHardDriveDriver.deleteFile(filename)) {
+                        _StdOut.putText("Success!");
+                    } else {
+                        _StdOut.putText("Failed to delete file.");
+                    }
+                    break;
+                case "read":
+                    if (_krnHardDriveDriver.readFile(filename)) {
+                        _StdOut.putText("New File: " + filename);
+                    } else {
+                        _StdOut.putText("Failed to read file.");
+                    }
+                    break;
+                default:
+                    this.krnTrace("Operation not found. Check Shell commands.");
+            }
+
+            _HardDriveDisplay.update();
         };
 
         //
