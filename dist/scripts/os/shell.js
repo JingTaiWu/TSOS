@@ -119,6 +119,9 @@ var TSOS;
             sc = new TSOS.ShellCommand(this.shellWrite, "write", " <filename> 'data'- write to a file on the hard drive.");
             this.commandList[this.commandList.length] = sc;
 
+            sc = new TSOS.ShellCommand(this.shellDelete, "delete", " <filename> - delete a file on the hard drive.");
+            this.commandList[this.commandList.length] = sc;
+
             // Display the initial prompt.
             this.putPrompt();
         };
@@ -580,6 +583,21 @@ var TSOS;
                 _StdOut.putText("Success!");
             } else {
                 _StdOut.putText("Failed.");
+            }
+        };
+
+        // delete a file
+        Shell.prototype.shellDelete = function (args) {
+            var filename = args[0];
+            if (filename) {
+                if (_krnHardDriveDriver.deleteFile(filename)) {
+                    _HardDriveDisplay.update();
+                    _StdOut.putText("Success!");
+                } else {
+                    _StdOut.putText("Success!");
+                }
+            } else {
+                _StdOut.putText("Please provide a filename.");
             }
         };
         return Shell;
