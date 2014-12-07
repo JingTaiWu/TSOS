@@ -624,7 +624,8 @@ module TSOS {
                 return;
             }
 
-            if(_krnHardDriveDriver.writeFile(filename, data)) {
+            if(_krnHardDriveDriver.writeFile(filename, data.slice(1, length - 1))) {
+                _HardDriveDisplay.update();
                 _StdOut.putText("Success!");
             } else {
                 _StdOut.putText("Failed.");
