@@ -630,7 +630,11 @@ module TSOS {
             var data = "";
             // concatenate all the strings after the file name
             for(var i = 1; i < args.length; i++) {
-                data += args[i];
+                if(i == args.length - 1) {
+                    data += args[i];
+                } else {
+                    data += args[i] + " ";
+                }
             }
 
             if(data.charAt(0) !== "\"" || data.charAt(data.length - 1) !== "\"") {
