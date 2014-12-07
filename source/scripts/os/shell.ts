@@ -164,7 +164,17 @@ module TSOS {
             sc = new ShellCommand(this.shellgetSchedule,
                                   "getschedule",
                                   " - get the current algorithm.");
-            this.commandList[this.commandList.length] = sc;   
+            this.commandList[this.commandList.length] = sc;
+
+            sc = new ShellCommand(this.shellCreate,
+                                  "create",
+                                  " <filename> - create a new file on the hard drive.");
+            this.commandList[this.commandList.length] = sc;    
+
+            sc = new ShellCommand(this.shellWrite,
+                                  "write",
+                                  " <filename> 'data'- write to a file on the hard drive.");
+            this.commandList[this.commandList.length] = sc;                       
             // Display the initial prompt.
             this.putPrompt();
         }
@@ -582,6 +592,43 @@ module TSOS {
         // getschedule -- display the current scheduling algorithm
         public shellgetSchedule(args) {
             _StdOut.putText(_CPUScheduler.getAlgorithm());
+        }
+
+        // createfile
+        public shellCreate(args) {
+            if(args.length == 0) {
+                _StdOut.putText("I need a filename.");
+                return;
+            }
+
+            if(_krnHardDriveDriver.createFile(args[0])) {
+                _HardDriveDisplay.update();
+                _StdOut.putText("success");
+            } else {
+                _StdOut.putText("failed");
+            }
+        }
+
+        // write to file
+        public shellWrite(args) {
+            if(args.length < 2) {
+                _StdOut.putText("Please give me a file name and some data.");
+                return;
+            }
+
+            var filename = args[0];
+            var data = args[1];
+
+            if(data.charAt(0) !== "\"" || data.charAt(data.length - 1) !== "\"") {
+                _StdOut.putText("Please put the data in two quotation marks.");
+                return;
+            }
+
+            if(_krnHardDriveDriver.writeFile(filename, data)) {
+                _StdOut.putText("Success!");
+            } else {
+                _StdOut.putText("Failed.");
+            }
         }
     }
 }

@@ -26,7 +26,7 @@ var TSOS;
 
         // getKey - return the string version of track, sector and block for table look up
         HardDrive.prototype.getKey = function (track, sector, block) {
-            return track + sector + block;
+            return "" + track + sector + block;
         };
         return HardDrive;
     })();

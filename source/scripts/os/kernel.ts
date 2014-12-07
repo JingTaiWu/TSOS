@@ -56,10 +56,10 @@ module TSOS {
 
             // Load the Hard Drive Device Driver
             this.krnTrace("Loading the hard drive device driver.");
-            _krnHardDriveDriver = new HardDriveDeviceDriver();
-            _krnHardDriveDriver.driverEntry();
-            this.krnTrace(_krnHardDriveDriver.status);
-
+            _krnHardDriveDriver = new HardDriveManager();
+            _krnHardDriveDriver.initialize();
+            _HardDriveDisplay = new HardDriveDisplay();
+            _HardDriveDisplay.update();
 
             // Enable the OS Interrupts.  (Not the CPU clock interrupt, as that is done in the hardware sim.)
             this.krnTrace("Enabling the interrupts.");
@@ -168,6 +168,8 @@ module TSOS {
                 case CONTEXT_SWTICH_ISR:
                     this.contextSwitchISR(params);
                     break;
+                case DISK_OPERATION_ISR:
+                    this.hardDriveIsr(params);
                 default:
                     this.krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");
             }
@@ -268,6 +270,13 @@ module TSOS {
             // stop CPU from running
             _CPU.stop();
           }
+        }
+
+        // handles hard drive operations
+        public hardDriveIsr(params) {
+            var operation = params[0];
+            var filename = params[1];
+            //var diskOp = _krnHardDriveDriver.serviceMap[operation];
         }
         //
         // OS Utility Routines

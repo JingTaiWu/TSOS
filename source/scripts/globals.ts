@@ -8,7 +8,7 @@
    Operating System Concepts 8th edition by Silberschatz, Galvin, and Gagne.  ISBN 978-0-470-12872-5
    ------------ */
 
-//
+//a
 // Global "CONSTANTS" (There is currently no const or final or readonly type annotation in TypeScript.)
 // TODO: Make a global object and use that instead of the "_" naming convention in the global namespace.
 //
@@ -30,6 +30,8 @@ var STEP_MODE_ISR: number = 4;
 var PROCESS_EXECUTION_ISR: number = 5;
 
 var CONTEXT_SWTICH_ISR: number = 6;
+
+var DISK_OPERATION_ISR: number = 7;
 
 //
 // Global Variables
@@ -78,7 +80,8 @@ var _Console: TSOS.Console;
 var _OsShell: TSOS.Shell;
 
 // Hard Drive
-var _krnHardDriveDriver: TSOS.HardDriveDeviceDriver;
+var _krnHardDriveDriver: TSOS.HardDriveManager;
+var _HardDriveDisplay: TSOS.HardDriveDisplay;
 
 // At least this OS is not trying to kill you. (Yet.)
 var _SarcasticMode: boolean = false;

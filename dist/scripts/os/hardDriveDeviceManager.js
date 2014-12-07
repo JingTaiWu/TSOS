@@ -15,15 +15,24 @@ var TSOS;
             The first character indicate whether or not the current TSB is occupied
             The following characters indicate the location of the connecting TSB
             */
-            this.HEADER_LENGTH = 4;
+            this.HEADER_LENGTH = 8;
             this.DATA_LENGTH = this.BLOCK_SIZE * 2 - this.HEADER_LENGTH;
             // Set the limit of the track that stores filename
             this.FILENAME_TRACKS = 1;
             // A map that keeps track of all the filenames
             // It is faster than iterating through the hard drive
-            this.filenameMap = {};
-            // Initialize the hard drive
+            this.filenameArray = [];
+            // Constants for the hedaer string
+            this.FREE = "00";
+            this.IN_USE = "01";
+            this.SWAP_FILE = "02";
+            this.DEFAULT_LINK = "000";
+            // An instance of hard drive
             this.hardDrive = new TSOS.HardDrive(this.TRACKS, this.SECTORS, this.BLOCKS, this.BLOCK_SIZE);
+            // Mapping for all the functions
+            this.serviceMap = {
+                "create": this.createFile
+            };
         }
         HardDriveManager.prototype.initialize = function () {
             for (var track = 0; track < this.TRACKS; track++) {
@@ -35,29 +44,33 @@ var TSOS;
             }
 
             // TSB: 000 is reserved
-            this.setHeader(0, 0, 0, "1000");
-            this.setContent(0, 0, 0, "001100");
+            this.setHeader(0, 0, 0, this.IN_USE + this.DEFAULT_LINK);
+            this.setContent(0, 0, 0, "");
         };
 
         // create file with a given filename
         HardDriveManager.prototype.createFile = function (filename) {
             // Limit the filename to be block size
-            if (filename.length > this.BLOCK_SIZE || this.filenameMap[filename])
+            if (filename.length > this.BLOCK_SIZE)
                 return false;
 
+            // Check for depulicate name
+            // for(var i = 0; i < this.filenameArray.length; i++) {
+            //     if(filename === this.filenameArray[i]) return false;
+            // }
             var tsbFileName = this.getNextAvailableFilenameLocation();
             var tsbFileLocation = this.getNextAvailableFileLocation();
 
             if (tsbFileName && tsbFileLocation) {
                 var tsbFN = this.toTSBArray(tsbFileName);
-                var header = "1" + tsbFileLocation;
+                var header = this.IN_USE + tsbFileLocation;
 
                 // Set the current tsb to in use
                 this.setHeader(tsbFN[0], tsbFN[1], tsbFN[2], header);
                 this.setContent(tsbFN[0], tsbFN[1], tsbFN[2], filename);
 
                 // Record the filename in the map
-                this.filenameMap[filename] = tsbFileName;
+                this.filenameArray.push(filename);
 
                 return true;
             }
@@ -66,6 +79,10 @@ var TSOS;
         };
 
         // write data to a file
+        HardDriveManager.prototype.writeFile = function (filename) {
+            return true;
+        };
+
         // delete file with the provided filename
         HardDriveManager.prototype.deleteFile = function (filename) {
             return true;
@@ -77,9 +94,9 @@ var TSOS;
                 for (var y = 0; y < this.SECTORS; y++) {
                     for (var z = 0; z < this.BLOCKS; z++) {
                         var header = this.getHeader(x, y, z);
-                        if (header.slice(0, 1) === "0") {
-                            var retVal = "" + x + y + z;
-                            return retVal;
+                        if (header.slice(0, 2) === this.FREE) {
+                            var tsb = this.toByteString(x) + this.toByteString(y) + this.toByteString(z);
+                            return tsb;
                         }
                     }
                 }
@@ -93,9 +110,9 @@ var TSOS;
             for (var x = this.FILENAME_TRACKS; x < this.TRACKS; x++) {
                 for (var y = 0; y < this.SECTORS; y++) {
                     for (var z = 0; z < this.BLOCKS; z++) {
-                        if (this.getHeader(x, y, z).charAt(0) === "0") {
-                            var retVal = "" + x + y + z;
-                            return retVal;
+                        if (this.getHeader(x, y, z).slice(0, 2) === this.FREE) {
+                            var tsb = this.toByteString(x) + this.toByteString(y) + this.toByteString(z);
+                            return tsb;
                         }
                     }
                 }
@@ -184,6 +201,19 @@ var TSOS;
             var block = parseInt(tsb.charAt(2), 10);
 
             var retVal = [track, sector, block];
+
+            return retVal;
+        };
+
+        // Convert a number to a byte string
+        HardDriveManager.prototype.toByteString = function (num) {
+            if (num > 256)
+                return null;
+
+            var retVal = num.toString(16);
+            if (retVal.length < 2) {
+                retVal = "0" + retVal;
+            }
 
             return retVal;
         };

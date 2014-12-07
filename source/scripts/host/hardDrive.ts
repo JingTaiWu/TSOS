@@ -35,7 +35,7 @@ module TSOS {
 
         // getKey - return the string version of track, sector and block for table look up
         public getKey(track, sector, block): string {
-            return track + sector + block;
+            return "" + track + sector + block;
         }
     }
 }
