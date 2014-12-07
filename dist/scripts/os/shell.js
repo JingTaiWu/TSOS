@@ -122,6 +122,9 @@ var TSOS;
             sc = new TSOS.ShellCommand(this.shellDelete, "delete", " <filename> - delete a file on the hard drive.");
             this.commandList[this.commandList.length] = sc;
 
+            sc = new TSOS.ShellCommand(this.shellRead, "read", " <filename> - read a file on the hard drive.");
+            this.commandList[this.commandList.length] = sc;
+
             // Display the initial prompt.
             this.putPrompt();
         };
@@ -571,7 +574,11 @@ var TSOS;
             }
 
             var filename = args[0];
-            var data = args[1];
+            var data = "";
+
+            for (var i = 1; i < args.length; i++) {
+                data += args[i];
+            }
 
             if (data.charAt(0) !== "\"" || data.charAt(data.length - 1) !== "\"") {
                 _StdOut.putText("Please put the data in two quotation marks.");
@@ -591,13 +598,29 @@ var TSOS;
             var filename = args[0];
             if (filename) {
                 if (_krnHardDriveDriver.deleteFile(filename)) {
+                    _StdOut.putText("Success!");
                     _HardDriveDisplay.update();
-                    _StdOut.putText("Success!");
                 } else {
-                    _StdOut.putText("Success!");
+                    _StdOut.putText("Failed!");
                 }
             } else {
                 _StdOut.putText("Please provide a filename.");
+            }
+        };
+
+        // read a file
+        Shell.prototype.shellRead = function (args) {
+            var filename = args[0];
+
+            if (filename) {
+                var output = _krnHardDriveDriver.readFile(filename);
+                if (output) {
+                    _StdOut.putText(output);
+                } else {
+                    _StdOut.putText("Cannot read file.");
+                }
+            } else {
+                _StdOut.putText("Please provide a file name.");
             }
         };
         return Shell;
