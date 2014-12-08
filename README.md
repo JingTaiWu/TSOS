@@ -23,7 +23,7 @@ Shell Related
 - ~~*write* (filename) --- Write the data inside the quotes to filename and isplay a message denoting success or failure.~~
 - ~~*delete* (filename) "data" --- Write the data inside the quotes to filename and display a message denoting success or failure.~~
 - ~~*format* --- Initialize all blocks in all sectors in all tracks and display a message denoting success or failure.~~
-- *ls* --- list the files currently stored on the disk.
+- ~~*ls* --- list the files currently stored on the disk.~~
 - ~~*setschedule* --- allow the user to select a CPU scheduling algorithm {rr. fcfs, priority}~~
 - ~~*getschedule* --- return the currently selected cpu scheduling algorithm.~~
 
@@ -31,12 +31,12 @@ Shell Related
 File System Related
 --------------
 
-- Implement a file system in HTML5 web storage as discussed in class.
-- Include a file system viewer in your OS interface.
-- File System Device for all of the functional requirements noted above.
-- load the fsDD in a similar manner as the keyboard device driver.
-- Develop your fsDD to insulate and encapsulate the implementation of the kernel-level I/O operations from the byte-level details
-of your individual blocks on the lcoal storage.
+- ~~Implement a file system in HTML5 web storage as discussed in class.~~
+- ~~Include a file system viewer in your OS interface.~~
+- ~~File System Device for all of the functional requirements noted above.~~
+- ~~load the fsDD in a similar manner as the keyboard device driver.~~
+- ~~evelop your fsDD to insulate and encapsulate the implementation of the kernel-level I/O operations from the byte-level details
+of your individual blocks on the lcoal storage.~~
 
 
 Scheduling Related

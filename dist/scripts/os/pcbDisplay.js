@@ -60,7 +60,8 @@ var TSOS;
 
             for (var i = 0; i < processls.length; i++) {
                 var process = processls[i];
-                var cols = "<td>" + process.pid + "</td>" + "<td>" + process.pc + "</td>" + "<td>" + process.ir + "</td>" + "<td>" + process.acc + "</td>" + "<td>" + process.xFlag + "</td>" + "<td>" + process.yFlag + "</td>" + "<td>" + process.zFlag + "</td>" + "<td>" + process.priority + "</td>" + "<td style='font-weight: bold;'>" + process.state + "</td>";
+                var processLocation = (process.location == 0 /* IN_RAM */) ? "RAM" : "Hard Drive";
+                var cols = "<td>" + process.pid + "</td>" + "<td>" + process.pc + "</td>" + "<td>" + process.ir + "</td>" + "<td>" + process.acc + "</td>" + "<td>" + process.xFlag + "</td>" + "<td>" + process.yFlag + "</td>" + "<td>" + process.zFlag + "</td>" + "<td>" + process.priority + "</td>" + "<td>" + processLocation + "</td>" + "<td style='font-weight: bold;'>" + process.state + "</td>";
                 var row = "";
 
                 // Show the running process in green

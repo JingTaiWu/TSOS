@@ -125,6 +125,12 @@ var TSOS;
             sc = new TSOS.ShellCommand(this.shellRead, "read", " <filename> - read a file on the hard drive.");
             this.commandList[this.commandList.length] = sc;
 
+            sc = new TSOS.ShellCommand(this.shellLs, "ls", "- list all the files on the hard drive.");
+            this.commandList[this.commandList.length] = sc;
+
+            sc = new TSOS.ShellCommand(this.shellFormat, "format", "- list all the files on the hard drive.");
+            this.commandList[this.commandList.length] = sc;
+
             // Display the initial prompt.
             this.putPrompt();
         };
@@ -608,6 +614,16 @@ var TSOS;
             } else {
                 _StdOut.putText("Please provide a file name.");
             }
+        };
+
+        // list all the files
+        Shell.prototype.shellLs = function (args) {
+            _Kernel.krnInterruptHandler(DISK_OPERATION_ISR, ["ls"]);
+        };
+
+        // format the hard drive
+        Shell.prototype.shellFormat = function (args) {
+            _Kernel.krnInterruptHandler(DISK_OPERATION_ISR, ["format"]);
         };
         return Shell;
     })();

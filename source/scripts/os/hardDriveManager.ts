@@ -152,6 +152,7 @@ module TSOS {
                 if(usedBit === this.SWAP_FILE) {return false;}
 
                 var header = this.getHeader(filenameTsb[0], filenameTsb[1], filenameTsb[2]).slice(1);
+
                 while(header !== this.DEFAULT_LINK) {
                     var link = this.toTSBArray(header);
                     // Get the next header
@@ -162,6 +163,13 @@ module TSOS {
 
                 // Set the filename block to free
                 this.setHeader(filenameTsb[0], filenameTsb[1], filenameTsb[2], this.FREE + this.DEFAULT_LINK);
+                // remove the file name from the list
+                for(var i = 0; i < this.filenameArray.length; i++) {
+                    if(this.filenameArray[i] === filename) {
+                        this.filenameArray.splice(i, 1);
+                        break;
+                    }
+                }
                 return true;
             }
 
@@ -214,6 +222,30 @@ module TSOS {
             return false;
         }
 
+        // delete a swap file - I want to separate this from deleteFile because users might accidently delete a swap file
+        public deleteSwapFile(filename: string): boolean {
+            var filenameTsbStr = this.findTsbWithFilename(filename);
+            if(filenameTsbStr) {
+                var filenameTsb = this.toTSBArray(this.findTsbWithFilename(filename));
+                var usedBit = this.getHeader(filenameTsb[0], filenameTsb[1], filenameTsb[2]).slice(0,1);
+                var header = this.getHeader(filenameTsb[0], filenameTsb[1], filenameTsb[2]).slice(1);
+
+                while(header !== this.DEFAULT_LINK) {
+                    var link = this.toTSBArray(header);
+                    // Get the next header
+                    header = this.getHeader(link[0], link[1], link[2]).slice(1);
+                    // Set the block to free
+                    this.setHeader(link[0], link[1], link[2], this.FREE + this.DEFAULT_LINK);
+                }
+
+                // Set the filename block to free
+                this.setHeader(filenameTsb[0], filenameTsb[1], filenameTsb[2], this.FREE + this.DEFAULT_LINK);
+                return true;
+            }
+
+            return false;
+        }        
+
         // returns a location to store the filename
         public getNextAvailableFilenameLocation(): string {
             for(var x = 0; x < this.FILENAME_TRACKS; x++) {
@@ -261,6 +293,24 @@ module TSOS {
             }
 
             return count;            
+        }
+
+        // returns the list of files
+        public getFileLs(): string[] {
+            var ls : string[] = [];
+
+            for(var x = 0; x < this.FILENAME_TRACKS; x++) {
+                for(var y = 0; y < this.SECTORS; y++) {
+                    for(var z = 1; z < this.BLOCKS; z++) {
+                        var header = this.getHeader(x, y, z);
+                        if(header.slice(0, 1) === this.IN_USE) {
+                            ls.push(this.toAsciiString(x, y, z));
+                        }
+                    }
+                }
+            }
+
+            return ls;
         }
 
         // find the track sector block of a given filename

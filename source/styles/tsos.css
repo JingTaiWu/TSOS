@@ -52,7 +52,7 @@ body {
 }
 
 #pcbDiv {
-  overflow: hidden;
+  overflow: auto;
   height: 120px;
 }
 

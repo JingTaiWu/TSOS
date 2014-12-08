@@ -184,7 +184,17 @@ module TSOS {
             sc = new ShellCommand(this.shellRead,
                                   "read",
                                   " <filename> - read a file on the hard drive.");
-            this.commandList[this.commandList.length] = sc;                        
+            this.commandList[this.commandList.length] = sc;             
+
+            sc = new ShellCommand(this.shellLs,
+                                  "ls",
+                                  "- list all the files on the hard drive.");
+            this.commandList[this.commandList.length] = sc;            
+
+            sc = new ShellCommand(this.shellFormat,
+                                  "format",
+                                  "- list all the files on the hard drive.");
+            this.commandList[this.commandList.length] = sc; 
             // Display the initial prompt.
             this.putPrompt();
         }
@@ -661,6 +671,16 @@ module TSOS {
             } else {
                 _StdOut.putText("Please provide a file name.");
             }
+        }
+
+        // list all the files
+        public shellLs(args) {
+            _Kernel.krnInterruptHandler(DISK_OPERATION_ISR, ["ls"]);
+        }
+
+        // format the hard drive
+        public shellFormat(args) {
+            _Kernel.krnInterruptHandler(DISK_OPERATION_ISR, ["format"]);
         }
     }
 }

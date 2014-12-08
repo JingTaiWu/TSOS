@@ -308,6 +308,21 @@ module TSOS {
                         _StdOut.putText("Failed to read file.");
                     }
                     break;
+                case "ls":
+                    var ls: string[] = _krnHardDriveDriver.getFileLs();
+
+                    for(var i = 0; i < ls.length; i++) {
+                        _StdOut.putText(ls[i]);
+                        _StdOut.advanceLine();
+                    }
+                    break;
+                case "format":
+                    if(_CPU.isExecuting) {
+                        _StdOut.putText("Cannot format hard drive right now.");
+                    } else {
+                        _krnHardDriveDriver.initialize();
+                        _StdOut.putText("Success.");
+                    }
                 default:
                     this.krnTrace("Operation not found. Check Shell commands.");
             }

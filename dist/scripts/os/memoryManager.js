@@ -70,6 +70,7 @@ var TSOS;
 
             // if it doesnt find any, put it in the hard drive
             if (_krnHardDriveDriver.writeSwapFile(program, process.pid)) {
+                process.location = 1 /* IN_HARD_DRIVE */;
                 _HardDriveDisplay.update();
                 return true;
             }
