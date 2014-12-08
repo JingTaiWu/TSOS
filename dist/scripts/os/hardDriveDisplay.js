@@ -29,7 +29,16 @@ var TSOS;
                         // The actual content contained in TSB
                         var content = "<td>" + data.slice(_krnHardDriveDriver.HEADER_LENGTH) + "</td>";
 
-                        var row = (data.slice(0, 1) === _krnHardDriveDriver.IN_USE) ? "<tr class='text-danger'>" + tsb + usedBit + link + content + "</tr>" : "<tr class='text-success'>" + tsb + usedBit + link + content + "</tr>";
+                        var row = "";
+
+                        if (data.slice(0, 1) === _krnHardDriveDriver.IN_USE) {
+                            row = "<tr class='text-danger'>" + tsb + usedBit + link + content + "</tr>";
+                        } else if (data.slice(0, 1) === _krnHardDriveDriver.SWAP_FILE) {
+                            row = "<tr class='text-warning'>" + tsb + usedBit + link + content + "</tr>";
+                        } else {
+                            row = "<tr class='text-success'>" + tsb + usedBit + link + content + "</tr>";
+                        }
+
                         $("#hardDriveDisplay > tbody:last").append(row);
                     }
                 }

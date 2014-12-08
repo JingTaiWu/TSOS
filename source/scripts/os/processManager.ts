@@ -27,6 +27,7 @@ module TSOS {
                 this.residentQueue.enqueue(process);
                 return process;
             } else {
+                // store the process into the hard drive instead
                 return null;
             }
         }

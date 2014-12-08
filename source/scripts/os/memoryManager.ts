@@ -30,15 +30,18 @@ module TSOS {
 
         // allocate memory for a given process
         public allocate(process: Process, program: string[]): boolean {
+            // Give the process a pid
+            process.pid = _ProcessManager.lastPid++;
             // find a free block for the new process
             for(var i = 0; i < this.numberOfBlocks; i++) {
                 if(this.availableBlocks[i] == MEMORY_STATUS.AVAILABLE) {
-                    process.pid = _ProcessManager.lastPid++;
                     // if it finds an available block, store the process in
                     // set the base and the limit of the current program
                     process.base = i * this.blockSize;
                     process.limit = process.base + this.blockSize;
                     process.blockNumber = i;
+                    process.location = ProcessLocation.IN_RAM;
+
                     // reset the block
                     for(var k: number = process.base; k < process.limit; k++) {
                         this.memory[k] = new Byte("00");
@@ -63,7 +66,12 @@ module TSOS {
                 } 
             }
 
-            // if it doesnt find any, return false
+            // if it doesnt find any, put it in the hard drive
+            if(_krnHardDriveDriver.writeSwapFile(program, process.pid)) {
+                _HardDriveDisplay.update();
+                return true;
+            }
+
             return false;
         }
 

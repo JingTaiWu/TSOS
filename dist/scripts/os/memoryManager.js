@@ -30,15 +30,17 @@ var TSOS;
         }
         // allocate memory for a given process
         MemoryManager.prototype.allocate = function (process, program) {
+            // Give the process a pid
+            process.pid = _ProcessManager.lastPid++;
+
             for (var i = 0; i < this.numberOfBlocks; i++) {
                 if (this.availableBlocks[i] == 0 /* AVAILABLE */) {
-                    process.pid = _ProcessManager.lastPid++;
-
                     // if it finds an available block, store the process in
                     // set the base and the limit of the current program
                     process.base = i * this.blockSize;
                     process.limit = process.base + this.blockSize;
                     process.blockNumber = i;
+                    process.location = 0 /* IN_RAM */;
 
                     for (var k = process.base; k < process.limit; k++) {
                         this.memory[k] = new TSOS.Byte("00");
@@ -66,7 +68,12 @@ var TSOS;
                 }
             }
 
-            // if it doesnt find any, return false
+            // if it doesnt find any, put it in the hard drive
+            if (_krnHardDriveDriver.writeSwapFile(program, process.pid)) {
+                _HardDriveDisplay.update();
+                return true;
+            }
+
             return false;
         };
 

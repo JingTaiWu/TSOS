@@ -18,11 +18,11 @@ To Do List
 Shell Related
 -------------
 
-- *create* (filename) --- Create the filenmae and display a message denoting success or failure
-- *read* (filename) --- Read and display the contents of filename or display an error if something went wrong.
-- *write* (filename) --- Write the data inside the quotes to filename and isplay a message denoting success or failure.
-- *delete* (filename) "data" --- Write the data inside the quotes to filename and display a message denoting success or failure.
-- *format* --- Initialize all blocks in all sectors in all tracks and display a message denoting success or failure.
+- ~~*create* (filename) --- Create the filenmae and display a message denoting success or failure.~~
+- ~~*read* (filename) --- Read and display the contents of filename or display an error if something went wrong.~~
+- ~~*write* (filename) --- Write the data inside the quotes to filename and isplay a message denoting success or failure.~~
+- ~~*delete* (filename) "data" --- Write the data inside the quotes to filename and display a message denoting success or failure.~~
+- ~~*format* --- Initialize all blocks in all sectors in all tracks and display a message denoting success or failure.~~
 - *ls* --- list the files currently stored on the disk.
 - ~~*setschedule* --- allow the user to select a CPU scheduling algorithm {rr. fcfs, priority}~~
 - ~~*getschedule* --- return the currently selected cpu scheduling algorithm.~~

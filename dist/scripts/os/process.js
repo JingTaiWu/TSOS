@@ -4,6 +4,11 @@ in the client OS
 */
 var TSOS;
 (function (TSOS) {
+    (function (ProcessLocation) {
+        ProcessLocation[ProcessLocation["IN_RAM"] = 0] = "IN_RAM";
+        ProcessLocation[ProcessLocation["IN_HARD_DRIVE"] = 1] = "IN_HARD_DRIVE";
+    })(TSOS.ProcessLocation || (TSOS.ProcessLocation = {}));
+    var ProcessLocation = TSOS.ProcessLocation;
     var Process = (function () {
         function Process() {
             this.pc = 0;
@@ -12,7 +17,6 @@ var TSOS;
             this.xFlag = "00";
             this.yFlag = "00";
             this.zFlag = "0";
-            this.location = "";
             this.base = 0;
             this.limit = 0;
             this.state = Process.NOT_RUNNING;

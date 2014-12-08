@@ -303,7 +303,7 @@ module TSOS {
                     break;
                 case "read":
                     if(_krnHardDriveDriver.readFile(filename)) {
-                        _StdOut.putText("New File: " + filename);
+                        _StdOut.putText(_krnHardDriveDriver.readFile(filename));
                     } else {
                         _StdOut.putText("Failed to read file.");
                     }
