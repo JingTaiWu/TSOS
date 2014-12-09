@@ -110,7 +110,6 @@ var TSOS;
                 _CPUDisplay.update();
                 _PCBDisplay.update();
                 _MemoryDisplay.update();
-                _HardDriveDisplay.update();
             } else {
                 this.krnTrace("Idle");
             }
@@ -265,6 +264,8 @@ var TSOS;
                     // allocate space for the new process
                     _MemoryManager.allocate(_CPUScheduler.currentProcess, currentProcessString);
                 }
+
+                _HardDriveDisplay.update();
             }
 
             _CPUScheduler.currentProcess.state = TSOS.Process.RUNNING;
