@@ -71,7 +71,7 @@ module TSOS {
                            "<td>" + process.xFlag + "</td>" +
                            "<td>" + process.yFlag + "</td>" +
                            "<td>" + process.zFlag + "</td>" +
-                           // "<td>" + process.priority + "</td>" +
+                           "<td>" + process.priority + "</td>" +
                            "<td>" + processLocation + "</td>" +
                            "<td style='font-weight: bold;'>" + process.state + "</td>";
                 var row = "";
