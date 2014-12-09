@@ -193,7 +193,7 @@ module TSOS {
 
             sc = new ShellCommand(this.shellFormat,
                                   "format",
-                                  "- list all the files on the hard drive.");
+                                  "- format the Hard Drive.");
             this.commandList[this.commandList.length] = sc; 
             // Display the initial prompt.
             this.putPrompt();
@@ -666,7 +666,6 @@ module TSOS {
             var filename = args[0];
 
             if(filename) {
-                var output = _krnHardDriveDriver.readFile(filename);
                 _Kernel.krnInterruptHandler(DISK_OPERATION_ISR, ["read", filename]);
             } else {
                 _StdOut.putText("Please provide a file name.");

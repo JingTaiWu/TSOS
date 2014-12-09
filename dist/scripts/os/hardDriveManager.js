@@ -84,7 +84,7 @@ var TSOS;
         };
 
         // read a file with a given file name
-        HardDriveManager.prototype.readFile = function (filename) {
+        HardDriveManager.prototype.readFile = function (filename, isSwapFile) {
             var filenameTsbStr = this.findTsbWithFilename(filename);
             if (filenameTsbStr) {
                 var filenameTsb = this.toTSBArray(filenameTsbStr);
@@ -95,7 +95,11 @@ var TSOS;
                     var fileTsb = this.toTSBArray(link);
 
                     // Read the data
-                    output += this.toAsciiString(fileTsb[0], fileTsb[1], fileTsb[2]);
+                    if (isSwapFile) {
+                        output += this.read(fileTsb[0], fileTsb[1], fileTsb[2]).slice(this.HEADER_LENGTH);
+                    } else {
+                        output += this.toAsciiString(fileTsb[0], fileTsb[1], fileTsb[2]);
+                    }
 
                     // Set the link to the next one
                     link = this.getHeader(fileTsb[0], fileTsb[1], fileTsb[2]).slice(1);
@@ -148,7 +152,10 @@ var TSOS;
                     this.setContent(nextLocation[0], nextLocation[1], nextLocation[2], partitionedData[i], true);
 
                     // set the next location
-                    nextLocation = this.toTSBArray(this.getNextAvailableFileLocation());
+                    nextLocation = this.toTSBArray(nextFileLocation);
+
+                    // set the next location to in use
+                    this.setHeader(nextLocation[0], nextLocation[1], nextLocation[2], this.IN_USE + this.DEFAULT_LINK);
                 }
 
                 return true;
@@ -206,7 +213,7 @@ var TSOS;
             var filenameLink = this.getNextAvailableFilenameLocation();
             var fileLink = this.getNextAvailableFileLocation();
 
-            if (requiredBlocks < this.getNumOfAvailableBlocks() && filenameLink) {
+            if (requiredBlocks < this.getNumOfAvailableBlocks() && filenameLink && fileLink) {
                 // Set the file name for this swap file
                 var filenameTsb = this.toTSBArray(filenameLink);
                 this.setHeader(filenameTsb[0], filenameTsb[1], filenameTsb[2], this.SWAP_FILE + fileLink);
@@ -227,12 +234,14 @@ var TSOS;
                 // Create a file name for this swap file
                 var nextLink = this.getHeader(filenameTsb[0], filenameTsb[1], filenameTsb[2]).slice(1);
                 var nextTSB = this.toTSBArray(nextLink);
+                this.setHeader(nextTSB[0], nextTSB[1], nextTSB[2], this.SWAP_FILE + this.DEFAULT_LINK);
 
                 for (var i = 0; i < partitionedData.length; i++) {
                     nextLink = (i < partitionedData.length - 1) ? this.getNextAvailableFileLocation() : this.DEFAULT_LINK;
                     this.setHeader(nextTSB[0], nextTSB[1], nextTSB[2], this.SWAP_FILE + nextLink);
                     this.setContent(nextTSB[0], nextTSB[1], nextTSB[2], partitionedData[i].toLowerCase(), false);
-                    nextTSB = this.toTSBArray(this.getNextAvailableFileLocation());
+                    nextTSB = this.toTSBArray(nextLink);
+                    this.setHeader(nextTSB[0], nextTSB[1], nextTSB[2], this.SWAP_FILE + this.DEFAULT_LINK);
                 }
 
                 return true;

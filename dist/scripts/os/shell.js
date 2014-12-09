@@ -128,7 +128,7 @@ var TSOS;
             sc = new TSOS.ShellCommand(this.shellLs, "ls", "- list all the files on the hard drive.");
             this.commandList[this.commandList.length] = sc;
 
-            sc = new TSOS.ShellCommand(this.shellFormat, "format", "- list all the files on the hard drive.");
+            sc = new TSOS.ShellCommand(this.shellFormat, "format", "- format the Hard Drive.");
             this.commandList[this.commandList.length] = sc;
 
             // Display the initial prompt.
@@ -609,7 +609,6 @@ var TSOS;
             var filename = args[0];
 
             if (filename) {
-                var output = _krnHardDriveDriver.readFile(filename);
                 _Kernel.krnInterruptHandler(DISK_OPERATION_ISR, ["read", filename]);
             } else {
                 _StdOut.putText("Please provide a file name.");
