@@ -14,6 +14,7 @@ module TSOS {
         // Add User input program to pcb
         public addProcess(program: string[], priority): Process{
             var process = new Process();
+            process.pid = this.lastPid++;
 
             if(isNaN(priority)) {
                 // give a random priority number (for priority scheduling testing)
@@ -27,7 +28,6 @@ module TSOS {
                 this.residentQueue.enqueue(process);
                 return process;
             } else {
-                // store the process into the hard drive instead
                 return null;
             }
         }

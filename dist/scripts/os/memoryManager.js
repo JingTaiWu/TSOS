@@ -30,9 +30,6 @@ var TSOS;
         }
         // allocate memory for a given process
         MemoryManager.prototype.allocate = function (process, program) {
-            // Give the process a pid
-            process.pid = _ProcessManager.lastPid++;
-
             for (var i = 0; i < this.numberOfBlocks; i++) {
                 if (this.availableBlocks[i] == 0 /* AVAILABLE */) {
                     // if it finds an available block, store the process in
@@ -106,12 +103,25 @@ var TSOS;
         // write to a specific byte in the memory
         MemoryManager.prototype.writeByte = function (location, byte, process) {
             location = location + process.base;
+            if (byte.length < 2) {
+                byte = "0" + byte;
+            }
             if (location < process.limit && location >= process.base) {
                 this.memory[location] = new TSOS.Byte(byte);
                 _MemoryDisplay.update();
             } else {
                 _Kernel.krnInterruptHandler(INVALID_MEMORY_OP, [process]);
             }
+        };
+
+        // Returns every single byte for a given process
+        MemoryManager.prototype.readAllBytes = function (process) {
+            var retVal = [];
+            for (var i = 0; i < this.blockSize; i++) {
+                retVal.push(this.readByte(i, process));
+            }
+
+            return retVal;
         };
         return MemoryManager;
     })();

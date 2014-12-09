@@ -63,7 +63,7 @@ module TSOS {
 
             for(var i = 0; i < processls.length; i++) {
                 var process = processls[i];
-                var processLocation = (process.location == ProcessLocation.IN_RAM) ? "RAM" : "Hard Drive";
+                var processLocation = (process.location == ProcessLocation.IN_RAM) ? "RAM" : "HD";
                 var cols = "<td>" + process.pid + "</td>" +
                            "<td>" + process.pc + "</td>" +
                            "<td>" + process.ir + "</td>" +
@@ -71,7 +71,7 @@ module TSOS {
                            "<td>" + process.xFlag + "</td>" +
                            "<td>" + process.yFlag + "</td>" +
                            "<td>" + process.zFlag + "</td>" +
-                           "<td>" + process.priority + "</td>" +
+                           // "<td>" + process.priority + "</td>" +
                            "<td>" + processLocation + "</td>" +
                            "<td style='font-weight: bold;'>" + process.state + "</td>";
                 var row = "";

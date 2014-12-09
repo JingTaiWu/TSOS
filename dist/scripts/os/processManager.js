@@ -15,6 +15,7 @@ var TSOS;
         // Add User input program to pcb
         ProcessManager.prototype.addProcess = function (program, priority) {
             var process = new TSOS.Process();
+            process.pid = this.lastPid++;
 
             if (isNaN(priority)) {
                 // give a random priority number (for priority scheduling testing)
@@ -29,7 +30,6 @@ var TSOS;
                 this.residentQueue.enqueue(process);
                 return process;
             } else {
-                // store the process into the hard drive instead
                 return null;
             }
         };

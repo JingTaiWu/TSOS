@@ -244,42 +244,27 @@ module TSOS {
 
             // Swap process from the hard drive if it is not in the memory
             if(_CPUScheduler.currentProcess.location == ProcessLocation.IN_HARD_DRIVE) {
-                // If there isn't a last process, find one in the memory
-                if(!lastProcess) {
-                    for(var i = 0; i < _ProcessManager.residentQueue.getSize(); i++) {
-                        var process = _ProcessManager.residentQueue.getProcess(i);
-                        if(process.location == ProcessLocation.IN_RAM) {
-                            lastProcess = process;
-                            break;
-                        }
-                    }
-                }
-
-                // Take the last process and write it back to the hard drive
-                var lastProcessString: string[] = [];
-                var currentProcessString: string[] = [];
-
-                for(var j = lastProcess.base; j < lastProcess.limit; j++) {
-                    lastProcessString.push(_MemoryManager.readByte(j, lastProcess));
-                }
-
-                _krnHardDriveDriver.writeSwapFile(lastProcessString, lastProcess.pid);
-                // Deallocate the process from memory
-                _MemoryManager.deallocate(lastProcess);
-                // Read the process and store it into the memory
                 var currentFilename = ".Process" + _CPUScheduler.currentProcess.pid;
                 var fullProgramString = _krnHardDriveDriver.readFile(currentFilename, true);
-                // convert the full string to list of strings to allow memory allocation
-                for(var h = 0; h < _MemoryManager.blockSize;) {
-                    var curByte = fullProgramString.charAt(h) + fullProgramString.charAt(h + 1);
-                    currentProcessString.push(curByte);
-                    h += 2; 
-                }
 
-                // delete the swap file from hard drive
-                _krnHardDriveDriver.deleteSwapFile(currentFilename);
-                // allocate space
-                _MemoryManager.allocate(_CPUScheduler.currentProcess, currentProcessString);
+                // convert the full string to list of bytes to allow memory allocation
+                var currentProcessString: string[] = fullProgramString.match(new RegExp(".{1,2}", "g"));
+                currentProcessString = currentProcessString.slice(0, _MemoryManager.blockSize);
+
+                if(!lastProcess) {
+                    _MemoryManager.allocate(_CPUScheduler.currentProcess, currentProcessString);                    
+                } else {
+                    // Take the last process and write it back to the hard drive
+                    var lastProcessString: string[] = _MemoryManager.readAllBytes(lastProcess);
+                    _krnHardDriveDriver.writeSwapFile(lastProcessString, lastProcess.pid);
+                    lastProcess.location = ProcessLocation.IN_HARD_DRIVE;
+                    // Deallocate the process from memory
+                    _MemoryManager.deallocate(lastProcess);
+                    // delete the swap file from hard drive
+                    _krnHardDriveDriver.deleteSwapFile(currentFilename);
+                    // allocate space for the new process
+                    _MemoryManager.allocate(_CPUScheduler.currentProcess, currentProcessString);
+                }
             }
 
 
@@ -366,6 +351,7 @@ module TSOS {
                         _krnHardDriveDriver.initialize();
                         _StdOut.putText("Success.");
                     }
+                    break;
                 default:
                     this.krnTrace("Operation not found. Check Shell commands.");
             }

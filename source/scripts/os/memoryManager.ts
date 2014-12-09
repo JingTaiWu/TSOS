@@ -15,7 +15,7 @@ module TSOS {
         // A reference to hardware memory
         public memory: Byte[];
         // A table to keep track of available blocks
-        private availableBlocks: MEMORY_STATUS[] = [];
+        public availableBlocks: MEMORY_STATUS[] = [];
 
         constructor() {
             // Initializes the memory
@@ -30,8 +30,6 @@ module TSOS {
 
         // allocate memory for a given process
         public allocate(process: Process, program: string[]): boolean {
-            // Give the process a pid
-            process.pid = _ProcessManager.lastPid++;
             // find a free block for the new process
             for(var i = 0; i < this.numberOfBlocks; i++) {
                 if(this.availableBlocks[i] == MEMORY_STATUS.AVAILABLE) {
@@ -104,12 +102,25 @@ module TSOS {
         // write to a specific byte in the memory
         public writeByte(location: number, byte: string, process: Process) {
             location = location + process.base;
+            if(byte.length < 2) {
+                byte = "0" + byte;
+            }
             if(location < process.limit && location >= process.base) {
                 this.memory[location] = new Byte(byte);
                 _MemoryDisplay.update();
             } else {
                 _Kernel.krnInterruptHandler(INVALID_MEMORY_OP, [process]);
             }
+        }
+
+        // Returns every single byte for a given process
+        public readAllBytes(process: Process): string[] {
+            var retVal = [];
+            for(var i = 0; i < this.blockSize; i++) {
+                retVal.push(this.readByte(i, process));
+            }
+
+            return retVal;
         }
     }
 }

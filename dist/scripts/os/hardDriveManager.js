@@ -209,7 +209,7 @@ var TSOS;
                 data += program[i];
             }
 
-            var requiredBlocks = Math.ceil(_MemoryManager.blockSize / (this.DATA_LENGTH * 2));
+            var requiredBlocks = Math.ceil(_MemoryManager.blockSize / (this.DATA_LENGTH));
             var filenameLink = this.getNextAvailableFilenameLocation();
             var fileLink = this.getNextAvailableFileLocation();
 
@@ -241,7 +241,9 @@ var TSOS;
                     this.setHeader(nextTSB[0], nextTSB[1], nextTSB[2], this.SWAP_FILE + nextLink);
                     this.setContent(nextTSB[0], nextTSB[1], nextTSB[2], partitionedData[i].toLowerCase(), false);
                     nextTSB = this.toTSBArray(nextLink);
-                    this.setHeader(nextTSB[0], nextTSB[1], nextTSB[2], this.SWAP_FILE + this.DEFAULT_LINK);
+                    if (nextLink !== this.DEFAULT_LINK) {
+                        this.setHeader(nextTSB[0], nextTSB[1], nextTSB[2], this.SWAP_FILE + this.DEFAULT_LINK);
+                    }
                 }
 
                 return true;

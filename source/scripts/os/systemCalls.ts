@@ -39,6 +39,7 @@ module TSOS {
                 }
             }
 
+            _krnHardDriveDriver.deleteSwapFile(".Process" + process.pid);
             // update all the display
             _MemoryDisplay.update();
             _PCBDisplay.update();
