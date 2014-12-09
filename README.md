@@ -10,7 +10,7 @@ Progress Check
 1.	iProject 1 (Complete!!)
 2.	iProject 2 (DONE!)
 3.	iProject 3 (完成)
-4.	iProject 4 (Now in Progress)
+4.	iProject 4 (O-WA-RI)
 
 To Do List
 ==========
@@ -47,7 +47,7 @@ Scheduling Related
 
 SOMETHING THAT'S WORTH 70 POINTS
 --------------------------------
-- Allow the OS to execute four concurrent user process by writing roll-out and roll-in routines to
+- ~~Allow the OS to execute four concurrent user process by writing roll-out and roll-in routines to~~
     - take a ready process and store it to the disk via your fsDD.
     - load a swapped-out process and place it in the ready queue.
     - your ready queue should denote which processes are where.

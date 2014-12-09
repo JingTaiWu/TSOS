@@ -110,6 +110,7 @@ var TSOS;
                 _CPUDisplay.update();
                 _PCBDisplay.update();
                 _MemoryDisplay.update();
+                _HardDriveDisplay.update();
             } else {
                 this.krnTrace("Idle");
             }
