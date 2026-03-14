@@ -129,6 +129,9 @@ var TSOS;
                 case "D0":
                     this.branchNotEqual();
                     break;
+                case "F0":
+                    this.branchEqual();
+                    break;
                 case "EE":
                     this.incrementValueOfByte();
                     break;
@@ -265,6 +268,19 @@ var TSOS;
 
             // if z flag = 0, branch
             if (zflag == 0) {
+                var offset = numOfBytes;
+                this.incrementPC(offset);
+            }
+        };
+
+        // F0 - Branch n bytes if Z flag = 1
+        Cpu.prototype.branchEqual = function () {
+            var numOfBytes = parseInt(this.readNextByte(), 16);
+            this.incrementPC(2);
+            var zflag = parseInt(this.Zflag, 16);
+
+            // if z flag = 1, branch
+            if (zflag == 1) {
                 var offset = numOfBytes;
                 this.incrementPC(offset);
             }

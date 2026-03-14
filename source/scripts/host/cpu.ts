@@ -124,6 +124,9 @@
             case "D0":
             this.branchNotEqual();
             break;
+            case "F0":
+            this.branchEqual();
+            break;
             case "EE":
             this.incrementValueOfByte();
             break;
@@ -254,6 +257,18 @@
           var zflag: number = parseInt(this.Zflag, 16);
           // if z flag = 0, branch
           if(zflag == 0) {
+            var offset = numOfBytes;
+            this.incrementPC(offset);
+        }
+    }
+
+        // F0 - Branch n bytes if Z flag = 1
+        public branchEqual(): void {
+          var numOfBytes: number = parseInt(this.readNextByte(), 16);
+          this.incrementPC(2);
+          var zflag: number = parseInt(this.Zflag, 16);
+          // if z flag = 1, branch
+          if(zflag == 1) {
             var offset = numOfBytes;
             this.incrementPC(offset);
         }
