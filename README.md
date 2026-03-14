@@ -1,53 +1,73 @@
-Welcome to JingleJangleOS
-=========================
+# React + TypeScript + Vite
 
--	This is my Fall 2014 Operating Systems class initial project.
--	See http://www.labouseur.com/courses/os/ for details.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Progress Check
-==============
+Currently, two official plugins are available:
 
-1.	iProject 1 (Complete!!)
-2.	iProject 2 (DONE!)
-3.	iProject 3 (完成)
-4.	iProject 4 (O-WA-RI)
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-To Do List
-==========
+## React Compiler
 
-Shell Related
--------------
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-- ~~*create* (filename) --- Create the filenmae and display a message denoting success or failure.~~
-- ~~*read* (filename) --- Read and display the contents of filename or display an error if something went wrong.~~
-- ~~*write* (filename) --- Write the data inside the quotes to filename and isplay a message denoting success or failure.~~
-- ~~*delete* (filename) "data" --- Write the data inside the quotes to filename and display a message denoting success or failure.~~
-- ~~*format* --- Initialize all blocks in all sectors in all tracks and display a message denoting success or failure.~~
-- ~~*ls* --- list the files currently stored on the disk.~~
-- ~~*setschedule* --- allow the user to select a CPU scheduling algorithm {rr. fcfs, priority}~~
-- ~~*getschedule* --- return the currently selected cpu scheduling algorithm.~~
+## Expanding the ESLint configuration
 
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-File System Related
---------------
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-- ~~Implement a file system in HTML5 web storage as discussed in class.~~
-- ~~Include a file system viewer in your OS interface.~~
-- ~~File System Device for all of the functional requirements noted above.~~
-- ~~load the fsDD in a similar manner as the keyboard device driver.~~
-- ~~evelop your fsDD to insulate and encapsulate the implementation of the kernel-level I/O operations from the byte-level details
-of your individual blocks on the lcoal storage.~~
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
 
-Scheduling Related
-------------------
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-- ~~first-come, first-served (FCFS)~~
-- ~~non-preemptive priority~~
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-SOMETHING THAT'S WORTH 70 POINTS
---------------------------------
-- ~~Allow the OS to execute four concurrent user process by writing roll-out and roll-in routines to~~
-    - take a ready process and store it to the disk via your fsDD.
-    - load a swapped-out process and place it in the ready queue.
-    - your ready queue should denote which processes are where.
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```

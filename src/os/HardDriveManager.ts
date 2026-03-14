@@ -130,7 +130,7 @@ export class HardDriveManager {
       const fileLinkTsb = this.toTSBArray(fileLink);
       this.setHeader(fileLinkTsb[0], fileLinkTsb[1], fileLinkTsb[2], this.SWAP_FILE + this.DEFAULT_LINK);
 
-      const partitionedData = data.match(new RegExp('.{1,' + (this.DATA_LENGTH * 2) + '}', 'g')) || [];
+      const partitionedData: string[] = data.match(new RegExp('.{1,' + (this.DATA_LENGTH * 2) + '}', 'g')) || [];
       for (let j = partitionedData.length; j < requiredBlocks; j++) partitionedData.push('00');
 
       let nextLink = this.getHeader(filenameTsb[0], filenameTsb[1], filenameTsb[2]).slice(1);
